@@ -2,6 +2,8 @@ package org.example.pro2projekt.views;
 
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.dom.Element;
 import org.example.pro2projekt.controller.dataInput;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -42,8 +44,8 @@ public class index extends VerticalLayout {
         add(importMain());
 
         btnSubmit.addClickListener(event -> {
-            remove(lets);
-            lets = new Div();
+            if(lets!= null)
+                remove(lets);
             lets = importLety(input.getLets(statOdletu, statPriletu));
             add(lets);
         });
@@ -59,12 +61,6 @@ public class index extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
     }
-    private void refreshLety() {
-        removeAll();
-        add(importZahlavi());
-        add(importMain());
-        add(importLety(input.getLets(statOdletu, statPriletu)));
-    }
     private Div importLety(ResultSet resultSet){
     // LetId LetadloID Cas_Odletu Cas_Priletu MestoOdletu StatOdletu NazevLOdletu MestoPriletu StatPriletu NazevLPriletu
         Div div = new Div();
@@ -72,31 +68,100 @@ public class index extends VerticalLayout {
         try {
             while (resultSet.next()) {
                 // Získání hodnot z ResultSet pro každý řádek
+                Div let = new Div();
+                FlexLayout row1 = new FlexLayout();
+                Div row1Left = new Div();
                 int letId = resultSet.getInt("LetId");
+                Text letIdText = new Text(String.valueOf("Id letu: "+letId));
+                row1Left.add(letIdText);
+                Div row1Right = new Div();
                 int letadloId = resultSet.getInt("LetadloID");
+                Text letadloIdText = new Text(String.valueOf("Id letadla: "+letadloId));
+                row1Right.add(letadloIdText);
+                row1Left.setWidth("20%");
+                row1Right.setWidth("80%");
+                row1.setWidthFull();
+                row1.add(row1Left,row1Right);
+
+                row1.getStyle().set("border", "1px solid lightblue").set("background","lightblue");
+
+                FlexLayout  row2 = new FlexLayout ();
+                Div row2Left = new Div();
                 String casOdletu = resultSet.getString("Cas_Odletu");
-                String casPriletu = resultSet.getString("Cas_Priletu");
+                Text casOdletuText = new Text(String.valueOf("Čas Odletu: "+casOdletu));
+                row2Left.add(casOdletuText);
+                row2Left.setWidth("20%");
+
+
+                FlexLayout row2Right = new FlexLayout();
+                Div rw2a = new Div();
                 String mestoOdletu = resultSet.getString("MestoOdletu");
+                Text textMestoOdletu =new Text(String.valueOf("Město : "+mestoOdletu));
+                rw2a.add(textMestoOdletu);
+                rw2a.setWidth("33%");
+
+                Div rw2b = new Div();
                 String statOdletu = resultSet.getString("StatOdletu");
+                Text textStatOdletu = new Text(String.valueOf("Stát : "+statOdletu));
+                rw2b.add(textStatOdletu);
+                rw2b.setWidth("33%");
+
+                Div rw2c = new Div();
                 String nazevLOdletu = resultSet.getString("NazevLOdletu");
+                Text textLOdletu = new Text(String.valueOf("Název : "+nazevLOdletu));
+                rw2c.add(textLOdletu);
+                rw2c.setWidth("33%");
+                row2Right.setWidth("80%");
+                row2Right.add(rw2a,rw2b,rw2c);
+
+                row2.setWidthFull();
+                row2.add(row2Left,row2Right);
+                row2.getStyle().set("border", "1px solid lightblue").set("background","white");
+
+                FlexLayout  row3 = new FlexLayout ();
+                Div row3Left = new Div();
+                String casPriletu = resultSet.getString("Cas_Priletu");
+                Text casPriletuText = new Text(String.valueOf("Čas : "+casPriletu));
+                row3Left.add(casPriletuText);
+                row3Left.setWidth("20%");
+
+                FlexLayout row3Right = new FlexLayout();
+                Div rw3a = new Div();
                 String mestoPriletu = resultSet.getString("MestoPriletu");
+                Text mestoPriletuText = new Text(String.valueOf("Město : "+mestoPriletu));
+                rw3a.add(mestoPriletuText);
+                rw3a.setWidth("33%");
+
+                Div rw3b = new Div();
                 String statPriletu = resultSet.getString("StatPriletu");
+                Text statPriletuText = new Text(String.valueOf("Stát : "+statPriletu));
+                rw3b.add(statPriletuText);
+                rw3b.setWidth("33%");
+
+                Div rw3c = new Div();
                 String nazevLPriletu = resultSet.getString("NazevLPriletu");
+                Text nazevLPriletuText = new Text(String.valueOf("Název : "+nazevLPriletu));
+                rw3c.add(nazevLPriletuText);
+                rw3c.setWidth("33%");
 
-                // Vytvoření textového řetězce s daty
-                String rowData = "Let ID: " + letId + ", Letadlo ID: " + letadloId + ", Čas odletu: " + casOdletu +
-                        ", Čas příletu: " + casPriletu + ", Město odletu: " + mestoOdletu +
-                        ", Stát odletu: " + statOdletu + ", Název letiště odletu: " + nazevLOdletu +
-                        ", Město příletu: " + mestoPriletu + ", Stát příletu: " + statPriletu +
-                        ", Název letiště příletu: " + nazevLPriletu;
+                row3Right.setWidth("80%");
+                row3Right.add(rw3a,rw3b,rw3c);
 
-                // Vytvoření paragraph elementu pro každý řádek dat
-                Paragraph paragraph = new Paragraph(rowData);
-                div.add(paragraph);
+                row3.setWidthFull();
+                row3.add(row3Left,row3Right);
+                row3.getStyle().set("border", "1px solid lightblue").set("background","lightblue");
+
+                let.add(row1,row2,row3);
+                let.getStyle().set("border", "2px solid lightblue")
+                        .set("border-radius", "10px")
+                        .set("padding", "10px")
+                        .set("margin-bottom","20px");
+                div.add(let);
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Pokud dojde k chybě při čtení z ResultSet
         }
+        div.setWidth("80%");
 
         return div;
     }
@@ -129,7 +194,7 @@ public class index extends VerticalLayout {
         main.setMaxWidth("80%");
 
         Text odlet = new Text("Stát odeltu: ");
-         odletField = new ComboBox<>();
+        odletField = new ComboBox<>();
         odletField.setItems(input.getAllStates());
         odletField.setPlaceholder("Vyberte stát odletu");
 
