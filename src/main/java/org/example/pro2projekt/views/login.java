@@ -22,8 +22,6 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
 
-        login.setAction("login");
-
         add(new H1("JKLetenky Login"), login);
 
         Button btnZpet = new Button("Zpět na hlavní stránku", event -> {

@@ -62,7 +62,7 @@ public class index extends VerticalLayout {
 
         //
         btnLogin.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate("login")));
-
+        btnRegister.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(register.class)));
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
     }
