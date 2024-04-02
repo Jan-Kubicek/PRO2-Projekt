@@ -27,7 +27,7 @@ public class index extends VerticalLayout {
     DatePicker datumODletuFiled, datumPriletuField;
     String statOdletu = "";
     String statPriletu = "";
-    String datumOdletu = "", datumPriletu = "", trida = "";
+    String datumOdletu = "", trida = "";
     dataInput input = new dataInput();
     ComboBox<String> odletField, priletField;
     ComboBox<Integer> pocetOsobField;
@@ -49,14 +49,13 @@ public class index extends VerticalLayout {
         btnSubmit.addClickListener(event -> {
             if(lets!= null)
                 remove(lets);
-            lets = importLety(input.getLets(statOdletu, statPriletu,datumOdletu,datumPriletu,trida));
+            lets = importLety(input.getLets(statOdletu, statPriletu,datumOdletu,trida));
             add(lets);
         });
 
         odletField.addValueChangeListener(event -> {statOdletu = event.getValue(); });
         priletField.addValueChangeListener(event -> {statPriletu = event.getValue(); });
-        datumODletuFiled.addValueChangeListener(event ->{datumPriletu = event.getValue().toString();}) ;
-        datumPriletuField.addValueChangeListener(event ->{datumOdletu = event.getValue().toString();});
+        datumODletuFiled.addValueChangeListener(event ->{datumOdletu = event.getValue().toString();}) ;
         tridaFiled.addValueChangeListener(event -> {trida = event.getValue();});
 
         //footer
@@ -214,10 +213,6 @@ public class index extends VerticalLayout {
         datumODletuFiled = new DatePicker();
         datumODletuFiled.setWidthFull();
 
-        Text datumPriletu = new Text("Datum příletu ");
-        datumPriletuField = new DatePicker();
-        datumPriletuField.setWidthFull();
-
         Text pocetOsob = new Text("Počet osob ");
         pocetOsobField = new ComboBox<>();
         pocetOsobField.setPlaceholder("Zadejte počet osob");
@@ -232,13 +227,12 @@ public class index extends VerticalLayout {
 
         Div row1 = new Div(odlet, odletField,prilet,priletField);
         Div row2 = new Div(datumOdletu,datumODletuFiled);
-        Div row3 = new Div(datumPriletu,datumPriletuField);
         Div row4 = new Div(pocetOsob,pocetOsobField);
         Div row5 = new Div(trida,tridaFiled);
         Div row6 = new Div(btnSubmit);
         btnSubmit.setWidthFull();
 
-        main.add(row1,row2,row3,row4,row5,row6);
+        main.add(row1,row2,row4,row5,row6);
 
         return main;
     }

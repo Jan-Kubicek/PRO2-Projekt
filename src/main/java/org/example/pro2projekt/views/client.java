@@ -5,10 +5,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Client")
+@PageTitle("client")
 @Route("/client")
-public class mainClient extends VerticalLayout {
-    public mainClient(){
+public class client extends VerticalLayout {
+    public client(){
         //componenty
 
         //header

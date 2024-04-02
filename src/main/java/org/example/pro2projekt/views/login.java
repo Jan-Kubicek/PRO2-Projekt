@@ -37,11 +37,11 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
             if (loginDispecer(username,password)) {
                 // Dispecer
-                getUI().ifPresent(ui -> ui.navigate("/admin")); // Navigate to your main application view
+                getUI().ifPresent(ui -> ui.navigate(admin.class)); // Navigate to your main application view
             }
             if (loginPasazer(username,password)) {
                 // Pasazer
-                getUI().ifPresent(ui -> ui.navigate("/client")); // Navigate to your main application view
+                getUI().ifPresent(ui -> ui.navigate(client.class)); // Navigate to your main application view
             } if(!loginPasazer(username,password) && !loginDispecer(username,password)) {
                 login.setError(true);
                 Notification.show("Neplatné jméno nebo heslo.");
