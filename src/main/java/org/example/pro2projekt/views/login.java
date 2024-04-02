@@ -42,7 +42,7 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             if (loginPasazer(username,password)) {
                 // Pasazer
                 getUI().ifPresent(ui -> ui.navigate("/client")); // Navigate to your main application view
-            } else {
+            } if(!loginPasazer(username,password) && !loginDispecer(username,password)) {
                 login.setError(true);
                 Notification.show("Neplatné jméno nebo heslo.");
             }
@@ -58,7 +58,6 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             login.setError(true);
         }
     }
-
     private boolean loginPasazer(String email, String password){
         return input.isPasazer(email, password);
     }

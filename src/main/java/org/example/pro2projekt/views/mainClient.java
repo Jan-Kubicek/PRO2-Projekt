@@ -6,7 +6,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("Client")
-@Route("client")
+@Route("/client")
 public class mainClient extends VerticalLayout {
     public mainClient(){
         //componenty

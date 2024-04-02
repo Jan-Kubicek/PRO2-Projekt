@@ -74,7 +74,7 @@ public class dataInput {
                         "JOIN Letadlo ltdl ON L.LetadloID = ltdl.LetadloID\n" +
                 "JOIN tridaletadlo tldl ON ltdl.LetadloID = tldl.LetadloID\n" +
                 "JOIN Trida t ON tldl.TridaID = t.TridaID\n" +
-                "WHERE (LSL.LetisteID != LSL1.LetisteID ) AND (LT1.Stat = '"+stat1+"' AND LT2.Stat = '"+stat2+"') AND (L.Cas_odletu >= '"+datumOdletu+"') OR (L.Cas_priletu >= '"+datumPriletu+"') AND (t.Nazev >= '"+trida+"')");
+                "WHERE (LSL.LetisteID != LSL1.LetisteID ) AND (LT1.Stat = '"+stat1+"' AND LT2.Stat = '"+stat2+"') AND ((L.Cas_odletu >= '"+datumOdletu+"') OR (L.Cas_priletu >= '"+datumPriletu+"')) AND (t.Nazev >= '"+trida+"')");
         return set;
     }
 

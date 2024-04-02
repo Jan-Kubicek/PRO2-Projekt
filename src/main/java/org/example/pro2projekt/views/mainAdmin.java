@@ -10,7 +10,7 @@ import com.vaadin.flow.router.Route;
 import static com.vaadin.flow.component.Tag.H1;
 
 @PageTitle("Admin")
-@Route("admin")
+@Route("/admin")
 public class mainAdmin extends VerticalLayout {
 
     public mainAdmin(){
