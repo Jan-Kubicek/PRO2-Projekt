@@ -24,11 +24,14 @@ import java.sql.SQLException;
 @Route("/")
 public class index extends VerticalLayout {
     Button btnLogin, btnRegister,btnSubmit;
-    RouterLink lingLogin, likRegister;//todo
+    DatePicker datumODletuFiled, datumPriletuField;
     String statOdletu = "";
     String statPriletu = "";
+    String datumOdletu = "", datumPriletu = "", trida = "";
     dataInput input = new dataInput();
     ComboBox<String> odletField, priletField;
+    ComboBox<Integer> pocetOsobField;
+    ComboBox<String> tridaFiled;
     Div lets;
     public index(){
         //componenty
@@ -46,12 +49,15 @@ public class index extends VerticalLayout {
         btnSubmit.addClickListener(event -> {
             if(lets!= null)
                 remove(lets);
-            lets = importLety(input.getLets(statOdletu, statPriletu));
+            lets = importLety(input.getLets(statOdletu, statPriletu,datumOdletu,datumPriletu,trida));
             add(lets);
         });
 
         odletField.addValueChangeListener(event -> {statOdletu = event.getValue(); });
         priletField.addValueChangeListener(event -> {statPriletu = event.getValue(); });
+        datumODletuFiled.addValueChangeListener(event ->{datumPriletu = event.getValue().toString();}) ;
+        datumPriletuField.addValueChangeListener(event ->{datumOdletu = event.getValue().toString();});
+        tridaFiled.addValueChangeListener(event -> {trida = event.getValue();});
 
         //footer
 
@@ -83,7 +89,7 @@ public class index extends VerticalLayout {
                 row1.setWidthFull();
                 row1.add(row1Left,row1Right);
 
-                row1.getStyle().set("border", "1px solid lightblue").set("background","lightblue");
+                row1.getStyle().set("border", "1px solid lightblue").set("background","lightblue").set("border-radius", "6px");
 
                 FlexLayout  row2 = new FlexLayout ();
                 Div row2Left = new Div();
@@ -116,7 +122,7 @@ public class index extends VerticalLayout {
 
                 row2.setWidthFull();
                 row2.add(row2Left,row2Right);
-                row2.getStyle().set("border", "1px solid lightblue").set("background","white");
+                row2.getStyle().set("border", "1px solid lightblue").set("background","white").set("border-radius", "6px");
 
                 FlexLayout  row3 = new FlexLayout ();
                 Div row3Left = new Div();
@@ -149,13 +155,14 @@ public class index extends VerticalLayout {
 
                 row3.setWidthFull();
                 row3.add(row3Left,row3Right);
-                row3.getStyle().set("border", "1px solid lightblue").set("background","lightblue");
+                row3.getStyle().set("border", "1px solid lightblue").set("background","lightblue").set("border-radius", "6px");
 
                 let.add(row1,row2,row3);
                 let.getStyle().set("border", "2px solid lightblue")
                         .set("border-radius", "10px")
                         .set("padding", "10px")
-                        .set("margin-bottom","20px");
+                        .set("margin-bottom","20px")
+                        .set("box-shadow","5px 5px 5px grey");
                 div.add(let);
             }
         } catch (SQLException e) {
@@ -204,21 +211,21 @@ public class index extends VerticalLayout {
         priletField.setPlaceholder("Vyberte stát příletu");
 
         Text datumOdletu = new Text("Datum odletu: ");
-        DatePicker datumODletuFiled = new DatePicker();
+        datumODletuFiled = new DatePicker();
         datumODletuFiled.setWidthFull();
 
         Text datumPriletu = new Text("Datum příletu ");
-        DatePicker datumPriletuField = new DatePicker();
+        datumPriletuField = new DatePicker();
         datumPriletuField.setWidthFull();
 
         Text pocetOsob = new Text("Počet osob ");
-        ComboBox<Integer> pocetOsobField = new ComboBox<>();
+        pocetOsobField = new ComboBox<>();
         pocetOsobField.setPlaceholder("Zadejte počet osob");
         pocetOsobField.setItems(1,2,3,4,5,6,7);
         pocetOsobField.setWidthFull();
 
         Text trida = new Text("Třída: ");
-        ComboBox<String> tridaFiled = new ComboBox<>();
+        tridaFiled = new ComboBox<>();
         tridaFiled.setItems(input.getAllClasses());
         tridaFiled.setPlaceholder("Vyberte třídu");
         tridaFiled.setWidthFull();

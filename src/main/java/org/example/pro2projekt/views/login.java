@@ -3,18 +3,17 @@ package org.example.pro2projekt.views;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.example.pro2projekt.controller.dataInput;
 
 @PageTitle("login")
 @Route("/login")
 @AnonymousAllowed
 public class login extends VerticalLayout implements BeforeEnterObserver {
-
+    dataInput input = new dataInput();
     private final LoginForm login = new LoginForm();
 
     public login(){
@@ -31,7 +30,23 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             getUI().ifPresent(ui -> ui.navigate("/"));
         });
         add(btnZpet);
+        // Handle login form submission
+        login.addLoginListener(event -> {
+            String username = event.getUsername();
+            String password = event.getPassword();
 
+            if (loginDispecer(username,password)) {
+                // Dispecer
+                getUI().ifPresent(ui -> ui.navigate("/admin")); // Navigate to your main application view
+            }
+            if (loginPasazer(username,password)) {
+                // Pasazer
+                getUI().ifPresent(ui -> ui.navigate("/client")); // Navigate to your main application view
+            } else {
+                login.setError(true);
+                Notification.show("Neplatné jméno nebo heslo.");
+            }
+        });
     }
 
     @Override
@@ -43,4 +58,12 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             login.setError(true);
         }
     }
+
+    private boolean loginPasazer(String email, String password){
+        return input.isPasazer(email, password);
+    }
+    private boolean loginDispecer(String email, String password){
+        return input.isDispecer(email, password);
+    }
+
 }
