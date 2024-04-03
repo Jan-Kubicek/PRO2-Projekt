@@ -122,7 +122,7 @@ public class register extends VerticalLayout {
     private void Registruj(String jmeno, String prijmeni, String email,String rodCi, String telCis, String heslo, String pohlavi){
         boolean isRegisted =  validate.Registruj(jmeno,prijmeni,email,rodCi,telCis,heslo,pohlavi);
         if(isRegisted){
-          //todo redirect
+            getUI().ifPresent(ui -> ui.navigate(login.class));
         }else{
             Notification.show("Byly zadány neplatné údaje");
         }

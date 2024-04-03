@@ -13,11 +13,19 @@ public class Database {
 
     public ResultSet getData(String query){
         try(Connection connection = DriverManager.getConnection(connectionUrl,username,password)) {
-            System.out.print("Database Connected");
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void newEntity(String query){
+        try(Connection connection = DriverManager.getConnection(connectionUrl,username,password)){
+            Statement statement = connection.createStatement();
+            statement.executeQuery(query);
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
     }

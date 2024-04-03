@@ -5,6 +5,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
