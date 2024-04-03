@@ -5,6 +5,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
@@ -13,18 +14,20 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.example.pro2projekt.controller.dataInput;
+import org.example.pro2projekt.validation.validator;
 
 @PageTitle("register")
 @Route("/register")
 public class register extends VerticalLayout {
-    dataInput input = new dataInput();
-    TextArea jmenoField, prijmeniField;
+    private validator validate = new validator();
+    TextArea jmenoField, prijmeniField,emailField;
     TextArea rodnecisloField, telefonniCisloField;
     PasswordField hesloField;
     Button btnRegister, btnBack;
     RadioButtonGroup<String> pohlavi;
-    String jmeno = "", prijmeni = "", rodC = "", telCis ="", heslo="", pohla= "";
+    String jmeno = "", prijmeni = "", rodCi = "", telCis ="", heslo="", email = "", pohla = "";
     public register(){
             //todo rest
         Div main = new Div();
@@ -78,6 +81,14 @@ public class register extends VerticalLayout {
         pss.getStyle().set("padding-left","30%");
         row4.add(pss);
 
+        FlexLayout row4b = new FlexLayout();
+        Div eml = new Div();
+        Text em = new Text("Zadejte svůj email: ");
+        emailField = new TextArea();
+        eml.add(em,emailField);
+        eml.getStyle().set("padding-left","30%");
+        row4b.add(eml);
+
         FlexLayout row5 = new FlexLayout();
         Div btnF = new Div();
         btnRegister = new Button("Register");
@@ -90,20 +101,31 @@ public class register extends VerticalLayout {
         btnL.setWidth("50%");
         row5.add(btnF,btnL);
 
+        jmenoField.addValueChangeListener(event -> {jmeno = event.getValue(); });
+        prijmeniField.addValueChangeListener(event -> {prijmeni = event.getValue(); });
+        rodnecisloField.addValueChangeListener(event -> {rodCi = event.getValue(); });
+        telefonniCisloField.addValueChangeListener(event -> {telCis = event.getValue(); });
+        hesloField.addValueChangeListener(event -> {heslo = event.getValue(); });
+        pohlavi.addValueChangeListener(event -> {pohla = event.getValue(); });
+        emailField.addValueChangeListener(event -> {email = event.getValue();});
 
-
-        btnRegister.addClickListener(Registruj());//todo
+        btnRegister.addClickListener(event ->{ Registruj(jmeno,prijmeni,email,rodCi,telCis,heslo,pohla);});
         btnBack.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(index.class)));
 
-        main.add(row1,row2,row3,row3a,row4,row5);
+        main.add(row1,row2,row3,row3a,row4,row4b,row5);
         add(main);
         main.setWidth("80%");
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
     }
 
-    private void Registruj(){
-        input = //todo
-        //todo
+    private void Registruj(String jmeno, String prijmeni, String email,String rodCi, String telCis, String heslo, String pohlavi){
+        boolean isRegisted =  validate.Registruj(jmeno,prijmeni,email,rodCi,telCis,heslo,pohlavi);
+        if(isRegisted){
+          //todo redirect
+        }else{
+            Notification.show("Byly zadány neplatné údaje");
+        }
     }
+
 }
