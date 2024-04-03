@@ -16,10 +16,11 @@ public class validator {
     }
 
     public boolean Registruj(String jmeno, String prijmeni, String email,String rodCi, String telCis, String heslo, String pohlavi){
-        if((jmeno.length() < 3) || (prijmeni.length() < 5) || (rodCi.length() < 10) || (telCis.length() < 9) || (heslo.length() < 4) || (email.length() < 5) ){
+        System.out.println(jmeno + " " + prijmeni + " " + email + " " + rodCi + " " + telCis + " " + heslo + " " + pohlavi);
+        if((jmeno.length() < 3) || (prijmeni.length() < 5) || (rodCi.length() < 9) || (telCis.length() < 8) || (heslo.length() < 4) || (email.length() < 5) ){
             return false;
         }
-        if((!(pohlavi.equals("Muž"))) || (!(pohlavi.equals("Žena")))){
+        if((!(pohlavi.equals("Muž"))) && (!(pohlavi.equals("Žena")))){
             return false;
         }
         if(!isValidEmail(email)){
