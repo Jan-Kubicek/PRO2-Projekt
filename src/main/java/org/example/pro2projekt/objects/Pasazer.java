@@ -19,7 +19,7 @@ public class Pasazer {
     private String Prijmeni;
     private String Rodne_cislo;
     private String Telefoni_cislo;
-    protected Pasazer(){
+    public Pasazer(){
 
     }
 
