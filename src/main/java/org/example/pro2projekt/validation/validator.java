@@ -78,4 +78,12 @@ public class validator {
         }
     }
 
+    public boolean isValidSpolecnost(String nazev, String sidlo){
+        if((nazev.length() < 3) || (sidlo.length() < 3)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 }
