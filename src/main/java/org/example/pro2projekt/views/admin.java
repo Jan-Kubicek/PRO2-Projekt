@@ -5,6 +5,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -29,8 +31,10 @@ public class admin extends VerticalLayout {
         row1div1.add(text);
         row1div1.setWidth("50%");
         Div row1div2 = new Div();
+        Icon iconLogOut = new Icon(VaadinIcon.POWER_OFF);
         btnLogout = new Button("Odhlášení");
         btnLogout.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(index.class)));
+        btnLogout.setIcon(iconLogOut);
         row1div2.add(btnLogout);
         row1div2.setWidth("50%");
         row1div2.getStyle().set("padding-left","60%").set("padding-top","1%");
@@ -48,8 +52,10 @@ public class admin extends VerticalLayout {
         row2div1.getStyle().set("padding-left","3%");
 
         Div row2div2 = new Div();
+        Icon icon2 = new Icon(VaadinIcon.LOCATION_ARROW);
         btnClients = new Button("Účty");
         btnClients.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminClientsView.class)));
+        btnClients.setIcon(icon2);
         row2div2.add(btnClients);
         row2div2.setWidth("50%");
         row2div2.getStyle().set("padding-left","50%");
@@ -73,6 +79,8 @@ public class admin extends VerticalLayout {
         Div row3div2 = new Div();
         btnLetadla = new Button("Letadla");
         btnLetadla.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminLetadlaView.class)));
+        Icon icon3 = new Icon(VaadinIcon.LOCATION_ARROW);
+        btnLetadla.setIcon(icon3);
         row3div2.add(btnLetadla);
         row3div2.setWidth("50%");
         row3div2.getStyle().set("padding-left","50%");
@@ -96,6 +104,8 @@ public class admin extends VerticalLayout {
         Div row4div2 = new Div();
         btnLetiste = new Button("Letiště");
         btnLetiste.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminLetisteView.class)));
+        Icon icon4 = new Icon(VaadinIcon.LOCATION_ARROW);
+        btnLetiste.setIcon(icon4);
         row4div2.add(btnLetiste);
         row4div2.setWidth("50%");
         row4div2.getStyle().set("padding-left","50%");
@@ -119,6 +129,8 @@ public class admin extends VerticalLayout {
         Div row5div2 = new Div();
         btnSpolecnost = new Button("Společnosti");
         btnSpolecnost.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminSpolecnostView.class)));
+        Icon icon5 = new Icon(VaadinIcon.LOCATION_ARROW);
+        btnSpolecnost.setIcon(icon5);
         row5div2.add(btnSpolecnost);
         row5div2.setWidth("50%");
         row5div2.getStyle().set("padding-left","50%");
@@ -131,8 +143,6 @@ public class admin extends VerticalLayout {
                 .set("margin-bottom","20px")
                 .set("box-shadow","5px 5px 5px grey");;
         add(row5);
-
-
         //footer
 
         //
