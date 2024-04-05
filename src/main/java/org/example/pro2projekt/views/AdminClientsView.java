@@ -34,7 +34,6 @@ public class AdminClientsView extends VerticalLayout {
     private Grid<Dispecer> dispecrGrid = new Grid<>(Dispecer.class,false);
     private List<Pasazer> pasazerList;
     private List<Dispecer> dispecerList;
-    Text numbber;
     public AdminClientsView(){
         FlexLayout row0 = new FlexLayout();
         Div div = new Div();
@@ -59,18 +58,18 @@ public class AdminClientsView extends VerticalLayout {
                 Dialog dialog = new Dialog();
 
                 FlexLayout row1 = new FlexLayout();
-                Div row1div1 = new Div();
-                Text jmeno = new Text("Jméno");
-                TextArea jmenoField = new TextArea();
-                jmenoField.setValue(pasazer.getJmeno());
-                row1div1.add(jmeno,jmenoField);
-                row1div1.getStyle().set("padding-left","10%");
-                Div row1div2 = new Div();
-                Text prijmeni = new Text("Přijmení");
-                TextArea prijmeniField = new TextArea();
-                prijmeniField.setValue(pasazer.getPrijmeni());
-                row1div2.add(prijmeni,prijmeniField);
-                row1div2.getStyle().set("padding-left","10%");
+                    Div row1div1 = new Div();
+                        Text jmeno = new Text("Jméno");
+                        TextArea jmenoField = new TextArea();
+                        jmenoField.setValue(pasazer.getJmeno());
+                    row1div1.add(jmeno,jmenoField);
+                    row1div1.getStyle().set("padding-left","10%");
+                    Div row1div2 = new Div();
+                        Text prijmeni = new Text("Přijmení");
+                        TextArea prijmeniField = new TextArea();
+                        prijmeniField.setValue(pasazer.getPrijmeni());
+                    row1div2.add(prijmeni,prijmeniField);
+                    row1div2.getStyle().set("padding-left","10%");
                 row1.add(row1div1,row1div2);
                 dialog.add(row1);
 

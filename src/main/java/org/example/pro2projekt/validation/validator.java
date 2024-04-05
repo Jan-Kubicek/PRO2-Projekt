@@ -59,4 +59,16 @@ public class validator {
         }
     }
 
+    public boolean isValidLetadlo(String nazev, String rok, String stav, String typ, String vyrobce){
+        if((nazev.length() < 3) || (rok.length() < 3) || (stav.length() < 5) || (typ.length() < 5) || (vyrobce.length() < 5)){
+            return false;
+        }
+        try{
+            int value = Integer.parseInt(rok);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
 }
