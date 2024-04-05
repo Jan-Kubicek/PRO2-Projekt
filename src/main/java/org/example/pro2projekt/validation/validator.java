@@ -42,5 +42,21 @@ public class validator {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+    public boolean isValid(String jmeno, String prijmeni, String email,String rodCi, String telCis){
+        System.out.println(jmeno + " " + prijmeni + " " + email + " " + rodCi + " " + telCis );
+        if((jmeno.length() < 3) || (prijmeni.length() < 5) || (rodCi.length() < 9) || (telCis.length() < 8) ||  (email.length() < 5) ){
+            return false;
+        }
+        if(!isValidEmail(email)){
+            return false;
+        }
+        try{
+            int value2 = Integer.parseInt(telCis);
+            return true;
+
+        }catch (Exception e) {
+            return false;
+        }
+    }
 
 }

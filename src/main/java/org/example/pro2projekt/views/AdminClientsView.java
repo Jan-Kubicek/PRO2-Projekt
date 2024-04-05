@@ -47,6 +47,7 @@ public class AdminClientsView extends VerticalLayout {
             Button editButton = new Button("Edit");
             editButton.addClickListener(event -> {
                 Dialog dialog = new Dialog();
+
                 FlexLayout row1 = new FlexLayout();
                 Div row1div1 = new Div();
                 Text jmeno = new Text("Jméno");
@@ -54,24 +55,51 @@ public class AdminClientsView extends VerticalLayout {
                 jmenoField.setValue(pasazer.getJmeno());
                 row1div1.add(jmeno,jmenoField);
                 row1div1.getStyle().set("padding-left","10%");
-
                 Div row1div2 = new Div();
                 Text prijmeni = new Text("Přijmení");
                 TextArea prijmeniField = new TextArea();
                 prijmeniField.setValue(pasazer.getPrijmeni());
                 row1div2.add(prijmeni,prijmeniField);
                 row1div2.getStyle().set("padding-left","10%");
-
                 row1.add(row1div1,row1div2);
                 dialog.add(row1);
 
 
+                FlexLayout row2 = new FlexLayout();
+                Div row2div1 = new Div();
+                Text email = new Text("Email");
+                TextArea emailField = new TextArea();
+                emailField.setValue(pasazer.getEmail());
+                row2div1.add(email,emailField);
+                row2div1.getStyle().set("padding-left","10%");
+                Div row2div2 = new Div();
+                Text rodneCislo = new Text("Rodné číslo");
+                TextArea rodneCisloField = new TextArea();
+                rodneCisloField.setValue(pasazer.getRodne_cislo());
+                row2div2.add(rodneCislo,rodneCisloField);
+                row2div2.getStyle().set("padding-left","10%");
+                row2.add(row2div1,row2div2);
+                dialog.add(row2);
+
+                FlexLayout row3 = new FlexLayout();
+                Div last = new Div();
+                Text tel = new Text("Telefoní číslo");
+                TextArea telField = new TextArea();
+                telField.setValue(pasazer.getTelefoni_cislo());
+                last.add(tel,telField);
+                last.getStyle().set("padding-left","25%");
+                row3.add(last);
+                dialog.add(row3);
+
                 FlexLayout rowLast = new FlexLayout();
                 Button uploadButton = new Button("Uprav", event3 ->{
-
+                    pasazerService.findByIdAndUpdate(pasazer.getPasazerID(),jmenoField.getValue(),prijmeniField.getValue(),emailField.getValue(),rodneCisloField.getValue(),telField.getValue());
+                    dialog.close();
+                    UI.getCurrent().getPage().reload();
                 });
-                uploadButton.getStyle().set("padding-left","20%");
+                uploadButton.getStyle().set("margin-left","40%");
                 Button closeButton = new Button("Zavřít", event2 -> dialog.close());
+                closeButton.getStyle().set("margin-left","10%");
                 rowLast.add(closeButton,uploadButton);
                 dialog.add(rowLast);
                 dialog.open();

@@ -10,4 +10,5 @@ public interface PasazerService {
     List<Pasazer> findByID(int id);
     List<Pasazer> findByTypPasazeraID(int id);
     List<Pasazer> findByIdAndDelete(int id);
+    void findByIdAndUpdate(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel);
 }
