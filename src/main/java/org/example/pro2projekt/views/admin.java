@@ -52,7 +52,7 @@ public class admin extends VerticalLayout {
         row2div1.getStyle().set("padding-left","3%");
 
         Div row2div2 = new Div();
-        Icon icon2 = new Icon(VaadinIcon.LOCATION_ARROW);
+        Icon icon2 = new Icon(VaadinIcon.ARROW_FORWARD);
         btnClients = new Button("Účty");
         btnClients.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminClientsView.class)));
         btnClients.setIcon(icon2);
@@ -79,7 +79,7 @@ public class admin extends VerticalLayout {
         Div row3div2 = new Div();
         btnLetadla = new Button("Letadla");
         btnLetadla.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminLetadlaView.class)));
-        Icon icon3 = new Icon(VaadinIcon.LOCATION_ARROW);
+        Icon icon3 = new Icon(VaadinIcon.ARROW_FORWARD);
         btnLetadla.setIcon(icon3);
         row3div2.add(btnLetadla);
         row3div2.setWidth("50%");
@@ -104,7 +104,7 @@ public class admin extends VerticalLayout {
         Div row4div2 = new Div();
         btnLetiste = new Button("Letiště");
         btnLetiste.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminLetisteView.class)));
-        Icon icon4 = new Icon(VaadinIcon.LOCATION_ARROW);
+        Icon icon4 = new Icon(VaadinIcon.ARROW_FORWARD);
         btnLetiste.setIcon(icon4);
         row4div2.add(btnLetiste);
         row4div2.setWidth("50%");
@@ -129,7 +129,7 @@ public class admin extends VerticalLayout {
         Div row5div2 = new Div();
         btnSpolecnost = new Button("Společnosti");
         btnSpolecnost.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminSpolecnostView.class)));
-        Icon icon5 = new Icon(VaadinIcon.LOCATION_ARROW);
+        Icon icon5 = new Icon(VaadinIcon.ARROW_FORWARD);
         btnSpolecnost.setIcon(icon5);
         row5div2.add(btnSpolecnost);
         row5div2.setWidth("50%");
