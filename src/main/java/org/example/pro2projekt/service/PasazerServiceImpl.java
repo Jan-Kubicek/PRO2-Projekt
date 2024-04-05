@@ -19,8 +19,8 @@ public class PasazerServiceImpl implements PasazerService{
 
     @Override
     public List<Pasazer> findAll() {
-        System.out.print(pasazerRepository.findAll().size());
-        return pasazerRepository.findAll();
+        String query = "SELECT * FROM Pasazer ";
+        return jdbcTemplate.query(query,new PasazerMapper());
     }
 
     @Override

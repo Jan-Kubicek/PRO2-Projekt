@@ -8,16 +8,16 @@ public class PasazerMapper implements RowMapper<Pasazer> {
     @Override
     public Pasazer mapRow(ResultSet rs, int rowNum) throws SQLException {
         Pasazer pasazer = new Pasazer();
-        pasazer.setPasazerID(rs.getInt("ID"));
-        pasazer.setEmail(rs.getString("EMAIL"));
-        pasazer.setHeslo(rs.getString("HESLO"));
-        pasazer.setJmeno(rs.getString("JMENO"));
-        pasazer.setPrijmeni(rs.getString("PRIJMENI"));
-        pasazer.setDatum_narozeni(rs.getDate("DATUM_NAROZENI"));
-        pasazer.setPohlavi(rs.getInt("POHLAVI"));
-        pasazer.setRodne_cislo(rs.getString("RODNE_CISLO"));
-        pasazer.setTelefoni_cislo(rs.getString("TELEFONI_CISLO"));
-        pasazer.setTyp_pasazeraID(rs.getInt("TYP_PASAZERAID"));
+        pasazer.setPasazerID(rs.getInt("PasazerID"));
+        pasazer.setEmail(rs.getString("Email"));
+        pasazer.setHeslo(rs.getString("Heslo"));
+        pasazer.setJmeno(rs.getString("Jmeno"));
+        pasazer.setPrijmeni(rs.getString("Prijmeni"));
+        pasazer.setDatum_narozeni(rs.getDate("Datum_narozeni"));
+        pasazer.setPohlavi(rs.getInt("Pohlavi"));
+        pasazer.setRodne_cislo(rs.getString("Rodne_cislo"));
+        pasazer.setTelefoni_cislo(rs.getString("Telefoni_cislo"));
+        pasazer.setTyp_pasazeraID(rs.getInt("Typ_pasazeraID"));
         return pasazer;
     }
 }

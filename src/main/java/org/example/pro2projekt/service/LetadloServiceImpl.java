@@ -18,7 +18,8 @@ public class LetadloServiceImpl implements LetadloService {
 
     @Override
     public List<Letadlo> findAll() {
-        return letadloRepository.findAll();
+        String query = "SELECT * FROM Letadlo ";
+        return jdbcTemplate.query(query,new LetadloMapper());
     }
 
     @Override

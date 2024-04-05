@@ -1,5 +1,6 @@
 package org.example.pro2projekt.service;
 
+import org.example.pro2projekt.mappaers.SpolecnostMapper;
 import org.example.pro2projekt.objects.Spolecnost;
 import org.example.pro2projekt.repository.SpolecnostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class SpolecnostServiceImpl implements  SpolecnostService {
 
     @Override
     public List<Spolecnost> findAll() {
-        return spolecnostRepository.findAll();
+        String query = "SELECT * FROM Spolecnost";
+        return jdbcTemplate.query(query,new SpolecnostMapper());
     }
 }

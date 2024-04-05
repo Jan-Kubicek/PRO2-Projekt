@@ -16,7 +16,8 @@ public class DispecerServiceImpl implements DispecerService{
     private JdbcTemplate jdbcTemplate;
     @Override
     public List<Dispecer> findAll() {
-        return dispecerRepository.findAll();
+        String query = "SELECT * FROM Dispecer";
+        return jdbcTemplate.query(query, new DispecerMapper());
     }
 
     @Override

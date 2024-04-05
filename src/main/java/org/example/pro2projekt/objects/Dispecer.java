@@ -3,8 +3,12 @@ package org.example.pro2projekt.objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.Immutable;
 
-@Entity
+@Table(name = "Dispecer")
+@Entity(name = "Dispecer")
+@Immutable
 public class Dispecer {
     @Id
     @GeneratedValue

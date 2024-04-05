@@ -18,7 +18,8 @@ public class LetisteServiceImpl implements LetisteService{
 
     @Override
     public List<Letiste> findAll() {
-        return letisteRepository.findAll();
+        String query = "SELECT * FROM Letiste L ";
+        return jdbcTemplate.query(query,new LetisteMapper());
     }
 
     @Override

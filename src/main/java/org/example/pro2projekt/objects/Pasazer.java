@@ -3,9 +3,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Immutable;
 
 import java.sql.Date;
-
+@Table(name = "Pasazer")
 @Entity(name = "Pasazer")
-@Table(name =  "Pasazer")
 @Immutable
 public class Pasazer {
     @Id

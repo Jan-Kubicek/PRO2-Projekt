@@ -28,8 +28,6 @@ public class AdminClientsView extends VerticalLayout {
     Text numbber;
     public AdminClientsView(){
         add(pasazerGrid);
-        numbber = new Text("#");
-        add(numbber);
         add(dispecrGrid);
 
     }
@@ -37,7 +35,6 @@ public class AdminClientsView extends VerticalLayout {
     @PostConstruct
     private void init(){
         pasazerList = pasazerService.findAll();
-        numbber.setText("num: "+pasazerList.size());
         pasazerGrid.setItems(pasazerList);
         dispecerList = dispecerService.findAll();
         dispecrGrid.setItems(dispecerList);
