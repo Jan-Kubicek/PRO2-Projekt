@@ -40,4 +40,10 @@ public class PasazerServiceImpl implements PasazerService{
         String query = "SELECT * FROM Pasazer P WHERE P.Typ_pasazeraID = ?";
         return jdbcTemplate.query(query,new PasazerMapper(),id);
     }
+
+    @Override
+    public List<Pasazer> findByIdAndDelete(int id) {
+        String query = "DELETE FROM Pasazer WHERE Pasazer.PasazerID = ?";
+        return jdbcTemplate.query(query,new PasazerMapper(),id);
+    }
 }

@@ -9,4 +9,5 @@ public interface PasazerService {
     List<Pasazer> findByJmenoAndPrijmeni(String jmeno, String prijmeni);
     List<Pasazer> findByID(int id);
     List<Pasazer> findByTypPasazeraID(int id);
+    List<Pasazer> findByIdAndDelete(int id);
 }
