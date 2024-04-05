@@ -1,11 +1,13 @@
 package org.example.pro2projekt.service;
 
 import org.example.pro2projekt.mappaers.DispecerMapper;
+import org.example.pro2projekt.mappaers.LetadloMapper;
 import org.example.pro2projekt.mappaers.PasazerMapper;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.repository.DispecerRepository;
 import org.example.pro2projekt.validation.validator;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,16 @@ public class DispecerServiceImpl implements DispecerService{
         if(valid){
             String query = "UPDATE Dispecer SET Dispecer.Jmeno = ?, Dispecer.Prijmeni = ?, Dispecer.Email = ?, Dispecer.Rodne_cislo = ?, Dispecer.Telefoni_cislo = ? WHERE Dispecer.DispecerID = ?";
             jdbcTemplate.query(query,new DispecerMapper(),jmeno,prijmeni,email,rodneCislo,tel,id);
+        }
+    }
+
+    @Override
+    public void createDispecer(String email, String heslo, String jmeno, String prijmeni, String rodneCislo, String tel) {
+        boolean valid = validator.isValid(jmeno,prijmeni,email,rodneCislo,tel);
+        if(valid){
+            String hashedHeslo =  BCrypt.hashpw(heslo, BCrypt.gensalt());
+            String query = "INSERT INTO  Dispecer (Email, Heslo, Jmeno, Prijmeni, Rodne_cislo, Telefoni_cislo) VALUES (?,?,?,?,?,?)";
+            jdbcTemplate.query(query,new LetadloMapper(),email,hashedHeslo,jmeno,prijmeni,rodneCislo,tel);
         }
     }
 }

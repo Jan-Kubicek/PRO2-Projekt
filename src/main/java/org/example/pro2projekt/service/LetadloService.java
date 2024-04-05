@@ -11,4 +11,5 @@ public interface LetadloService {
     List<Letadlo> findByVyrobce(String vyrobce);
     List<Letadlo> findByIdAndDelete(int id);
     void findByIdAndUpdate(int id, String nazev, String rok, String stav, String typ, String vyrobce);
+    void createNewLetadlo(String nazev, String vyrobce, String typ, String rok, String stav, int spolecnost);
 }

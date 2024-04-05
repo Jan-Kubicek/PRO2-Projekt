@@ -47,7 +47,16 @@ public class LetadloServiceImpl implements LetadloService {
         boolean valid = validator.isValidLetadlo(nazev,rok,stav,typ,vyrobce);
         if(valid){
             String query = "UPDATE Letadlo SET Letadlo.Nazev = ?, Letadlo.Rok_vyroby = ?, Letadlo.Stav = ?, Letadlo.Typ = ?, Letadlo.Vyrobce = ? WHERE Letadlo.LetadloID = ?";
-            jdbcTemplate.query(query,new PasazerMapper(),nazev,rok,stav,typ,vyrobce,id);
+            jdbcTemplate.query(query,new LetadloMapper(),nazev,rok,stav,typ,vyrobce,id);
+        }
+    }
+
+    @Override
+    public void createNewLetadlo(String nazev, String vyrobce, String typ, String rok, String stav, int spolecnost) {
+        boolean valid = validator.isValidLetadlo(nazev,rok,stav,typ,vyrobce);
+        if(valid){
+            String query = "INSERT INTO  Letadlo (SpolecnostID, Nazev, Rok_vyroby, Stav, Typ, Vyrobce) VALUES (?,?,?,?,?,?)";
+            jdbcTemplate.query(query,new LetadloMapper(),spolecnost,nazev,rok,stav,typ,vyrobce);
         }
     }
 }

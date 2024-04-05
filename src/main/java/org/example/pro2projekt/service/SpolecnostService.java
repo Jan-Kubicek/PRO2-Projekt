@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SpolecnostService {
     List<Spolecnost> findAll();
+    List<Integer> findAllIndexes();
 }

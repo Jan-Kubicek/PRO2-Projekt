@@ -60,7 +60,7 @@ public class validator {
     }
 
     public boolean isValidLetadlo(String nazev, String rok, String stav, String typ, String vyrobce){
-        if((nazev.length() < 3) || (rok.length() < 3) || (stav.length() < 5) || (typ.length() < 5) || (vyrobce.length() < 5)){
+        if((nazev.length() < 3) || (rok.length() < 3) || (stav.length() < 3) || (typ.length() < 3) || (vyrobce.length() < 3)){
             return false;
         }
         try{

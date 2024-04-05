@@ -21,4 +21,10 @@ public class SpolecnostServiceImpl implements  SpolecnostService {
         String query = "SELECT * FROM Spolecnost";
         return jdbcTemplate.query(query,new SpolecnostMapper());
     }
+
+    @Override
+    public List<Integer> findAllIndexes() {
+        String query = "SELECT SpolecnostID FROM Spolecnost";
+        return jdbcTemplate.query(query, (rs, rowNum) -> rs.getInt("SpolecnostID"));
+    }
 }

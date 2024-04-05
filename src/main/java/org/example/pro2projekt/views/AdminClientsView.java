@@ -3,6 +3,7 @@ package org.example.pro2projekt.views;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -41,10 +42,76 @@ public class AdminClientsView extends VerticalLayout {
         btnBack.addClickListener(event ->{ getUI().ifPresent(ui -> ui.navigate(admin.class));});
         btnBack.setText("Zpět na hlavní stránku");
         div.add(btnBack);
-        div.getStyle().set("margin-left","80%");
-        row0.add(div);
-        div.getStyle().set("margin-left","40%");
+        Div div2 = new Div();
+        Button btnNew = new Button();
+        btnNew.addClickListener(event -> {
+            Dialog dialog = new Dialog();
+
+            FlexLayout row1 = new FlexLayout();
+            Div row1div1 = new Div();
+            Text jmeno = new Text("Jméno");
+            TextArea jmenoField = new TextArea();
+            row1div1.add(jmeno,jmenoField);
+            row1div1.getStyle().set("padding-left","10%");
+            Div row1div2 = new Div();
+            Text prijmeni = new Text("Přijmení");
+            TextArea prijmeniField = new TextArea();
+            row1div2.add(prijmeni,prijmeniField);
+            row1div2.getStyle().set("padding-left","10%");
+            row1.add(row1div1,row1div2);
+            dialog.add(row1);
+
+
+            FlexLayout row2 = new FlexLayout();
+            Div row2div1 = new Div();
+            Text email = new Text("Email");
+            TextArea emailField = new TextArea();
+            row2div1.add(email,emailField);
+            row2div1.getStyle().set("padding-left","10%");
+            Div row2div2 = new Div();
+            Text rodneCislo = new Text("Rodné číslo");
+            TextArea rodneCisloField = new TextArea();
+            row2div2.add(rodneCislo,rodneCisloField);
+            row2div2.getStyle().set("padding-left","10%");
+            row2.add(row2div1,row2div2);
+            dialog.add(row2);
+
+            FlexLayout row3 = new FlexLayout();
+            Div last = new Div();
+            Text tel = new Text("Telefoní číslo");
+            TextArea telField = new TextArea();
+            last.add(tel,telField);
+            last.getStyle().set("padding-left","10%");
+            Div lastt = new Div();
+            Text hes = new Text("Heslo");
+            TextArea hesloField = new TextArea();
+            lastt.add(hes,hesloField);
+            lastt.getStyle().set("padding-left","10%");
+            row3.add(last,lastt);
+            dialog.add(row3);
+
+            FlexLayout rowLast = new FlexLayout();
+            Button uploadButton = new Button("Vytvoř", event3 ->{
+                dispecerService.createDispecer(emailField.getValue(),hesloField.getValue(),jmenoField.getValue(),prijmeniField.getValue(),rodneCisloField.getValue(),telField.getValue());
+                dialog.close();
+                UI.getCurrent().getPage().reload();
+            });
+            uploadButton.getStyle().set("margin-left","40%");
+
+            Button closeButton = new Button("Zavřít", event2 -> dialog.close());
+            closeButton.getStyle().set("margin-left","10%");
+            rowLast.add(closeButton,uploadButton);
+            dialog.add(rowLast);
+            dialog.open();
+        });
+        btnNew.setText("Nový účet dispečera");
+        btnNew.getStyle().set("margin-left","40%");
+        div2.add(btnNew);
+        div2.getStyle().set("margin-left","40%");
+        row0.add(div,div2);
         add(row0);
+
+
         pasazerGrid.addColumn(Pasazer::getPasazerID).setHeader("ID");
         pasazerGrid.addColumn(Pasazer::getJmeno).setHeader("Jmeno");
         pasazerGrid.addColumn(Pasazer::getPrijmeni).setHeader("Prijmeni");
@@ -191,6 +258,7 @@ public class AdminClientsView extends VerticalLayout {
                     UI.getCurrent().getPage().reload();
                 });
                 uploadButton.getStyle().set("margin-left","40%");
+
                 Button closeButton = new Button("Zavřít", event2 -> dialog.close());
                 closeButton.getStyle().set("margin-left","10%");
                 rowLast.add(closeButton,uploadButton);
