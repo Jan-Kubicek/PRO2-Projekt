@@ -70,5 +70,12 @@ public class validator {
             return false;
         }
     }
+    public boolean isValidLetiste(String mesto, int kapacita, String nazev, String stat){
+        if((mesto.length() < 3) || (kapacita < 3) || (nazev.length() < 4) || (stat.length() < 4)){
+            return false;
+        }else{
+            return  true;
+        }
+    }
 
 }
