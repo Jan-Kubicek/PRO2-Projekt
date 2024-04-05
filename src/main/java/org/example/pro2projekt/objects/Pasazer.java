@@ -1,23 +1,34 @@
 package org.example.pro2projekt.objects;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Immutable;
 
 import java.sql.Date;
 
-@Entity
+@Entity(name = "Pasazer")
+@Table(name =  "Pasazer")
+@Immutable
 public class Pasazer {
     @Id
     @GeneratedValue
+    @Column(name ="PasazerID")
     private int PasazerID;
+    @Column(name= "Typ_pasazeraID")
     private int Typ_pasazeraID;
+    @Column(name= "Datum_narozeni")
     private Date Datum_narozeni;
+    @Column(name= "Email")
     private String Email;
+    @Column(name= "Heslo")
     private String Heslo;
+    @Column(name= "Jmeno")
     private String Jmeno;
+    @Column(name= "Pohlavi")
     private int Pohlavi;
+    @Column(name= "Prijmeni")
     private String Prijmeni;
+    @Column(name= "Rodne_cislo")
     private String Rodne_cislo;
+    @Column(name= "Telefoni_cislo")
     private String Telefoni_cislo;
     public Pasazer(){
 
