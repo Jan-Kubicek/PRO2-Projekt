@@ -8,11 +8,16 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.example.pro2projekt.controller.dataInput;
+import org.example.pro2projekt.service.PasazerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("login")
 @Route("/login")
 @AnonymousAllowed
 public class login extends VerticalLayout implements BeforeEnterObserver {
+    @Autowired
+    private PasazerService pasazerService;
+    private int pasazerIdFound;
     dataInput input = new dataInput();
     private final LoginForm login = new LoginForm();
 
@@ -39,12 +44,16 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             }
             if (loginPasazer(username,password)) {
                 // Pasazer
-                getUI().ifPresent(ui -> ui.navigate(client.class)); // Navigate to your main application view
+                int value = getPasazerIdFound(username,password);
+                getUI().ifPresent(ui -> ui.navigate(client.class, Integer.toString(value))); // Navigate to your main application view
             } if(!loginPasazer(username,password) && !loginDispecer(username,password)) {
                 login.setError(true);
                 Notification.show("Neplatné jméno nebo heslo.");
             }
         });
+    }
+    private int getPasazerIdFound(String email, String password){
+        return pasazerService.findByEmailAndPassword(email,password);
     }
 
     @Override

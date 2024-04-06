@@ -31,8 +31,14 @@ public class PasazerServiceImpl implements PasazerService{
     }
 
     @Override
+    public int findByEmailAndPassword(String email, String password) {
+        String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
+        return jdbcTemplate.queryForObject(query, Integer.class, email);
+    }
+
+    @Override
     public List<Pasazer> findByID(int id) {
-        String query = "SELECT * FROM Pasazer P WHERE P.PasazerID = ?";
+        String query = "SELECT * FROM Pasazer WHERE Pasazer.PasazerID = ?";
         return jdbcTemplate.query(query,new PasazerMapper(), id);
     }
 
