@@ -7,24 +7,27 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabSheet;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.pro2projekt.objects.Letenka;
+import org.example.pro2projekt.objects.LetenkaHistorie;
 import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.objects.Zavazadlo;
-import org.example.pro2projekt.service.LetenkaService;
-import org.example.pro2projekt.service.PasazerService;
-import org.example.pro2projekt.service.PasazerServiceImpl;
-import org.example.pro2projekt.service.ZavazadloService;
+import org.example.pro2projekt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -34,6 +37,12 @@ import java.util.List;
 public class client extends VerticalLayout implements HasUrlParameter<String> {
     @Autowired
     private PasazerService pasazerService;
+    @Autowired
+    private ZavazadloService zavazadloService;
+    @Autowired
+    private LetenkaService letenkaService;
+    @Autowired
+    private LetenkaHistorieService letenkaHistorieService;
     private Pasazer pasazer;
     private Grid<Letenka> historieLetenek = new Grid<>(Letenka.class,false);
     private Grid<Letenka> registraceLetenek = new Grid<>(Letenka.class,false);
@@ -41,7 +50,9 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     private List<Letenka> historieList;
     private List<Letenka> registerList;
     private List<Zavazadlo> zavazadloList;
-    private int pasazerId;
+    private List<LetenkaHistorie> letenkaHistories;
+    private int pasazerId, letID  = 0;
+    LetenkaHistorie letenkaH;
     Button btnLogout;
     TabSheet tabSheet;
     Div divZavazadla, divProfil, divHistorie, divRegistrace;
@@ -87,6 +98,14 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
                 pasazerId = Integer.parseInt(parameter);
                 List<Pasazer> pasazers = pasazerService.findByID(pasazerId);
                 pasazer = pasazers.isEmpty() ? null : pasazers.getFirst();
+                zavazadloList = zavazadloService.findByPasazerId(pasazerId);
+                zavazadloGrid.setItems(zavazadloList);
+                historieList = letenkaService.findByPasazer(pasazerId);
+                historieLetenek.setItems(historieList);
+                if(letID != 0){
+                    letenkaHistories = letenkaHistorieService.findByLetID(letID);
+                    letenkaH = letenkaHistories.getFirst();
+                }
                 if (pasazer == null) {
                 } else {
                     // Po načtení pasažéra aktualizujeme profil
@@ -234,6 +253,88 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         //here
         Text text = new Text("historie ");
         divHistorie.add(text);
+        historieLetenek.addColumn(Letenka::getLetenkaID).setHeader("ID");
+        historieLetenek.addColumn(new ComponentRenderer<>(letenka -> {
+            String value = "";
+            if(letenka.getJeSkupinova() == 1){
+                value = "Skupinová";
+            }else{
+                value = "Individuální";
+            }
+            return new Span(value);
+        })).setHeader("Skupinová");
+        historieLetenek.addColumn(Letenka::getPocet_pasazeru).setHeader("Počet pasažerů");
+        historieLetenek.addColumn(Letenka::getTrida).setHeader("Třída");
+        historieLetenek.addColumn(new ComponentRenderer<>(letenka -> {
+            Button showDetails = new Button();
+            showDetails.setText("Detaily");
+            showDetails.setIcon(new Icon(VaadinIcon.SEARCH));
+            showDetails.addClickListener(event -> {
+                Dialog dialog = new Dialog();
+                letID = letenka.getLetID();
+                letenkaHistories = letenkaHistorieService.findByLetID(letID);
+                letenkaH = letenkaHistories.getFirst();
+                FlexLayout row = new FlexLayout();
+                    Div div = new Div();
+                        Text text1 = new Text("Letadlo ID: ");
+                        Text text2 = new Text(String.valueOf(letenkaH.getLetadloID()));
+                    div.add(text1,text2);
+                    div.getStyle().set("margin-left","10%");
+                    Div div1 = new Div();
+                        Text text3 = new Text("Čas odletu: ");
+                        Text text4 = new Text(String.valueOf(letenkaH.getCas_Odletu().toString()));
+                    div1.add(text3,text4);
+                    div1.getStyle().set("margin-left","30%");
+                row.add(div,div1);
+                dialog.add(row);
+                FlexLayout row2 = new FlexLayout();
+                    Div div2 = new Div();
+                        Text text5 = new Text("Odlet    Město: ");
+                        Text text6 = new Text(letenkaH.getMestoOdletu());
+                    div2.add(text5,text6);
+                    div2.getStyle().set("margin-left","10%");
+                    Div div3 = new Div();
+                        Text text7 = new Text("Název: ");
+                        Text text8 = new Text(letenkaH.getNazevLOdletu());
+                    div3.add(text7,text8);
+                    div3.getStyle().set("margin-left","10%");
+                    Div div4 = new Div();
+                        Text text9 = new Text("Stát: ");
+                        Text text10 = new Text(letenkaH.getStatOdletu());
+                    div4.add(text9,text10);
+                    div4.getStyle().set("margin-left","10%");
+                row2.add(div2,div3,div4);
+                dialog.add(row2);
+                FlexLayout row3 = new FlexLayout();
+                Div div5 = new Div();
+                Text text11 = new Text("Přílet    Město: ");
+                Text text12 = new Text(letenkaH.getMestoPriletu());
+                div5.add(text11,text12);
+                div5.getStyle().set("margin-left","10%");
+                Div div6 = new Div();
+                Text text13 = new Text("Název: ");
+                Text text14 = new Text(letenkaH.getNazevLPriletu());
+                div6.add(text13,text14);
+                div6.getStyle().set("margin-left","10%");
+                Div div7 = new Div();
+                Text text15 = new Text("Stát: ");
+                Text text16 = new Text(letenkaH.getStatPriletu());
+                div7.add(text15,text16);
+                div7.getStyle().set("margin-left","10%");
+                row3.add(div5,div6,div7);
+                dialog.add(row3);
+                FlexLayout rowLast = new FlexLayout();
+                Button closeButton = new Button("Zavřít", event2 -> dialog.close());
+                closeButton.getStyle().set("margin-left","10%");
+                Icon icon11 = new Icon(VaadinIcon.CLOSE);
+                closeButton.setIcon(icon11);
+                rowLast.add(closeButton);
+                dialog.add(rowLast);
+                dialog.open();
+            });
+            return showDetails;
+        }));
+        divHistorie.add(historieLetenek);
     }
     private void updateRegister() {
         if (divRegistrace == null) {
@@ -252,8 +353,174 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
             divZavazadla.removeAll();
         }
         //here
-        Text text = new Text("Zavazadla ");
+        Text text = new Text("Má zavazadla ");
         divZavazadla.add(text);
+
+        zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
+            String value = "";
+            if(zavazadlo.getZavazadloID() == 1){
+                value = "Příruční";
+            }else{
+                value = "Odbavované";
+            }
+            return new Span(value);
+        })).setHeader("Typ zavazadla");
+        zavazadloGrid.addColumn(Zavazadlo::getSirka).setHeader("Šířka");
+        zavazadloGrid.addColumn(Zavazadlo::getVyska).setHeader("Výška");
+        zavazadloGrid.addColumn(Zavazadlo::getVaha).setHeader("Váha");
+        zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
+            String value = "";
+            if(zavazadlo.getKrehke() == 1){
+                value = "Křehké";
+            }else{
+                value = "Odolné";
+            }
+            return new Span(value);
+        })).setHeader("Křehkost");
+        zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
+            Button editButton = new Button("Úprava");
+            editButton.addClickListener(event -> {
+                Dialog dialog = new Dialog();
+
+                FlexLayout row1 = new FlexLayout();
+                Div row1div1 = new Div();
+                Text sirka = new Text("Šířka");
+                NumberField sirkaField = new NumberField();
+                sirkaField.setValue(Double.valueOf(String.valueOf(zavazadlo.getSirka())));
+                row1div1.add(sirka,sirkaField);
+                row1div1.getStyle().set("padding-left","10%");
+
+                Div row1div2 = new Div();
+                Text vyska = new Text("Výška");
+                NumberField vyskaField = new NumberField();
+                vyskaField.setValue((double) zavazadlo.getVyska());
+                row1div2.add(vyska,vyskaField);
+                row1div2.getStyle().set("padding-left","10%");
+                row1.add(row1div1,row1div2);
+                dialog.add(row1);
+
+                FlexLayout row2 = new FlexLayout();
+                Div row2div1 = new Div();
+                Text vaha = new Text("Váha");
+                NumberField vahaField = new NumberField();
+                vahaField.setValue((double)zavazadlo.getVaha());
+                row2div1.add(vaha,vahaField);
+                row2div1.getStyle().set("padding-left","10%");
+
+                Div row2div2 = new Div();
+                Text krehke = new Text("Křehké -> 1 ");
+                NumberField krehkeField = new NumberField();
+                krehkeField.setValue((double)zavazadlo.getKrehke());
+                row2div2.add(krehke,krehkeField);
+                row2div2.getStyle().set("padding-left","10%");
+                row2.add(row2div1,row2div2);
+                dialog.add(row2);
+
+                FlexLayout row = new FlexLayout();
+                Div div = new Div();
+                Text typ = new Text("Typ 1 - Příruční 2 - Odbavované");
+                NumberField typField= new NumberField();
+                typField.setValue((double) zavazadlo.getTyp_zavazadlaID());
+                div.add(typ,typField);
+                row.add(div);
+                dialog.add(row);
+
+                FlexLayout rowLast = new FlexLayout();
+                Button uploadButton = new Button("Uprav", event3 ->{
+                    zavazadloService.findByIdAndUpdate(zavazadlo.getZavazadloID(),sirkaField.getValue().intValue(),vyskaField.getValue().intValue(),vahaField.getValue().intValue(),krehkeField.getValue().intValue(),typField.getValue().intValue());
+                    dialog.close();
+                    UI.getCurrent().getPage().reload();
+                });
+                Icon icon10 = new Icon(VaadinIcon.CHECK);
+                uploadButton.setIcon(icon10);
+                uploadButton.getStyle().set("margin-left","40%");
+                Button closeButton = new Button("Zavřít", event2 -> dialog.close());
+                closeButton.getStyle().set("margin-left","10%");
+                Icon icon11 = new Icon(VaadinIcon.CLOSE);
+                closeButton.setIcon(icon11);
+                rowLast.add(closeButton,uploadButton);
+                dialog.add(rowLast);
+                dialog.open();
+            });
+            Icon icon3 = new Icon(VaadinIcon.ARROW_CIRCLE_UP);
+            editButton.setIcon(icon3);
+            Button deleteButton = new Button("Smazání");
+            deleteButton.addClickListener(event -> {
+                zavazadloService.findByIdAndDelete(zavazadlo.getZavazadloID());
+                UI.getCurrent().getPage().reload();
+            });
+            Icon icon4 = new Icon(VaadinIcon.CLOSE_CIRCLE);
+            deleteButton.setIcon(icon4);
+            HorizontalLayout buttonLayout = new HorizontalLayout(editButton, deleteButton);
+            return buttonLayout;
+        })).setHeader("Akce");
+        divZavazadla.add(zavazadloGrid);
+        FlexLayout row = new FlexLayout();
+        Div div = new Div();
+        Button btnNew = new Button();
+        btnNew.addClickListener(event ->{
+            Dialog dialog = new Dialog();
+
+            FlexLayout row1 = new FlexLayout();
+            Div row1div1 = new Div();
+            Text sirka = new Text("Šířka");
+            NumberField sirkaField = new NumberField();
+            row1div1.add(sirka,sirkaField);
+            row1div1.getStyle().set("padding-left","10%");
+
+            Div row1div2 = new Div();
+            Text vyska = new Text("Výška");
+            NumberField vyskaField = new NumberField();
+            row1div2.add(vyska,vyskaField);
+            row1div2.getStyle().set("padding-left","10%");
+            row1.add(row1div1,row1div2);
+            dialog.add(row1);
+
+            FlexLayout row2 = new FlexLayout();
+            Div row2div1 = new Div();
+            Text vaha = new Text("Váha");
+            NumberField vahaField = new NumberField();
+            row2div1.add(vaha,vahaField);
+            row2div1.getStyle().set("padding-left","10%");
+
+            Div row2div2 = new Div();
+            Text krehke = new Text("Křehké -> 1 ");
+            NumberField krehkeField = new NumberField();
+            row2div2.add(krehke,krehkeField);
+            row2div2.getStyle().set("padding-left","10%");
+            row2.add(row2div1,row2div2);
+            dialog.add(row2);
+
+            FlexLayout row4 = new FlexLayout();
+            Div div2 = new Div();
+            Text typ = new Text("Typ 1 - Příruční 2 - Odbavované");
+            NumberField typField= new NumberField();
+            div2.add(typ,typField);
+            row4.add(div2);
+            dialog.add(row4);
+
+            FlexLayout rowLast = new FlexLayout();
+            Button uploadButton = new Button("Nový", event3 ->{
+                zavazadloService.createZavazadlo(pasazerId,sirkaField.getValue().intValue(),vyskaField.getValue().intValue(),vahaField.getValue().intValue(),krehkeField.getValue().intValue(),typField.getValue().intValue());
+                dialog.close();
+                UI.getCurrent().getPage().reload();
+            });
+            uploadButton.getStyle().set("margin-left","40%");
+            Icon icon10 = new Icon(VaadinIcon.CHECK);
+            uploadButton.setIcon(icon10);
+            Button closeButton = new Button("Zavřít", event2 -> dialog.close());
+            closeButton.getStyle().set("margin-left","10%");
+            Icon icon11 = new Icon(VaadinIcon.CLOSE);
+            closeButton.setIcon(icon11);
+            rowLast.add(closeButton,uploadButton);
+            dialog.add(rowLast);
+            dialog.open();
+        });
+        btnNew.setText("Nové zavazadlo");
+        div.add(btnNew);
+        div.getStyle().set("margin-left","50%");
+        row.add(div);
+        divZavazadla.add(row);
     }
 
     @PostConstruct
@@ -261,6 +528,14 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         // Po inicializaci komponent vytvoříme profil na základě ID předaného v URL
         List<Pasazer> pasazers = pasazerService.findByID(pasazerId);
         pasazer = pasazers.isEmpty() ? null : pasazers.getFirst();
+        zavazadloList = zavazadloService.findByPasazerId(pasazerId);
+        zavazadloGrid.setItems(zavazadloList);
+        historieList = letenkaService.findByPasazer(pasazerId);
+        historieLetenek.setItems(historieList);
+        if(letID != 0){
+            letenkaHistories = letenkaHistorieService.findByLetID(letID);
+            letenkaH = letenkaHistories.getFirst();
+        }
         if (pasazer == null) {
         } else {
             updateProfile(); // Aktualizace profilu
