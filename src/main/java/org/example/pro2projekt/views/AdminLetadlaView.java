@@ -6,22 +6,29 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.PostConstruct;
 import org.example.pro2projekt.objects.Letadlo;
+import org.example.pro2projekt.objects.LetadloStats;
 import org.example.pro2projekt.objects.Spolecnost;
 import org.example.pro2projekt.service.LetadloService;
+import org.example.pro2projekt.service.LetadloStatsService;
 import org.example.pro2projekt.service.SpolecnostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.stefan.table.Table;
+import org.vaadin.stefan.table.TableRow;
 
 import java.util.List;
 
@@ -32,8 +39,12 @@ public class AdminLetadlaView  extends VerticalLayout {
     private LetadloService letadloService;
     @Autowired
     private SpolecnostService spolecnostService;
+    @Autowired
+    private LetadloStatsService letadloStatsService;
     private Grid<Letadlo> letadloGrid = new Grid<>(Letadlo.class,false);
+    private Grid<LetadloStats> statsGrid = new Grid<>(LetadloStats.class,false);
     private List<Letadlo> letadloList;
+    private List<LetadloStats> customList;
     public AdminLetadlaView(){
         FlexLayout row0 = new FlexLayout();
         Div div = new Div();
@@ -213,10 +224,29 @@ public class AdminLetadlaView  extends VerticalLayout {
                 .set("box-shadow","5px 5px 5px grey");
 
         add(letadloGrid);
+
+        int numberOfType;
+        int numberOfPlanes;
+        statsGrid.addColumn(LetadloStats::getVyrobce).setHeader("Vyrobce");
+        statsGrid.addColumn(LetadloStats::getNazev).setHeader("Název");
+        statsGrid.addColumn(new ComponentRenderer<>(letadloStat -> new Span(Integer.toString(letadloStat.getPocet()))))
+                .setHeader("Počet");
+        statsGrid.addColumn(new ComponentRenderer<>(letadloStat -> {
+            double percent = ((double) letadloStat.getPocet() / letadloStat.getAllPlanes()) * 100;
+            return new Span(String.format("%.2f %%", percent));
+        })).setHeader("% z celku");
+        statsGrid.getStyle().set("border", "2px solid lightblue")
+                .set("border-radius", "10px")
+                .set("padding", "10px")
+                .set("margin-bottom","20px")
+                .set("box-shadow","5px 5px 5px grey");
+        add(statsGrid);
     }
 
     @PostConstruct
     private void init(){
+        customList = letadloStatsService.groupByVyrobces();
+        statsGrid.setItems(customList);
         letadloList = letadloService.findAll();
         letadloGrid.setItems(letadloList);
     }

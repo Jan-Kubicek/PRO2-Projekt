@@ -59,4 +59,12 @@ public class LetadloServiceImpl implements LetadloService {
             jdbcTemplate.query(query,new LetadloMapper(),spolecnost,nazev,rok,stav,typ,vyrobce);
         }
     }
+
+    @Override
+    public List<Letadlo> groupByVyrobces() {
+        String query = "SELECT L.Vyrobce, L.Nazev, (SELECT COUNT(L1.LetadloID) FROM Letadlo L1 WHERE L1.Nazev = L.Nazev ) AS Pocet,\n" +
+                "(SELECT COUNT(L1.LetadloID) FROM Letadlo L1 ) AS Allplanes\n" +
+                "FROM Letadlo L GROUP BY L.Nazev";
+        return jdbcTemplate.query(query,new LetadloMapper());
+    }
 }
