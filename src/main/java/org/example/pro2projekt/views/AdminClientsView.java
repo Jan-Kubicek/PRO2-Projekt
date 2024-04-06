@@ -6,6 +6,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
@@ -18,8 +19,10 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.PostConstruct;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
+import org.example.pro2projekt.objects.PasazerStats;
 import org.example.pro2projekt.service.DispecerService;
 import org.example.pro2projekt.service.PasazerService;
+import org.example.pro2projekt.service.PasazerStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -31,9 +34,13 @@ public class AdminClientsView extends VerticalLayout {
     private PasazerService pasazerService;
     @Autowired
     private DispecerService dispecerService;
+    @Autowired
+    private PasazerStatsService pasazerStatsService;
+    private Grid<PasazerStats> pasazerStatsGrid = new Grid<>(PasazerStats.class,false);
     private Grid<Pasazer> pasazerGrid = new Grid<>(Pasazer.class,false);
     private Grid<Dispecer> dispecrGrid = new Grid<>(Dispecer.class,false);
     private List<Pasazer> pasazerList;
+    private List<PasazerStats> pasazerStatsList;
     private List<Dispecer> dispecerList;
     public AdminClientsView(){
         FlexLayout row0 = new FlexLayout();
@@ -211,6 +218,19 @@ public class AdminClientsView extends VerticalLayout {
                 .set("margin-bottom","20px")
                 .set("box-shadow","5px 5px 5px grey");
 
+        pasazerStatsGrid.addColumn(PasazerStats::getTyp).setHeader("Typ Pasažéra");
+        pasazerStatsGrid.addColumn(PasazerStats::getPocet).setHeader("Počet");
+        pasazerStatsGrid.addColumn(PasazerStats::getPopis).setHeader("Popis");
+        pasazerStatsGrid.addColumn( new ComponentRenderer<>(pasazerStats -> {
+            double percent = ((double) pasazerStats.getPocet() / pasazerStats.getAllPasazers()) * 100;
+            return new Span(String.format("%.2f %%", percent));
+        })).setHeader("% z celku");
+        pasazerStatsGrid.getStyle().set("border", "2px solid lightblue")
+                .set("border-radius", "10px")
+                .set("padding", "10px")
+                .set("margin-bottom","20px")
+                .set("box-shadow","5px 5px 5px grey");
+
         dispecrGrid.addColumn(Dispecer::getDispecerID).setHeader("ID");
         dispecrGrid.addColumn(Dispecer::getJmeno).setHeader("Jmeno");
         dispecrGrid.addColumn(Dispecer::getPrijmeni).setHeader("Prijmeni");
@@ -305,11 +325,14 @@ public class AdminClientsView extends VerticalLayout {
 
 
         add(pasazerGrid);
+        add(pasazerStatsGrid);
         add(dispecrGrid);
     }
 
     @PostConstruct
     private void init(){
+        pasazerStatsList = pasazerStatsService.groupByTyp();
+        pasazerStatsGrid.setItems(pasazerStatsList);
         pasazerList = pasazerService.findAll();
         pasazerGrid.setItems(pasazerList);
         dispecerList = dispecerService.findAll();
