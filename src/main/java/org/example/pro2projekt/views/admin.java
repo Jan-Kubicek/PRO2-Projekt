@@ -141,7 +141,7 @@ public class admin extends VerticalLayout {
                 .set("border-radius", "10px")
                 .set("padding", "10px")
                 .set("margin-bottom","20px")
-                .set("box-shadow","5px 5px 5px grey");;
+                .set("box-shadow","5px 5px 5px grey");
         add(row5);
         //footer
 

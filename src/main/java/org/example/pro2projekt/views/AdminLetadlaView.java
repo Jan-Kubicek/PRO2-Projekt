@@ -7,6 +7,8 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -38,6 +40,8 @@ public class AdminLetadlaView  extends VerticalLayout {
         Button btnBack = new Button();
         btnBack.addClickListener(event ->{ getUI().ifPresent(ui -> ui.navigate(admin.class));});
         btnBack.setText("Zpět na hlavní stránku");
+        Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
+        btnBack.setIcon(icon1);
         div.add(btnBack);
         Div div2 = new Div();
         Button btnNew = new Button();
@@ -96,15 +100,21 @@ public class AdminLetadlaView  extends VerticalLayout {
                 UI.getCurrent().getPage().reload();
             });
             uploadButton.getStyle().set("margin-left","40%");
+            Icon icon10 = new Icon(VaadinIcon.CHECK);
+            uploadButton.setIcon(icon10);
 
             Button closeButton = new Button("Zavřít", event2 -> dialog.close());
             closeButton.getStyle().set("margin-left","10%");
+            Icon icon11 = new Icon(VaadinIcon.CLOSE);
+            closeButton.setIcon(icon11);
             rowLast.add(closeButton,uploadButton);
             dialog.add(rowLast);
             dialog.open();
         });
         btnNew.setText("Nové letadlo");
         btnNew.getStyle().set("margin-left","40%");
+        Icon icon2 = new Icon(VaadinIcon.PLUS_CIRCLE);
+        btnNew.setIcon(icon2);
         div2.add(btnNew);
         div2.getStyle().set("margin-left","40%");
         row0.add(div,div2);
@@ -172,19 +182,27 @@ public class AdminLetadlaView  extends VerticalLayout {
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
+                Icon icon10 = new Icon(VaadinIcon.CHECK);
+                uploadButton.setIcon(icon10);
                 uploadButton.getStyle().set("margin-left","40%");
 
                 Button closeButton = new Button("Zavřít", event2 -> dialog.close());
                 closeButton.getStyle().set("margin-left","10%");
+                Icon icon11 = new Icon(VaadinIcon.CLOSE);
+                closeButton.setIcon(icon11);
                 rowLast.add(closeButton,uploadButton);
                 dialog.add(rowLast);
                 dialog.open();
             });
+            Icon icon3 = new Icon(VaadinIcon.ARROW_CIRCLE_UP);
+            editButton.setIcon(icon3);
             Button deleteButton = new Button("Smazání");
             deleteButton.addClickListener(event -> {
                 letadloService.findByIdAndDelete(letadloId);
                 UI.getCurrent().getPage().reload();
             });
+            Icon icon4 = new Icon(VaadinIcon.CLOSE_CIRCLE);
+            deleteButton.setIcon(icon4);
             HorizontalLayout buttonLayout = new HorizontalLayout(editButton, deleteButton);
             return buttonLayout;
         })).setHeader("Akce");
