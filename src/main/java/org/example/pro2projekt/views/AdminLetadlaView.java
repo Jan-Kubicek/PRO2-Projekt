@@ -225,8 +225,6 @@ public class AdminLetadlaView  extends VerticalLayout {
 
         add(letadloGrid);
 
-        int numberOfType;
-        int numberOfPlanes;
         statsGrid.addColumn(LetadloStats::getVyrobce).setHeader("Vyrobce");
         statsGrid.addColumn(LetadloStats::getNazev).setHeader("Název");
         statsGrid.addColumn(new ComponentRenderer<>(letadloStat -> new Span(Integer.toString(letadloStat.getPocet()))))

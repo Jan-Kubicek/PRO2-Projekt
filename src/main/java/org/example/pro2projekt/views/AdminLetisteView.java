@@ -6,6 +6,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
@@ -17,8 +18,11 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.PostConstruct;
+import org.example.pro2projekt.objects.LetadloStats;
 import org.example.pro2projekt.objects.Letiste;
+import org.example.pro2projekt.objects.LetisteStats;
 import org.example.pro2projekt.service.LetisteService;
+import org.example.pro2projekt.service.LetisteStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -28,6 +32,10 @@ import java.util.List;
 public class AdminLetisteView  extends VerticalLayout {
     @Autowired
     private LetisteService letisteService;
+    @Autowired
+    private LetisteStatsService letisteStatsService;
+    private Grid<LetisteStats> letisteStatsGrid = new Grid<>(LetisteStats.class,false);
+    private List<LetisteStats> letisteStatsList;
     private Grid<Letiste> letisteGrid = new Grid<>(Letiste.class,false);
     private List<Letiste> letisteList;
     public AdminLetisteView(){
@@ -182,10 +190,28 @@ public class AdminLetisteView  extends VerticalLayout {
                 .set("margin-bottom","20px")
                 .set("box-shadow","5px 5px 5px grey");
         add(letisteGrid);
+
+
+        letisteStatsGrid.addColumn(LetisteStats::getStat).setHeader("Stát");
+        letisteStatsGrid.addColumn(LetisteStats::getPocet).setHeader("Počet letišť");
+        letisteStatsGrid.addColumn(new ComponentRenderer<>(letisteStats -> new Span(Integer.toString(letisteStats.getKapacita()))))
+                .setHeader("Kapacita ve státě");
+        letisteStatsGrid.addColumn(new ComponentRenderer<>(letisteStats -> {
+            double percent = ((double) letisteStats.getKapacita() / letisteStats.getAllLetiste()) * 100;
+            return new Span(String.format("%.2f %%", percent));
+        })).setHeader("% z celku");
+        letisteStatsGrid.getStyle().set("border", "2px solid lightblue")
+                .set("border-radius", "10px")
+                .set("padding", "10px")
+                .set("margin-bottom","20px")
+                .set("box-shadow","5px 5px 5px grey");
+        add(letisteStatsGrid);
     }
 
     @PostConstruct
     private void init(){
+        letisteStatsList = letisteStatsService.groupByStates();
+        letisteStatsGrid.setItems(letisteStatsList);
         letisteList = letisteService.findAll();
         letisteGrid.setItems(letisteList);
     }
