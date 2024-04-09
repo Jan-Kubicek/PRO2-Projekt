@@ -59,7 +59,18 @@ public class index extends VerticalLayout {
         tridaFiled.addValueChangeListener(event -> {trida = event.getValue();});
 
         //footer
-
+        FlexLayout footer = new FlexLayout();
+        Text text1 = new Text("@2024");
+        Text text2 = new Text("Jan Kubíček");
+        Div div = new Div();
+        div.add(text1);
+        div.getStyle().set("margin-left","10%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        Div div1 = new Div();
+        div1.add(text2);
+        div1.getStyle().set("margin-left","70%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        footer.getStyle().set("border-top", "2px solid lightblue").set("width", "70%");
+        footer.add(div, div1);
+        add(footer);
         //
         btnLogin.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate("login")));
         btnRegister.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(register.class)));
@@ -191,7 +202,7 @@ public class index extends VerticalLayout {
 
         zahlaviDiv.add(zahlaviH1);
         zahlaviDiv.add(zahlaviBtn);
-
+        zahlaviDiv.getStyle().set("border-bottom", "2px solid lightblue");
         return zahlaviDiv;
     }
 

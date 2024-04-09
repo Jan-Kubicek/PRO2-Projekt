@@ -40,6 +40,7 @@ public class admin extends VerticalLayout {
         row1div2.getStyle().set("padding-left","60%").set("padding-top","1%");
         row1.add(row1div1,row1div2);
         row1.setWidth("90%");
+        row1.getStyle().set("border-bottom", "2px solid lightblue");
         add(row1);
 
         //main
@@ -144,7 +145,18 @@ public class admin extends VerticalLayout {
                 .set("box-shadow","5px 5px 5px grey");
         add(row5);
         //footer
-
+        FlexLayout footer = new FlexLayout();
+        Text text5 = new Text("@2024");
+        Text text6 = new Text("Jan Kubíček");
+        Div div = new Div();
+        div.add(text5);
+        div.getStyle().set("margin-left","10%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        Div div1 = new Div();
+        div1.add(text6);
+        div1.getStyle().set("margin-left","70%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        footer.getStyle().set("border-top", "2px solid lightblue").set("width", "90%");
+        footer.add(div, div1);
+        add(footer);
         //
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);

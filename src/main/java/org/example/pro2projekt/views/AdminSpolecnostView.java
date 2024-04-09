@@ -145,6 +145,18 @@ public class AdminSpolecnostView extends VerticalLayout {
                 .set("margin-bottom","20px")
                 .set("box-shadow","5px 5px 5px grey");
         add(spolecnostGrid);
+        FlexLayout footer = new FlexLayout();
+        Text text1 = new Text("@2024");
+        Text text2 = new Text("Jan Kubíček");
+        Div div1 = new Div();
+        div1.add(text1);
+        div1.getStyle().set("margin-left","10%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        Div div3 = new Div();
+        div3.add(text2);
+        div3.getStyle().set("margin-left","70%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        footer.getStyle().set("border-top", "2px solid lightblue").set("width", "100%");
+        footer.add(div1, div3);
+        add(footer);
     }
 
     @PostConstruct
