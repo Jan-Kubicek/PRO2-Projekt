@@ -246,9 +246,6 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         } else {
             divHistorie.removeAll();
         }
-        //here
-        Text text = new Text("historie ");
-        divHistorie.add(text);
         historieLetenek.addColumn(Letenka::getLetenkaID).setHeader("ID");
         historieLetenek.addColumn(new ComponentRenderer<>(letenka -> {
             String value = "";
@@ -292,38 +289,38 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
                 dialog.add(row);
                 FlexLayout row2 = new FlexLayout();
                 Div div2 = new Div();
-                Text text5 = new Text("Odlet    Město: ");
+                Text text5 = new Text("Odlet  Město: ");
                 Text text6 = new Text(letenkaH.getMestoOdletu());
                 div2.add(text5, text6);
-                div2.getStyle().set("margin-left", "5%");
+                div2.getStyle().set("margin-left", "2%");
                 Div div3 = new Div();
                 Text text7 = new Text("Název: ");
                 Text text8 = new Text(letenkaH.getNazevLOdletu());
                 div3.add(text7, text8);
-                div3.getStyle().set("margin-left", "5%");
+                div3.getStyle().set("margin-left", "2%");
                 Div div4 = new Div();
                 Text text9 = new Text("Stát: ");
                 Text text10 = new Text(letenkaH.getStatOdletu());
                 div4.add(text9, text10);
-                div4.getStyle().set("margin-left", "5%");
+                div4.getStyle().set("margin-left", "2%");
                 row2.add(div2, div3, div4);
                 dialog.add(row2);
                 FlexLayout row3 = new FlexLayout();
                 Div div5 = new Div();
-                Text text11 = new Text("Přílet    Město: ");
+                Text text11 = new Text("Přílet  Město: ");
                 Text text12 = new Text(letenkaH.getMestoPriletu());
                 div5.add(text11, text12);
-                div5.getStyle().set("margin-left", "5%");
+                div5.getStyle().set("margin-left", "2%");
                 Div div6 = new Div();
                 Text text13 = new Text("Název: ");
                 Text text14 = new Text(letenkaH.getNazevLPriletu());
                 div6.add(text13, text14);
-                div6.getStyle().set("margin-left", "5%");
+                div6.getStyle().set("margin-left", "2%");
                 Div div7 = new Div();
                 Text text15 = new Text("Stát: ");
                 Text text16 = new Text(letenkaH.getStatPriletu());
                 div7.add(text15, text16);
-                div7.getStyle().set("margin-left", "5%");
+                div7.getStyle().set("margin-left", "2%");
                 row3.add(div5, div6, div7);
                 dialog.add(row3);
                 FlexLayout rowLast = new FlexLayout();
