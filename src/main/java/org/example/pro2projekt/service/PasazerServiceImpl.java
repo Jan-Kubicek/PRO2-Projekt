@@ -7,6 +7,7 @@ import org.example.pro2projekt.repository.PasazerRepository;
 import org.example.pro2projekt.validation.validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class PasazerServiceImpl implements PasazerService{
     private PasazerRepository pasazerRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private validator validator = new validator();
     @Override
     public List<Pasazer> findAll() {
@@ -34,6 +37,12 @@ public class PasazerServiceImpl implements PasazerService{
     public int findByEmailAndPassword(String email, String password) {
         String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
         return jdbcTemplate.queryForObject(query, Integer.class, email);
+    }
+
+    @Override
+    public Pasazer findByEmail(String email) {
+        String query = "SELECT * FROM Pasazer P WHERE P.Email = ?";
+        return jdbcTemplate.queryForObject(query, Pasazer.class,email);
     }
 
     @Override

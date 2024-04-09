@@ -29,6 +29,7 @@ public class Pasazer {
     private String Rodne_cislo;
     @Column(name= "Telefoni_cislo")
     private String Telefoni_cislo;
+    private String role = "PASAZER";
     public Pasazer(){
 
     }
@@ -54,6 +55,10 @@ public class Pasazer {
         Prijmeni = prijmeni;
         Rodne_cislo = rodne_cislo;
         Telefoni_cislo = telefoni_cislo;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public int getPasazerID() {

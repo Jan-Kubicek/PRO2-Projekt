@@ -19,6 +19,7 @@ public class Dispecer {
     private String Prijmeni;
     private String Rodne_cislo;
     private String Telefoni_cislo;
+    private String role = "DISPECER";
 
     public Dispecer() {
     }
@@ -30,6 +31,9 @@ public class Dispecer {
         Prijmeni = prijmeni;
         Rodne_cislo = rodne_cislo;
         Telefoni_cislo = telefoni_cislo;
+    }
+    public String getRole() {
+        return role;
     }
 
     public int getDispecerID() {

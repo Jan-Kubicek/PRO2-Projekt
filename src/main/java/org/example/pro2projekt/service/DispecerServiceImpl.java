@@ -56,4 +56,10 @@ public class DispecerServiceImpl implements DispecerService{
             jdbcTemplate.query(query,new LetadloMapper(),email,hashedHeslo,jmeno,prijmeni,rodneCislo,tel);
         }
     }
+
+    @Override
+    public Dispecer findByEmail(String email) {
+        String query = "SELECT * FROM Dispecer WHERE Dispecer.Email = ?";
+        return jdbcTemplate.queryForObject(query,Dispecer.class,email);
+    }
 }

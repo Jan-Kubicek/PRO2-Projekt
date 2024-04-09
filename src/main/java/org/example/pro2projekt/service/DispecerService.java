@@ -11,4 +11,5 @@ public interface DispecerService {
     List<Dispecer> findByIdAndDelete(int id);
     void findByIdAndUpdate(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel);
     void createDispecer(String email, String heslo, String jmeno, String prijmeni, String rodneCislo, String tel);
+    Dispecer findByEmail(String email);
 }
