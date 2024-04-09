@@ -21,7 +21,7 @@ public class LetenkaHistorie {
     }
 
     public void setLetId(int letId) {
-        LetId = letId;
+        LetId= letId;
     }
 
     public int getLetadloID() {

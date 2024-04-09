@@ -44,20 +44,20 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     @Autowired
     private LetenkaHistorieService letenkaHistorieService;
     private Pasazer pasazer;
-    private Grid<Letenka> historieLetenek = new Grid<>(Letenka.class,false);
-    private Grid<Letenka> registraceLetenek = new Grid<>(Letenka.class,false);
-    private Grid<Zavazadlo> zavazadloGrid = new Grid<>(Zavazadlo.class,false);
+    private Grid<Letenka> historieLetenek = new Grid<>(Letenka.class, false);
+    private Grid<Letenka> registraceLetenek = new Grid<>(Letenka.class, false);
+    private Grid<Zavazadlo> zavazadloGrid = new Grid<>(Zavazadlo.class, false);
     private List<Letenka> historieList;
     private List<Letenka> registerList;
     private List<Zavazadlo> zavazadloList;
     private List<LetenkaHistorie> letenkaHistories;
-    private int pasazerId, letID  = 0;
+    private int pasazerId, letID = 0;
     LetenkaHistorie letenkaH;
     Button btnLogout;
     TabSheet tabSheet;
     Div divZavazadla, divProfil, divHistorie, divRegistrace;
 
-    public client(){
+    public client() {
         // Inicializace komponent v konstruktoru
         FlexLayout row1 = new FlexLayout();
         Div row1div1 = new Div();
@@ -71,8 +71,8 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         btnLogout.setIcon(iconLogOut);
         row1div2.add(btnLogout);
         row1div2.setWidth("50%");
-        row1div2.getStyle().set("padding-left","60%").set("padding-top","1%");
-        row1.add(row1div1,row1div2);
+        row1div2.getStyle().set("padding-left", "60%").set("padding-top", "1%");
+        row1.add(row1div1, row1div2);
         row1.setWidth("90%");
         add(row1);
 
@@ -82,9 +82,9 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         divRegistrace = new Div();
         tabSheet = new TabSheet();
         tabSheet.add("Můj profil", divProfil);
-        tabSheet.add("Historie",divHistorie);
-        tabSheet.add("Registrace Letenek",divRegistrace);
-        tabSheet.add("Moje zavazadlo",divZavazadla);
+        tabSheet.add("Historie", divHistorie);
+        tabSheet.add("Registrace Letenek", divRegistrace);
+        tabSheet.add("Moje zavazadlo", divZavazadla);
         add(tabSheet);
         tabSheet.setWidth("90%");
         setAlignItems(Alignment.CENTER);
@@ -102,10 +102,6 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
                 zavazadloGrid.setItems(zavazadloList);
                 historieList = letenkaService.findByPasazer(pasazerId);
                 historieLetenek.setItems(historieList);
-                if(letID != 0){
-                    letenkaHistories = letenkaHistorieService.findByLetID(letID);
-                    letenkaH = letenkaHistories.getFirst();
-                }
                 if (pasazer == null) {
                 } else {
                     // Po načtení pasažéra aktualizujeme profil
@@ -135,113 +131,113 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
 
         // Vytvoříme a přidáme komponenty pro zobrazení profilu pasažéra
         FlexLayout profilRow1 = new FlexLayout();
-            Div div1Prow1 = new Div();
-                Text jmeno = new Text("Jméno: ");
-                Text jmenoValue = new Text(pasazer.getJmeno());
-            div1Prow1.add(jmeno, jmenoValue);
-            div1Prow1.getStyle().set("margin-left","10%");
-            Div div2Prow1 = new Div();
-                Text prijemni = new Text("Přijmení: ");
-                Text prijmeniValue = new Text(pasazer.getPrijmeni());
-            div2Prow1.add(prijemni,prijmeniValue);
-            div2Prow1.getStyle().set("margin-left","5%");
+        Div div1Prow1 = new Div();
+        Text jmeno = new Text("Jméno: ");
+        Text jmenoValue = new Text(pasazer.getJmeno());
+        div1Prow1.add(jmeno, jmenoValue);
+        div1Prow1.getStyle().set("margin-left", "10%");
+        Div div2Prow1 = new Div();
+        Text prijemni = new Text("Přijmení: ");
+        Text prijmeniValue = new Text(pasazer.getPrijmeni());
+        div2Prow1.add(prijemni, prijmeniValue);
+        div2Prow1.getStyle().set("margin-left", "5%");
         Div div3Prow1 = new Div();
-            Text datumNaroz = new Text("Datum narození: ");
-            Text datumNarozValue = new Text(pasazer.getDatum_narozeni().toString());
-        div3Prow1.add(datumNaroz,datumNarozValue);
-        div3Prow1.getStyle().set("margin-left","10%");
-        profilRow1.add(div1Prow1,div2Prow1,div3Prow1);
-        profilRow1.getStyle().set("margin-botton","5%").set("border-bottom","1px solid lightblue");
+        Text datumNaroz = new Text("Datum narození: ");
+        Text datumNarozValue = new Text(pasazer.getDatum_narozeni().toString());
+        div3Prow1.add(datumNaroz, datumNarozValue);
+        div3Prow1.getStyle().set("margin-left", "10%");
+        profilRow1.add(div1Prow1, div2Prow1, div3Prow1);
+        profilRow1.getStyle().set("margin-botton", "5%").set("border-bottom", "1px solid lightblue");
         FlexLayout profilRow2 = new FlexLayout();
-            Div div1Prow2 = new Div();
-                Text email = new Text("Email: ");
-                Text emailValue = new Text(pasazer.getEmail());
-            div1Prow2.add(email,emailValue);
-            div1Prow2.getStyle().set("margin-left","10%");
-            Div div2Prow2 = new Div();
-                Text tel = new Text("Telefoní číslo: ");
-                Text telValue = new Text(pasazer.getTelefoni_cislo());
-            div2Prow2.add(tel,telValue);
-            div2Prow2.getStyle().set("margin-left","5%");
-            Div div3Prow2 = new Div();
-                Text rodC = new Text("Rodné číslo");
-                Text rodneValue = new Text(pasazer.getRodne_cislo());
-            div3Prow2.add(rodC,rodneValue);
-            div3Prow2.getStyle().set("margin-left","10%");
-        profilRow2.add(div1Prow2,div2Prow2,div3Prow2);
-        profilRow2.getStyle().set("margin-botton","5%").set("border-bottom","1px solid lightblue");
+        Div div1Prow2 = new Div();
+        Text email = new Text("Email: ");
+        Text emailValue = new Text(pasazer.getEmail());
+        div1Prow2.add(email, emailValue);
+        div1Prow2.getStyle().set("margin-left", "10%");
+        Div div2Prow2 = new Div();
+        Text tel = new Text("Telefoní číslo: ");
+        Text telValue = new Text(pasazer.getTelefoni_cislo());
+        div2Prow2.add(tel, telValue);
+        div2Prow2.getStyle().set("margin-left", "5%");
+        Div div3Prow2 = new Div();
+        Text rodC = new Text("Rodné číslo");
+        Text rodneValue = new Text(pasazer.getRodne_cislo());
+        div3Prow2.add(rodC, rodneValue);
+        div3Prow2.getStyle().set("margin-left", "10%");
+        profilRow2.add(div1Prow2, div2Prow2, div3Prow2);
+        profilRow2.getStyle().set("margin-botton", "5%").set("border-bottom", "1px solid lightblue");
         FlexLayout profilRow3 = new FlexLayout();
-            Div btnDiv = new Div();
-                Button update = new Button();
-                update.addClickListener(event -> {
-                    Dialog dialog = new Dialog();
-                        FlexLayout row1 = new FlexLayout();
-                        Div row1div1 = new Div();
-                        Text jmenoA = new Text("Jméno");
-                        TextArea jmenoField = new TextArea();
-                        jmenoField.setValue(pasazer.getJmeno());
-                        row1div1.add(jmenoA,jmenoField);
-                        row1div1.getStyle().set("padding-left","10%");
-                        Div row1div2 = new Div();
-                        Text prijmeni = new Text("Přijmení");
-                        TextArea prijmeniField = new TextArea();
-                        prijmeniField.setValue(pasazer.getPrijmeni());
-                        row1div2.add(prijmeni,prijmeniField);
-                        row1div2.getStyle().set("padding-left","10%");
-                        row1.add(row1div1,row1div2);
-                        dialog.add(row1);
+        Div btnDiv = new Div();
+        Button update = new Button();
+        update.addClickListener(event -> {
+            Dialog dialog = new Dialog();
+            FlexLayout row1 = new FlexLayout();
+            Div row1div1 = new Div();
+            Text jmenoA = new Text("Jméno");
+            TextArea jmenoField = new TextArea();
+            jmenoField.setValue(pasazer.getJmeno());
+            row1div1.add(jmenoA, jmenoField);
+            row1div1.getStyle().set("padding-left", "10%");
+            Div row1div2 = new Div();
+            Text prijmeni = new Text("Přijmení");
+            TextArea prijmeniField = new TextArea();
+            prijmeniField.setValue(pasazer.getPrijmeni());
+            row1div2.add(prijmeni, prijmeniField);
+            row1div2.getStyle().set("padding-left", "10%");
+            row1.add(row1div1, row1div2);
+            dialog.add(row1);
 
 
-                        FlexLayout row2 = new FlexLayout();
-                        Div row2div1 = new Div();
-                        Text email2 = new Text("Email");
-                        TextArea emailField = new TextArea();
-                        emailField.setValue(pasazer.getEmail());
-                        row2div1.add(email2,emailField);
-                        row2div1.getStyle().set("padding-left","10%");
-                        Div row2div2 = new Div();
-                        Text rodneCislo = new Text("Rodné číslo");
-                        TextArea rodneCisloField = new TextArea();
-                        rodneCisloField.setValue(pasazer.getRodne_cislo());
-                        row2div2.add(rodneCislo,rodneCisloField);
-                        row2div2.getStyle().set("padding-left","10%");
-                        row2.add(row2div1,row2div2);
-                        dialog.add(row2);
+            FlexLayout row2 = new FlexLayout();
+            Div row2div1 = new Div();
+            Text email2 = new Text("Email");
+            TextArea emailField = new TextArea();
+            emailField.setValue(pasazer.getEmail());
+            row2div1.add(email2, emailField);
+            row2div1.getStyle().set("padding-left", "10%");
+            Div row2div2 = new Div();
+            Text rodneCislo = new Text("Rodné číslo");
+            TextArea rodneCisloField = new TextArea();
+            rodneCisloField.setValue(pasazer.getRodne_cislo());
+            row2div2.add(rodneCislo, rodneCisloField);
+            row2div2.getStyle().set("padding-left", "10%");
+            row2.add(row2div1, row2div2);
+            dialog.add(row2);
 
-                        FlexLayout row3 = new FlexLayout();
-                        Div last = new Div();
-                        Text tel2 = new Text("Telefoní číslo");
-                        TextArea telField = new TextArea();
-                        telField.setValue(pasazer.getTelefoni_cislo());
-                        last.add(tel2,telField);
-                        last.getStyle().set("padding-left","25%");
-                        row3.add(last);
-                        dialog.add(row3);
+            FlexLayout row3 = new FlexLayout();
+            Div last = new Div();
+            Text tel2 = new Text("Telefoní číslo");
+            TextArea telField = new TextArea();
+            telField.setValue(pasazer.getTelefoni_cislo());
+            last.add(tel2, telField);
+            last.getStyle().set("padding-left", "25%");
+            row3.add(last);
+            dialog.add(row3);
 
-                        FlexLayout rowLast = new FlexLayout();
-                        Button uploadButton = new Button("Uprav", event3 ->{
-                            pasazerService.findByIdAndUpdate(pasazer.getPasazerID(),jmenoField.getValue(),prijmeniField.getValue(),emailField.getValue(),rodneCisloField.getValue(),telField.getValue());
-                            dialog.close();
-                            UI.getCurrent().getPage().reload();
-                        });
-                        Icon icon10 = new Icon(VaadinIcon.CHECK);
-                        uploadButton.setIcon(icon10);
-                        uploadButton.getStyle().set("margin-left","40%");
-                        Button closeButton = new Button("Zavřít", event3 -> dialog.close());
-                        closeButton.getStyle().set("margin-left","10%");
-                        Icon icon11 = new Icon(VaadinIcon.CLOSE);
-                        closeButton.setIcon(icon11);
-                        rowLast.add(closeButton,uploadButton);
-                        dialog.add(rowLast);
-                        dialog.open();
-                    });
-                update.setText("Úprava profilu");
-                update.setIcon(new Icon (VaadinIcon.ARROW_CIRCLE_UP));
-                btnDiv.add(update);
-            btnDiv.getStyle().set("margin-left","45%");
+            FlexLayout rowLast = new FlexLayout();
+            Button uploadButton = new Button("Uprav", event3 -> {
+                pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
+                dialog.close();
+                UI.getCurrent().getPage().reload();
+            });
+            Icon icon10 = new Icon(VaadinIcon.CHECK);
+            uploadButton.setIcon(icon10);
+            uploadButton.getStyle().set("margin-left", "40%");
+            Button closeButton = new Button("Zavřít", event3 -> dialog.close());
+            closeButton.getStyle().set("margin-left", "10%");
+            Icon icon11 = new Icon(VaadinIcon.CLOSE);
+            closeButton.setIcon(icon11);
+            rowLast.add(closeButton, uploadButton);
+            dialog.add(rowLast);
+            dialog.open();
+        });
+        update.setText("Úprava profilu");
+        update.setIcon(new Icon(VaadinIcon.ARROW_CIRCLE_UP));
+        btnDiv.add(update);
+        btnDiv.getStyle().set("margin-left", "45%");
         profilRow3.add(btnDiv);
-        profilRow3.getStyle().set("margin-botton","5%");
-        divProfil.add(profilRow1,profilRow2,profilRow3);
+        profilRow3.getStyle().set("margin-botton", "5%");
+        divProfil.add(profilRow1, profilRow2, profilRow3);
     }
 
     private void updateHistory() {
@@ -256,9 +252,9 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         historieLetenek.addColumn(Letenka::getLetenkaID).setHeader("ID");
         historieLetenek.addColumn(new ComponentRenderer<>(letenka -> {
             String value = "";
-            if(letenka.getJeSkupinova() == 1){
+            if (letenka.getJeSkupinova() == 1) {
                 value = "Skupinová";
-            }else{
+            } else {
                 value = "Individuální";
             }
             return new Span(value);
@@ -271,61 +267,68 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
             showDetails.setIcon(new Icon(VaadinIcon.SEARCH));
             showDetails.addClickListener(event -> {
                 Dialog dialog = new Dialog();
+
                 letID = letenka.getLetID();
-                letenkaHistories = letenkaHistorieService.findByLetID(letID);
-                letenkaH = letenkaHistories.getFirst();
+                System.out.println("size of ltHs" + letenkaHistories.size());
+                for (int i = 0; i < letenkaHistories.size(); i++) {
+                    LetenkaHistorie historie = letenkaHistories.get(i);
+                    if (historie != null && historie.getLetId() == letID) {
+                        letenkaH = historie;
+                        break; // Pokud nalezena shoda, ukončíme cyklus
+                    }
+                }
                 FlexLayout row = new FlexLayout();
-                    Div div = new Div();
-                        Text text1 = new Text("Letadlo ID: ");
-                        Text text2 = new Text(String.valueOf(letenkaH.getLetadloID()));
-                    div.add(text1,text2);
-                    div.getStyle().set("margin-left","10%");
-                    Div div1 = new Div();
-                        Text text3 = new Text("Čas odletu: ");
-                        Text text4 = new Text(String.valueOf(letenkaH.getCas_Odletu().toString()));
-                    div1.add(text3,text4);
-                    div1.getStyle().set("margin-left","30%");
-                row.add(div,div1);
+                Div div = new Div();
+                Text text1 = new Text("Letadlo ID: ");
+                Text text2 = new Text(String.valueOf(letenkaH.getLetadloID()));
+                div.add(text1, text2);
+                div.getStyle().set("margin-left", "10%");
+                Div div1 = new Div();
+                Text text3 = new Text("Čas odletu: ");
+                Text text4 = new Text(String.valueOf(letenkaH.getCas_Odletu().toString()));
+                div1.add(text3, text4);
+                div1.getStyle().set("margin-left", "30%");
+                row.add(div, div1);
                 dialog.add(row);
                 FlexLayout row2 = new FlexLayout();
-                    Div div2 = new Div();
-                        Text text5 = new Text("Odlet    Město: ");
-                        Text text6 = new Text(letenkaH.getMestoOdletu());
-                    div2.add(text5,text6);
-                    div2.getStyle().set("margin-left","10%");
-                    Div div3 = new Div();
-                        Text text7 = new Text("Název: ");
-                        Text text8 = new Text(letenkaH.getNazevLOdletu());
-                    div3.add(text7,text8);
-                    div3.getStyle().set("margin-left","10%");
-                    Div div4 = new Div();
-                        Text text9 = new Text("Stát: ");
-                        Text text10 = new Text(letenkaH.getStatOdletu());
-                    div4.add(text9,text10);
-                    div4.getStyle().set("margin-left","10%");
-                row2.add(div2,div3,div4);
+                Div div2 = new Div();
+                Text text5 = new Text("Odlet    Město: ");
+                Text text6 = new Text(letenkaH.getMestoOdletu());
+                div2.add(text5, text6);
+                div2.getStyle().set("margin-left", "5%");
+                Div div3 = new Div();
+                Text text7 = new Text("Název: ");
+                Text text8 = new Text(letenkaH.getNazevLOdletu());
+                div3.add(text7, text8);
+                div3.getStyle().set("margin-left", "5%");
+                Div div4 = new Div();
+                Text text9 = new Text("Stát: ");
+                Text text10 = new Text(letenkaH.getStatOdletu());
+                div4.add(text9, text10);
+                div4.getStyle().set("margin-left", "5%");
+                row2.add(div2, div3, div4);
                 dialog.add(row2);
                 FlexLayout row3 = new FlexLayout();
                 Div div5 = new Div();
                 Text text11 = new Text("Přílet    Město: ");
                 Text text12 = new Text(letenkaH.getMestoPriletu());
-                div5.add(text11,text12);
-                div5.getStyle().set("margin-left","10%");
+                div5.add(text11, text12);
+                div5.getStyle().set("margin-left", "5%");
                 Div div6 = new Div();
                 Text text13 = new Text("Název: ");
                 Text text14 = new Text(letenkaH.getNazevLPriletu());
-                div6.add(text13,text14);
-                div6.getStyle().set("margin-left","10%");
+                div6.add(text13, text14);
+                div6.getStyle().set("margin-left", "5%");
                 Div div7 = new Div();
                 Text text15 = new Text("Stát: ");
                 Text text16 = new Text(letenkaH.getStatPriletu());
-                div7.add(text15,text16);
-                div7.getStyle().set("margin-left","10%");
-                row3.add(div5,div6,div7);
+                div7.add(text15, text16);
+                div7.getStyle().set("margin-left", "5%");
+                row3.add(div5, div6, div7);
                 dialog.add(row3);
                 FlexLayout rowLast = new FlexLayout();
                 Button closeButton = new Button("Zavřít", event2 -> dialog.close());
-                closeButton.getStyle().set("margin-left","10%");
+                closeButton.getStyle().set("margin-left", "10%");
                 Icon icon11 = new Icon(VaadinIcon.CLOSE);
                 closeButton.setIcon(icon11);
                 rowLast.add(closeButton);
@@ -336,6 +339,7 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         }));
         divHistorie.add(historieLetenek);
     }
+
     private void updateRegister() {
         if (divRegistrace == null) {
             divRegistrace = new Div();
@@ -346,6 +350,7 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         Text text = new Text("Registrace ");
         divRegistrace.add(text);
     }
+
     private void updateZavazadla() {
         if (divZavazadla == null) {
             divZavazadla = new Div();
@@ -358,9 +363,9 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
 
         zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
             String value = "";
-            if(zavazadlo.getZavazadloID() == 1){
+            if (zavazadlo.getZavazadloID() == 1) {
                 value = "Příruční";
-            }else{
+            } else {
                 value = "Odbavované";
             }
             return new Span(value);
@@ -370,9 +375,9 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         zavazadloGrid.addColumn(Zavazadlo::getVaha).setHeader("Váha");
         zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
             String value = "";
-            if(zavazadlo.getKrehke() == 1){
+            if (zavazadlo.getKrehke() == 1) {
                 value = "Křehké";
-            }else{
+            } else {
                 value = "Odolné";
             }
             return new Span(value);
@@ -387,58 +392,58 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
                 Text sirka = new Text("Šířka");
                 NumberField sirkaField = new NumberField();
                 sirkaField.setValue(Double.valueOf(String.valueOf(zavazadlo.getSirka())));
-                row1div1.add(sirka,sirkaField);
-                row1div1.getStyle().set("padding-left","10%");
+                row1div1.add(sirka, sirkaField);
+                row1div1.getStyle().set("padding-left", "10%");
 
                 Div row1div2 = new Div();
                 Text vyska = new Text("Výška");
                 NumberField vyskaField = new NumberField();
                 vyskaField.setValue((double) zavazadlo.getVyska());
-                row1div2.add(vyska,vyskaField);
-                row1div2.getStyle().set("padding-left","10%");
-                row1.add(row1div1,row1div2);
+                row1div2.add(vyska, vyskaField);
+                row1div2.getStyle().set("padding-left", "10%");
+                row1.add(row1div1, row1div2);
                 dialog.add(row1);
 
                 FlexLayout row2 = new FlexLayout();
                 Div row2div1 = new Div();
                 Text vaha = new Text("Váha");
                 NumberField vahaField = new NumberField();
-                vahaField.setValue((double)zavazadlo.getVaha());
-                row2div1.add(vaha,vahaField);
-                row2div1.getStyle().set("padding-left","10%");
+                vahaField.setValue((double) zavazadlo.getVaha());
+                row2div1.add(vaha, vahaField);
+                row2div1.getStyle().set("padding-left", "10%");
 
                 Div row2div2 = new Div();
                 Text krehke = new Text("Křehké -> 1 ");
                 NumberField krehkeField = new NumberField();
-                krehkeField.setValue((double)zavazadlo.getKrehke());
-                row2div2.add(krehke,krehkeField);
-                row2div2.getStyle().set("padding-left","10%");
-                row2.add(row2div1,row2div2);
+                krehkeField.setValue((double) zavazadlo.getKrehke());
+                row2div2.add(krehke, krehkeField);
+                row2div2.getStyle().set("padding-left", "10%");
+                row2.add(row2div1, row2div2);
                 dialog.add(row2);
 
                 FlexLayout row = new FlexLayout();
                 Div div = new Div();
                 Text typ = new Text("Typ 1 - Příruční 2 - Odbavované");
-                NumberField typField= new NumberField();
+                NumberField typField = new NumberField();
                 typField.setValue((double) zavazadlo.getTyp_zavazadlaID());
-                div.add(typ,typField);
+                div.add(typ, typField);
                 row.add(div);
                 dialog.add(row);
 
                 FlexLayout rowLast = new FlexLayout();
-                Button uploadButton = new Button("Uprav", event3 ->{
-                    zavazadloService.findByIdAndUpdate(zavazadlo.getZavazadloID(),sirkaField.getValue().intValue(),vyskaField.getValue().intValue(),vahaField.getValue().intValue(),krehkeField.getValue().intValue(),typField.getValue().intValue());
+                Button uploadButton = new Button("Uprav", event3 -> {
+                    zavazadloService.findByIdAndUpdate(zavazadlo.getZavazadloID(), sirkaField.getValue().intValue(), vyskaField.getValue().intValue(), vahaField.getValue().intValue(), krehkeField.getValue().intValue(), typField.getValue().intValue());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
                 Icon icon10 = new Icon(VaadinIcon.CHECK);
                 uploadButton.setIcon(icon10);
-                uploadButton.getStyle().set("margin-left","40%");
+                uploadButton.getStyle().set("margin-left", "40%");
                 Button closeButton = new Button("Zavřít", event2 -> dialog.close());
-                closeButton.getStyle().set("margin-left","10%");
+                closeButton.getStyle().set("margin-left", "10%");
                 Icon icon11 = new Icon(VaadinIcon.CLOSE);
                 closeButton.setIcon(icon11);
-                rowLast.add(closeButton,uploadButton);
+                rowLast.add(closeButton, uploadButton);
                 dialog.add(rowLast);
                 dialog.open();
             });
@@ -458,67 +463,67 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         FlexLayout row = new FlexLayout();
         Div div = new Div();
         Button btnNew = new Button();
-        btnNew.addClickListener(event ->{
+        btnNew.addClickListener(event -> {
             Dialog dialog = new Dialog();
 
             FlexLayout row1 = new FlexLayout();
             Div row1div1 = new Div();
             Text sirka = new Text("Šířka");
             NumberField sirkaField = new NumberField();
-            row1div1.add(sirka,sirkaField);
-            row1div1.getStyle().set("padding-left","10%");
+            row1div1.add(sirka, sirkaField);
+            row1div1.getStyle().set("padding-left", "10%");
 
             Div row1div2 = new Div();
             Text vyska = new Text("Výška");
             NumberField vyskaField = new NumberField();
-            row1div2.add(vyska,vyskaField);
-            row1div2.getStyle().set("padding-left","10%");
-            row1.add(row1div1,row1div2);
+            row1div2.add(vyska, vyskaField);
+            row1div2.getStyle().set("padding-left", "10%");
+            row1.add(row1div1, row1div2);
             dialog.add(row1);
 
             FlexLayout row2 = new FlexLayout();
             Div row2div1 = new Div();
             Text vaha = new Text("Váha");
             NumberField vahaField = new NumberField();
-            row2div1.add(vaha,vahaField);
-            row2div1.getStyle().set("padding-left","10%");
+            row2div1.add(vaha, vahaField);
+            row2div1.getStyle().set("padding-left", "10%");
 
             Div row2div2 = new Div();
             Text krehke = new Text("Křehké -> 1 ");
             NumberField krehkeField = new NumberField();
-            row2div2.add(krehke,krehkeField);
-            row2div2.getStyle().set("padding-left","10%");
-            row2.add(row2div1,row2div2);
+            row2div2.add(krehke, krehkeField);
+            row2div2.getStyle().set("padding-left", "10%");
+            row2.add(row2div1, row2div2);
             dialog.add(row2);
 
             FlexLayout row4 = new FlexLayout();
             Div div2 = new Div();
             Text typ = new Text("Typ 1 - Příruční 2 - Odbavované");
-            NumberField typField= new NumberField();
-            div2.add(typ,typField);
+            NumberField typField = new NumberField();
+            div2.add(typ, typField);
             row4.add(div2);
             dialog.add(row4);
 
             FlexLayout rowLast = new FlexLayout();
-            Button uploadButton = new Button("Nový", event3 ->{
-                zavazadloService.createZavazadlo(pasazerId,sirkaField.getValue().intValue(),vyskaField.getValue().intValue(),vahaField.getValue().intValue(),krehkeField.getValue().intValue(),typField.getValue().intValue());
+            Button uploadButton = new Button("Nový", event3 -> {
+                zavazadloService.createZavazadlo(pasazerId, sirkaField.getValue().intValue(), vyskaField.getValue().intValue(), vahaField.getValue().intValue(), krehkeField.getValue().intValue(), typField.getValue().intValue());
                 dialog.close();
                 UI.getCurrent().getPage().reload();
             });
-            uploadButton.getStyle().set("margin-left","40%");
+            uploadButton.getStyle().set("margin-left", "40%");
             Icon icon10 = new Icon(VaadinIcon.CHECK);
             uploadButton.setIcon(icon10);
             Button closeButton = new Button("Zavřít", event2 -> dialog.close());
-            closeButton.getStyle().set("margin-left","10%");
+            closeButton.getStyle().set("margin-left", "10%");
             Icon icon11 = new Icon(VaadinIcon.CLOSE);
             closeButton.setIcon(icon11);
-            rowLast.add(closeButton,uploadButton);
+            rowLast.add(closeButton, uploadButton);
             dialog.add(rowLast);
             dialog.open();
         });
         btnNew.setText("Nové zavazadlo");
         div.add(btnNew);
-        div.getStyle().set("margin-left","50%");
+        div.getStyle().set("margin-left", "50%");
         row.add(div);
         divZavazadla.add(row);
     }
@@ -532,10 +537,7 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         zavazadloGrid.setItems(zavazadloList);
         historieList = letenkaService.findByPasazer(pasazerId);
         historieLetenek.setItems(historieList);
-        if(letID != 0){
-            letenkaHistories = letenkaHistorieService.findByLetID(letID);
-            letenkaH = letenkaHistories.getFirst();
-        }
+        letenkaHistories = letenkaHistorieService.findAll();
         if (pasazer == null) {
         } else {
             updateProfile(); // Aktualizace profilu

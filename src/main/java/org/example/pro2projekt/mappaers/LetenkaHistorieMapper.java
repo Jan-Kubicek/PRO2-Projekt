@@ -20,6 +20,6 @@ public class LetenkaHistorieMapper implements RowMapper<LetenkaHistorie> {
         letenkaHistorie.setNazevLPriletu(rs.getString("NAZEVLPRILETU"));
         letenkaHistorie.setStatOdletu(rs.getString("STATODLETU"));
         letenkaHistorie.setStatPriletu(rs.getString("STATPRILETU"));
-        return null;
+        return letenkaHistorie;
     }
 }
