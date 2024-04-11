@@ -7,6 +7,7 @@ import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.PostConstruct;
 import org.example.pro2projekt.controller.dataInput;
@@ -17,8 +18,11 @@ import org.example.pro2projekt.service.DispecerServiceImpl;
 import org.example.pro2projekt.service.PasazerService;
 import org.example.pro2projekt.service.PasazerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,16 +39,13 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm loginForm = new LoginForm();
     @Autowired
-    private final UserDetailsService userDetailsService;
-    @Autowired
     private DispecerServiceImpl dispecerService;
     @Autowired
     private PasazerServiceImpl pasazerService;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private UserDetails user;
 
-    public login(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-
+    public login() {
         addClassName("login-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
@@ -65,42 +66,65 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private void authenticate(String username, String password) {
         // Načtení uživatelských údajů na základě uživatelského jména
-        Pasazer pasazer = pasazerService.findByEmail(username);
-        Dispecer dispecer = dispecerService.findByEmail(username);
-
-        if (dispecer != null || pasazer != null) {
-            // Uživatel nalezen, zjistíme, jestli je to dispečer nebo pasažér
-            UserDetails userDetails;
-            String role;
-            if (dispecer != null) {
-                userDetails = dispecer;
-                role = "DISPECER";
-            } else {
-                userDetails = pasazer;
-                role = "PASAZER";
-            }
-            System.out.println(role);
+        UserDetails userDetails = loadUserByUsername(username);
+        if (userDetails != null) {
+            // Uživatel nalezen
             boolean passwordMatch = bCryptPasswordEncoder.matches(password, userDetails.getPassword());
             if (passwordMatch) {
                 // Přihlášení úspěšné
-                // Zde můžete přidat roli do userDetails, pokud je to potřeba
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(role));
-                userDetails = new User(userDetails.getUsername(), userDetails.getPassword(), authorities);
-                if(dispecer!=null){
-                    getUI().ifPresent(ui -> ui.navigate("/admin"));
-                }else{
-                    getUI().ifPresent(ui -> ui.navigate("/client"));
-                }
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                user = userDetails;
+                navigateToNextPage();
             } else {
                 // Nesprávné heslo
                 Notification.show("Neplatné přihlašovací údaje", 3000, Notification.Position.TOP_CENTER);
-
             }
         } else {
             // Uživatel nenalezen
             Notification.show("Neplatné přihlašovací údaje", 3000, Notification.Position.TOP_CENTER);
+        }
+    }
 
+    private UserDetails loadUserByUsername(String username) {
+        Pasazer pasazer = null;
+        try{
+            pasazer =  pasazerService.findByEmail(username);
+        }catch (Exception e){
+            pasazer = null;
+        }
+        Dispecer dispecer = null;
+        try{
+            dispecer = dispecerService.findByEmail(username);
+        }catch (Exception e){
+            dispecer =null;
+        }
+        if (pasazer != null) {
+            return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("PASAZER"));
+        } else if (dispecer != null) {
+            return new User(dispecer.getEmail(), dispecer.getPassword(), getAuthorities("DISPECER"));
+        }
+        return null;
+    }
+
+    private List<GrantedAuthority> getAuthorities(String role) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        return authorities;
+    }
+
+    private void navigateToNextPage() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_DISPECER"))) {
+                VaadinSession vaadinSession = VaadinSession.getCurrent();
+                vaadinSession.setAttribute("loggedInUser",user);
+                getUI().ifPresent(ui -> ui.navigate("/admin"));
+            } else {
+                VaadinSession vaadinSession = VaadinSession.getCurrent();
+                vaadinSession.setAttribute("loggedInUser",user);
+                getUI().ifPresent(ui -> ui.navigate("/client"));
+            }
         }
     }
 
