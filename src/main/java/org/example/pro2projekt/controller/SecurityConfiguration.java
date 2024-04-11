@@ -27,11 +27,6 @@ import javax.crypto.SecretKey;
 @Configuration
 public class SecurityConfiguration extends VaadinWebSecurity {
 
-    private static final String LOGIN_PROCESSING_URL = "/login";
-    private static final String LOGIN_FAILURE_URL = "/login?error";
-    private static final String LOGIN_URL = "/login";
-    private static final String LOGOUT_SUCCESS_URL = "/login";
-
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -45,18 +40,10 @@ public class SecurityConfiguration extends VaadinWebSecurity {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Nastavení cesty pro odhlášení
                 .logoutSuccessUrl("/") // Cesta, kam se uživatel přesměruje po odhlášení
                 .invalidateHttpSession(true) // Invalidace HTTP relace po odhlášení
-                .deleteCookies("JSESSIONID"));
-
+                .deleteCookies("JSESSIONID")).formLogin((form) -> form.loginPage("/login").loginProcessingUrl("/login").permitAll());
+        //setLoginView(http, login.class);
         super.configure(http);
-        setLoginView(http, login.class);
     }
-    /*
-    Button logoutButton = new Button("Odhlásit se");
-    logoutButton.addClickListener(event -> {
-    // Po kliknutí na tlačítko se provede odhlášení
-    UI.getCurrent().getPage().executeJs("window.location.href = '/logout';");
-    });
-     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);

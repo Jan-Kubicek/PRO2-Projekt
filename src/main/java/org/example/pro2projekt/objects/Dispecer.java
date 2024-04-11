@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Table(name = "Dispecer")
@@ -27,7 +28,7 @@ public class Dispecer implements UserDetails {
     private String Prijmeni;
     private String Rodne_cislo;
     private String Telefoni_cislo;
-    private String role = "DISPECER";
+    private String role = "ROLE_DISPECER";
 
     public Dispecer() {
     }
@@ -102,9 +103,7 @@ public class Dispecer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("DISPECER"));
-        return authorities;
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_DISPECER"));
     }
 
     @Override

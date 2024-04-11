@@ -18,7 +18,7 @@ import org.example.pro2projekt.objects.Pasazer;
 
 @PageTitle("admin")
 @Route("/admin")
-@RolesAllowed("DISPECER")
+@RolesAllowed("ROLE_DISPECER")
 public class admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
@@ -35,7 +35,9 @@ public class admin extends VerticalLayout {
         Div row1div2 = new Div();
         Icon iconLogOut = new Icon(VaadinIcon.POWER_OFF);
         btnLogout = new Button("Odhlášení");
-        btnLogout.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(index.class)));
+        btnLogout.addClickListener(event -> getUI().ifPresent(ui -> {
+            ui.getPage().executeJs("location.assign('logout')");
+        }));
         btnLogout.setIcon(iconLogOut);
         row1div2.add(btnLogout);
         row1div2.setWidth("50%");

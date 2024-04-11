@@ -100,9 +100,13 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             dispecer =null;
         }
         if (pasazer != null) {
+            System.out.println("PASAZER");
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("PASAZER"));
-        } else if (dispecer != null) {
-            return new User(dispecer.getEmail(), dispecer.getPassword(), getAuthorities("DISPECER"));
+        } else {
+            if (dispecer != null){
+                System.out.println("DISPECER");
+                return new User(dispecer.getEmail(), dispecer.getPassword(), getAuthorities("DISPECER"));
+            }
         }
         return null;
     }
@@ -119,10 +123,12 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_DISPECER"))) {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
+                System.out.println("DISPECER");
                 getUI().ifPresent(ui -> ui.navigate("/admin"));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
+                System.out.println("PASAZER");
                 getUI().ifPresent(ui -> ui.navigate("/client"));
             }
         }

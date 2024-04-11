@@ -37,16 +37,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private UserDetails buildUserDetails(Dispecer dispecer, String role) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
-
         return dispecer;
     }
 
     private UserDetails buildUserDetails(Pasazer pasazer, String role) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
-
         return pasazer;
     }
 }
