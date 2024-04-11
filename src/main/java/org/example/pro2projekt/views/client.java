@@ -20,6 +20,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.security.RolesAllowed;
@@ -60,6 +61,8 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     Div divZavazadla, divProfil, divHistorie, divRegistrace;
 
     public client() {
+        VaadinSession vaadinSession = VaadinSession.getCurrent();
+        System.out.println(vaadinSession.getAttribute("loggedInUser"));
         // Inicializace komponent v konstruktoru
         FlexLayout row1 = new FlexLayout();
         Div row1div1 = new Div();

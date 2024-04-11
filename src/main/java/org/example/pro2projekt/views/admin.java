@@ -11,21 +11,24 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.objects.Pasazer;
+import org.springframework.security.access.annotation.Secured;
 //import com.vaadin.flow.component.crud.Crud;
 
 
 @PageTitle("admin")
 @Route("/admin")
-@RolesAllowed("ROLE_DISPECER")
+@RolesAllowed("DISPECER")
 public class admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
 
     public admin(){
         //componenty
-
+        VaadinSession vaadinSession = VaadinSession.getCurrent();
+        System.out.println(vaadinSession.getAttribute("loggedInUser"));
         //header
         FlexLayout row1 = new FlexLayout();
         Div row1div1 = new Div();
@@ -36,6 +39,8 @@ public class admin extends VerticalLayout {
         Icon iconLogOut = new Icon(VaadinIcon.POWER_OFF);
         btnLogout = new Button("Odhlášení");
         btnLogout.addClickListener(event -> getUI().ifPresent(ui -> {
+            VaadinSession vaadinSession1 = VaadinSession.getCurrent();
+            vaadinSession1.setAttribute("",null);
             ui.getPage().executeJs("location.assign('logout')");
         }));
         btnLogout.setIcon(iconLogOut);
