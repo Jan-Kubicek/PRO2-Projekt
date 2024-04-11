@@ -16,6 +16,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.objects.Spolecnost;
 import org.example.pro2projekt.service.SpolecnostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @PageTitle("adminSpolecnost")
 @Route("/admin/spolecnost")
+@RolesAllowed("DISPECER")
 public class AdminSpolecnostView extends VerticalLayout {
     @Autowired
     private SpolecnostService spolecnostService;

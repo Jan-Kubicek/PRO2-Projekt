@@ -18,6 +18,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.objects.LetadloStats;
 import org.example.pro2projekt.objects.Letiste;
 import org.example.pro2projekt.objects.LetisteStats;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @PageTitle("adminLetiste")
 @Route("/admin/letiste")
+@RolesAllowed("DISPECER")
 public class AdminLetisteView  extends VerticalLayout {
     @Autowired
     private LetisteService letisteService;

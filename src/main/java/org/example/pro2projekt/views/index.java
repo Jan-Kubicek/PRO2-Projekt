@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.example.pro2projekt.controller.dataInput;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -22,6 +23,7 @@ import java.sql.SQLException;
 
 @PageTitle("index")
 @Route("/")
+@AnonymousAllowed
 public class index extends VerticalLayout {
     Button btnLogin, btnRegister,btnSubmit;
     DatePicker datumODletuFiled, datumPriletuField;

@@ -11,12 +11,14 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.objects.Pasazer;
 //import com.vaadin.flow.component.crud.Crud;
 
 
 @PageTitle("admin")
 @Route("/admin")
+@RolesAllowed("DISPECER")
 public class admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;

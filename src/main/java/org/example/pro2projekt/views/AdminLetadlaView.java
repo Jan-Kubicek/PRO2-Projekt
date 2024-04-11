@@ -27,8 +27,6 @@ import org.example.pro2projekt.service.LetadloService;
 import org.example.pro2projekt.service.LetadloStatsService;
 import org.example.pro2projekt.service.SpolecnostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.stefan.table.Table;
-import org.vaadin.stefan.table.TableRow;
 
 import java.util.List;
 

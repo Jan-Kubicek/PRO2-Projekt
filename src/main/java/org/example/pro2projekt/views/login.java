@@ -1,5 +1,6 @@
 package org.example.pro2projekt.views;
 
+import ch.qos.logback.core.boolex.Matcher;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -7,54 +8,100 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.PostConstruct;
 import org.example.pro2projekt.controller.dataInput;
+import org.example.pro2projekt.objects.Dispecer;
+import org.example.pro2projekt.objects.Pasazer;
+import org.example.pro2projekt.service.DispecerService;
+import org.example.pro2projekt.service.DispecerServiceImpl;
 import org.example.pro2projekt.service.PasazerService;
+import org.example.pro2projekt.service.PasazerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @PageTitle("login")
 @Route("/login")
 @AnonymousAllowed
 public class login extends VerticalLayout implements BeforeEnterObserver {
-    @Autowired
-    private PasazerService pasazerService;
-    private int pasazerIdFound;
-    dataInput input = new dataInput();
-    private final LoginForm login = new LoginForm();
 
-    public login(){
+    private final LoginForm loginForm = new LoginForm();
+    @Autowired
+    private final UserDetailsService userDetailsService;
+    @Autowired
+    private DispecerServiceImpl dispecerService;
+    @Autowired
+    private PasazerServiceImpl pasazerService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+    public login(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+
         addClassName("login-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
 
-        add(new H1("JKLetenky Login"), login);
-
+        add(new H1("JKLetenky Login"), loginForm);
 
         Button btnZpet = new Button("Zpět na hlavní stránku", event -> {
             getUI().ifPresent(ui -> ui.navigate("/"));
         });
+        loginForm.setAction("login");
         add(btnZpet);
-        // Handle login form submission
-        login.addLoginListener(event -> {
-            String username = event.getUsername();
-            String password = event.getPassword();
 
-            if (loginDispecer(username,password)) {
-                // Dispecer
-                getUI().ifPresent(ui -> ui.navigate(admin.class)); // Navigate to your main application view
-            }
-            if (loginPasazer(username,password)) {
-                // Pasazer
-                int value = getPasazerIdFound(username,password);
-                getUI().ifPresent(ui -> ui.navigate(client.class, Integer.toString(value))); // Navigate to your main application view
-            } if(!loginPasazer(username,password) && !loginDispecer(username,password)) {
-                login.setError(true);
-                Notification.show("Neplatné jméno nebo heslo.");
-            }
+        loginForm.addLoginListener(e -> {
+            authenticate(e.getUsername(), e.getPassword());
         });
     }
-    private int getPasazerIdFound(String email, String password){
-        return pasazerService.findByEmailAndPassword(email,password);
+
+    private void authenticate(String username, String password) {
+        // Načtení uživatelských údajů na základě uživatelského jména
+        Pasazer pasazer = pasazerService.findByEmail(username);
+        Dispecer dispecer = dispecerService.findByEmail(username);
+
+        if (dispecer != null || pasazer != null) {
+            // Uživatel nalezen, zjistíme, jestli je to dispečer nebo pasažér
+            UserDetails userDetails;
+            String role;
+            if (dispecer != null) {
+                userDetails = dispecer;
+                role = "DISPECER";
+            } else {
+                userDetails = pasazer;
+                role = "PASAZER";
+            }
+            System.out.println(role);
+            boolean passwordMatch = bCryptPasswordEncoder.matches(password, userDetails.getPassword());
+            if (passwordMatch) {
+                // Přihlášení úspěšné
+                // Zde můžete přidat roli do userDetails, pokud je to potřeba
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority(role));
+                userDetails = new User(userDetails.getUsername(), userDetails.getPassword(), authorities);
+                if(dispecer!=null){
+                    getUI().ifPresent(ui -> ui.navigate("/admin"));
+                }else{
+                    getUI().ifPresent(ui -> ui.navigate("/client"));
+                }
+            } else {
+                // Nesprávné heslo
+                Notification.show("Neplatné přihlašovací údaje", 3000, Notification.Position.TOP_CENTER);
+
+            }
+        } else {
+            // Uživatel nenalezen
+            Notification.show("Neplatné přihlašovací údaje", 3000, Notification.Position.TOP_CENTER);
+
+        }
     }
 
     @Override
@@ -63,14 +110,7 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
                 .getQueryParameters()
                 .getParameters()
                 .containsKey("error")) {
-            login.setError(true);
+            loginForm.setError(true);
         }
     }
-    private boolean loginPasazer(String email, String password){
-        return input.isPasazer(email, password);
-    }
-    private boolean loginDispecer(String email, String password){
-        return input.isDispecer(email, password);
-    }
-
 }

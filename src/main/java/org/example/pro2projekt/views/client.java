@@ -22,6 +22,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.pro2projekt.objects.Letenka;
 import org.example.pro2projekt.objects.LetenkaHistorie;
@@ -34,6 +35,7 @@ import java.util.List;
 
 @PageTitle("client")
 @Route("/client/")
+@RolesAllowed("PASAZER")
 public class client extends VerticalLayout implements HasUrlParameter<String> {
     @Autowired
     private PasazerService pasazerService;

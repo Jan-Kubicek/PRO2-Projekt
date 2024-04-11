@@ -17,6 +17,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.objects.PasazerStats;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @PageTitle("adminClients")
 @Route("/admin/clients")
+@RolesAllowed("DISPECER")
 public class AdminClientsView extends VerticalLayout {
     @Autowired
     private PasazerService pasazerService;

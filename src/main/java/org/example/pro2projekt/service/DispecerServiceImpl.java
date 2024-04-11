@@ -9,6 +9,7 @@ import org.example.pro2projekt.repository.DispecerRepository;
 import org.example.pro2projekt.validation.validator;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +61,6 @@ public class DispecerServiceImpl implements DispecerService{
     @Override
     public Dispecer findByEmail(String email) {
         String query = "SELECT * FROM Dispecer WHERE Dispecer.Email = ?";
-        return jdbcTemplate.queryForObject(query,Dispecer.class,email);
+        return jdbcTemplate.queryForObject(query,new BeanPropertyRowMapper<>(Dispecer.class),email);
     }
 }

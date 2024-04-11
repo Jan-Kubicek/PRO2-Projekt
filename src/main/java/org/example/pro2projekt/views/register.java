@@ -14,12 +14,14 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.example.pro2projekt.controller.dataInput;
 import org.example.pro2projekt.validation.validator;
 
 @PageTitle("register")
 @Route("/register")
+@AnonymousAllowed
 public class register extends VerticalLayout {
     private validator validate = new validator();
     TextArea jmenoField, prijmeniField,emailField;
