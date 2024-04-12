@@ -20,7 +20,7 @@ import org.springframework.security.access.annotation.Secured;
 
 @PageTitle("admin")
 @Route("/admin")
-@RolesAllowed("DISPECER")
+@RolesAllowed("ROLE_DISPECER")
 public class admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
