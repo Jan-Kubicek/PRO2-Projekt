@@ -10,7 +10,7 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
-import org.example.pro2projekt.service.AuthService;
+//import org.example.pro2projekt.service.AuthService;
 import org.example.pro2projekt.service.DispecerServiceImpl;
 import org.example.pro2projekt.service.PasazerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,6 @@ import java.util.List;
 
 @PageTitle("login")
 @Route("/login")
-@AnonymousAllowed
 public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm loginForm = new LoginForm();
@@ -39,10 +38,8 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
     private PasazerServiceImpl pasazerService;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private UserDetails user;
-    private final AuthService authService;
 
-    public login(AuthService authService) {
-        this.authService = authService;
+    public login() {
         addClassName("login-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
