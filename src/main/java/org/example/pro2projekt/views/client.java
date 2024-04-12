@@ -33,9 +33,9 @@ import org.example.pro2projekt.objects.*;
 import org.example.pro2projekt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @PageTitle("client")
@@ -362,7 +362,26 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
                 dialog.add(rowLast);
                 dialog.open();
             });
-            return showDetails;
+
+            FlexLayout l = new FlexLayout();
+            l.add(showDetails);
+            Date current = new Date();
+            letID = letenka.getLetID();
+            for (int i = 0; i < letenkaHistories.size(); i++) {
+                LetenkaHistorie historie = letenkaHistories.get(i);
+                if(historie.getCas_Odletu().after(current) && letID == historie.getLetId()){
+                    Button del = new Button("Zrušení letenky");
+                    Icon icon = new Icon(VaadinIcon.CLOSE);
+                    del.setIcon(icon);
+                    del.addClickListener(event ->{
+                        letenkaService.deleteLetenka(letenka.getLetenkaID());
+                        UI.getCurrent().getPage().reload();
+                    });
+                    l.add(del);
+                    break;
+                }
+            }
+            return l;
         }));
         divHistorie.add(historieLetenek);
     }
@@ -409,6 +428,8 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         Div row6 = new Div(btnSubmit);
         form.add(row1,row2,row4,row5,row6);
         btnSubmit.setWidthFull();
+        Icon icon = new Icon(VaadinIcon.ARROW_CIRCLE_UP);
+        btnSubmit.setIcon(icon);
         form.add(btnSubmit);
         divRegistrace.add(form);
         List <LetenkaRegister> Selected = new ArrayList<>();
@@ -445,8 +466,8 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
 
                 FlexLayout rowLast = new FlexLayout();
                 Button back = new Button("Zpět", event2 -> dialog.close());
-                Icon icon = new Icon(VaadinIcon.CLOSE);
-                back.setIcon(icon);
+                Icon icon2 = new Icon(VaadinIcon.CLOSE);
+                back.setIcon(icon2);
                 Button set = new Button("Potvrd", event3 -> {
                     int jeSkupinova = 0;
                     if(pocetOsobField.getValue()>1){

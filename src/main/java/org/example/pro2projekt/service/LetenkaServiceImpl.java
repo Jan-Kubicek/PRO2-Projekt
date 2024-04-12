@@ -53,4 +53,10 @@ public class LetenkaServiceImpl implements LetenkaService {
         jdbcTemplate.query(query,new LetenkaMapper(),letId,pasazerId,jeSkupinova,pocet_Pasazeru,Trida);
     }
 
+    @Override
+    public void deleteLetenka(int letenkaID) {
+        String query = "DELETE FROM Letenka WHERE Letenka.LetenkaID = ?";
+        jdbcTemplate.query(query,new LetenkaMapper(),letenkaID);
+    }
+
 }
