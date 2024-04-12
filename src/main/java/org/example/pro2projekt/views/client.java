@@ -63,6 +63,7 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     public client() {
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         System.out.println(vaadinSession.getAttribute("loggedInUser"));
+        System.out.println(vaadinSession.getAttribute("userRole"));
         // Inicializace komponent v konstruktoru
         FlexLayout row1 = new FlexLayout();
         Div row1div1 = new Div();

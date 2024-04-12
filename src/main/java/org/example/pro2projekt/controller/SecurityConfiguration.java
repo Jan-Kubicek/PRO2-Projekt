@@ -47,22 +47,16 @@ public class SecurityConfiguration extends VaadinWebSecurity {
             auth.requestMatchers("/").permitAll();
             auth.requestMatchers("/admin/**").hasRole("DISPECER");
             auth.requestMatchers("/client/**").hasRole("PASAZER");
-        }).logout(logout -> logout
+        }).formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login").permitAll())
+                .logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Nastavení cesty pro odhlášení
                 .logoutSuccessUrl("/") // Cesta, kam se uživatel přesměruje po odhlášení
-                .invalidateHttpSession(true) // Invalidace HTTP relace po odhlášení
-                .deleteCookies("JSESSIONID"));
+                );
 
         super.configure(http);
         setLoginView(http, login.class);
     }
-    /*
-    Button logoutButton = new Button("Odhlásit se");
-    logoutButton.addClickListener(event -> {
-    // Po kliknutí na tlačítko se provede odhlášení
-    UI.getCurrent().getPage().executeJs("window.location.href = '/logout';");
-    });
-     */
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);

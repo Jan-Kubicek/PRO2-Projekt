@@ -1,6 +1,5 @@
 package org.example.pro2projekt.views;
 
-import ch.qos.logback.core.boolex.Matcher;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -9,13 +8,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import jakarta.annotation.PostConstruct;
-import org.example.pro2projekt.controller.dataInput;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
-import org.example.pro2projekt.service.DispecerService;
 import org.example.pro2projekt.service.DispecerServiceImpl;
-import org.example.pro2projekt.service.PasazerService;
 import org.example.pro2projekt.service.PasazerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,11 +20,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @PageTitle("login")
@@ -90,15 +83,11 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         Pasazer pasazer = null;
         try{
             pasazer =  pasazerService.findByEmail(username);
-        }catch (Exception e){
-            pasazer = null;
-        }
+        }catch (Exception ignored){}
         Dispecer dispecer = null;
         try{
             dispecer = dispecerService.findByEmail(username);
-        }catch (Exception e){
-            dispecer =null;
-        }
+        }catch (Exception ignored){}
         if (pasazer != null) {
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("PASAZER"));
         } else if (dispecer != null) {
@@ -119,10 +108,12 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_DISPECER"))) {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
+                vaadinSession.setAttribute("userRole","ROLE_DISPECER");
                 getUI().ifPresent(ui -> ui.navigate("/admin"));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
+                vaadinSession.setAttribute("userRole","ROLE_PASAZER");
                 getUI().ifPresent(ui -> ui.navigate("/client"));
             }
         }

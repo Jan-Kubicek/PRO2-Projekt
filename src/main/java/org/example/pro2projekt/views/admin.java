@@ -29,6 +29,7 @@ public class admin extends VerticalLayout {
         //componenty
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         System.out.println(vaadinSession.getAttribute("loggedInUser"));
+        System.out.println(vaadinSession.getAttribute("userRole"));
         //header
         FlexLayout row1 = new FlexLayout();
         Div row1div1 = new Div();
