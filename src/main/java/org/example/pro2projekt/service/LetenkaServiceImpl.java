@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,4 +35,16 @@ public class LetenkaServiceImpl implements LetenkaService {
         String query = "SELECT * FROM Letenka L WHERE L.PasazerID = ? AND L.Trida = ?";
         return jdbcTemplate.query(query, new LetenkaMapper(), id, trida);
     }
+
+    @Override
+    public List<String> getAllStates() {
+        String query = "SELECT DISTINCT L.Stat FROM Letiste L";
+        return jdbcTemplate.queryForList(query, String.class);
+    }
+    @Override
+    public List<String> getAllClasses() {
+        String query = "SELECT DISTINCT T.Nazev FROM Trida T";
+        return jdbcTemplate.queryForList(query,String.class);
+    }
+
 }

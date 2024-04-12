@@ -3,6 +3,8 @@ package org.example.pro2projekt.views;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -27,10 +29,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.persistence.criteria.CriteriaBuilder;
-import org.example.pro2projekt.objects.Letenka;
-import org.example.pro2projekt.objects.LetenkaHistorie;
-import org.example.pro2projekt.objects.Pasazer;
-import org.example.pro2projekt.objects.Zavazadlo;
+import org.example.pro2projekt.objects.*;
 import org.example.pro2projekt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,17 +47,25 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     private LetenkaService letenkaService;
     @Autowired
     private LetenkaHistorieService letenkaHistorieService;
+    @Autowired
+    private LetenkaRegisterService letenkaRegisterService;
     private Pasazer pasazer;
     private Grid<Letenka> historieLetenek = new Grid<>(Letenka.class, false);
-    private Grid<Letenka> registraceLetenek = new Grid<>(Letenka.class, false);
+    private Grid<LetenkaRegister> registraceLetenek = new Grid<>(LetenkaRegister.class, false);
     private Grid<Zavazadlo> zavazadloGrid = new Grid<>(Zavazadlo.class, false);
     private List<Letenka> historieList;
-    private List<Letenka> registerList;
+    private List<LetenkaRegister> registerList;
     private List<Zavazadlo> zavazadloList;
     private List<LetenkaHistorie> letenkaHistories;
+    private List<String> classesList, statesList;
+    DatePicker datumODletuFiled;
+
+    ComboBox<String> odletField, priletField;
+    ComboBox<Integer> pocetOsobField;
+    ComboBox<String> tridaFiled;
     private int pasazerId, letID = 0;
     LetenkaHistorie letenkaH;
-    Button btnLogout;
+    Button btnLogout,btnSubmit;
     TabSheet tabSheet;
     Div divZavazadla, divProfil, divHistorie, divRegistrace;
 
@@ -364,9 +371,44 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         } else {
             divRegistrace.removeAll();
         }
+        Div form = new Div();
         //here
-        Text text = new Text("Registrace ");
-        divRegistrace.add(text);
+        btnSubmit = new Button("Submit");
+        Text odlet = new Text("Stát odeltu: ");
+        odletField = new ComboBox<>();
+        odletField.setItems(statesList);
+        odletField.setPlaceholder("Vyberte stát odletu");
+
+        Text prilet = new Text("Stát příletu: ");
+        priletField = new ComboBox<>();
+        priletField.setItems(statesList);
+        priletField.setPlaceholder("Vyberte stát příletu");
+
+        Text datumOdletu = new Text("Datum odletu: ");
+        datumODletuFiled = new DatePicker();
+        datumODletuFiled.setWidthFull();
+
+        Text pocetOsob = new Text("Počet osob ");
+        pocetOsobField = new ComboBox<>();
+        pocetOsobField.setPlaceholder("Zadejte počet osob");
+        pocetOsobField.setItems(1,2,3,4,5,6,7);
+        pocetOsobField.setWidthFull();
+
+        Text trida = new Text("Třída: ");
+        tridaFiled = new ComboBox<>();
+        tridaFiled.setItems(classesList);
+        tridaFiled.setPlaceholder("Vyberte třídu");
+        tridaFiled.setWidthFull();
+
+        Div row1 = new Div(odlet, odletField,prilet,priletField);
+        Div row2 = new Div(datumOdletu,datumODletuFiled);
+        Div row4 = new Div(pocetOsob,pocetOsobField);
+        Div row5 = new Div(trida,tridaFiled);
+        Div row6 = new Div(btnSubmit);
+        form.add(row1,row2,row4,row5,row6);
+        btnSubmit.setWidthFull();
+        form.add(btnSubmit);
+        divRegistrace.add(form);
     }
 
     private void updateZavazadla() {
@@ -556,6 +598,9 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         historieList = letenkaService.findByPasazer(pasazerId);
         historieLetenek.setItems(historieList);
         letenkaHistories = letenkaHistorieService.findAll();
+        registerList = letenkaRegisterService.findAll();
+        statesList = letenkaService.getAllStates();
+        classesList = letenkaService.getAllClasses();
         if (pasazer == null) {
         } else {
             updateProfile(); // Aktualizace profilu
