@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -31,32 +32,37 @@ import javax.crypto.SecretKey;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends VaadinWebSecurity {
+
+    private static final String LOGIN_PROCESSING_URL = "/login";
+    private static final String LOGIN_FAILURE_URL = "/login?error";
+    private static final String LOGIN_URL = "/login";
+    private static final String LOGOUT_SUCCESS_URL = "/login";
+
     @Autowired
-    private DispecerService dispecerService;
-    @Autowired
-    private PasazerService pasazerService;
+    private UserDetailsService userDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*http.authorizeHttpRequests(auth -> {
+        http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/").permitAll();
             auth.requestMatchers("/admin/**").hasRole("DISPECER");
             auth.requestMatchers("/client/**").hasRole("PASAZER");
-        });*/
-        super.configure(http);
-        setLoginView(http, login.class);
-        /*
-        logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Nastavení cesty pro odhlášení
-                .logoutSuccessUrl("/") // Cesta, kam se uživatel přesměruje po odhlášení
-                .invalidateHttpSession(true) // Invalidace HTTP relace po odhlášení
-                .deleteCookies("JSESSIONID")).formLogin((form) -> form.loginPage("/login").loginProcessingUrl("/login").permitAll());
-          http.logout(logout -> logout
+        }).logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Nastavení cesty pro odhlášení
                 .logoutSuccessUrl("/") // Cesta, kam se uživatel přesměruje po odhlášení
                 .invalidateHttpSession(true) // Invalidace HTTP relace po odhlášení
                 .deleteCookies("JSESSIONID"));
-         */
+
+        super.configure(http);
+        setLoginView(http, login.class);
     }
+    /*
+    Button logoutButton = new Button("Odhlásit se");
+    logoutButton.addClickListener(event -> {
+    // Po kliknutí na tlačítko se provede odhlášení
+    UI.getCurrent().getPage().executeJs("window.location.href = '/logout';");
+    });
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);

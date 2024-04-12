@@ -1,5 +1,6 @@
 package org.example.pro2projekt.views;
 
+import ch.qos.logback.core.boolex.Matcher;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -8,9 +9,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.PostConstruct;
+import org.example.pro2projekt.controller.dataInput;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
+import org.example.pro2projekt.service.DispecerService;
 import org.example.pro2projekt.service.DispecerServiceImpl;
+import org.example.pro2projekt.service.PasazerService;
 import org.example.pro2projekt.service.PasazerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,8 +25,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,37 +88,41 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private UserDetails loadUserByUsername(String username) {
         Pasazer pasazer = null;
-        try{pasazer =  pasazerService.findByEmail(username);}catch (Exception ignored){}
+        try{
+            pasazer =  pasazerService.findByEmail(username);
+        }catch (Exception e){
+            pasazer = null;
+        }
         Dispecer dispecer = null;
-        try{dispecer = dispecerService.findByEmail(username);}catch (Exception ignored){}
+        try{
+            dispecer = dispecerService.findByEmail(username);
+        }catch (Exception e){
+            dispecer =null;
+        }
         if (pasazer != null) {
-            System.out.println("PASAZER1");
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("PASAZER"));
-        } else {
-            if (dispecer != null){
-                System.out.println("DISPECER1");
-                return new User(dispecer.getEmail(), dispecer.getPassword(), getAuthorities("DISPECER"));
-            }
+        } else if (dispecer != null) {
+            return new User(dispecer.getEmail(), dispecer.getPassword(), getAuthorities("DISPECER"));
         }
         return null;
     }
 
     private List<GrantedAuthority> getAuthorities(String role) {
-        return Collections.singletonList(new SimpleGrantedAuthority(role));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        return authorities;
     }
 
     private void navigateToNextPage() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("DISPECER"))) {
+            if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_DISPECER"))) {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
-                System.out.println("DISPECER2");
                 getUI().ifPresent(ui -> ui.navigate("/admin"));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
-                System.out.println("PASAZER2");
                 getUI().ifPresent(ui -> ui.navigate("/client"));
             }
         }

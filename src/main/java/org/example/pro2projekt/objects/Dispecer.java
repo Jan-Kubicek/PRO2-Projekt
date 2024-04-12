@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Immutable;
 import org.springframework.context.annotation.Role;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +31,6 @@ public class Dispecer implements UserDetails {
     private String Rodne_cislo;
     private String Telefoni_cislo;
     private String role = "ROLE_DISPECER";
-
     public Dispecer() {
     }
 

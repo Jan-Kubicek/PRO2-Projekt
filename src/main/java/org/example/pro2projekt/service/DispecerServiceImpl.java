@@ -4,7 +4,6 @@ import org.example.pro2projekt.mappaers.DispecerMapper;
 import org.example.pro2projekt.mappaers.LetadloMapper;
 import org.example.pro2projekt.mappaers.PasazerMapper;
 import org.example.pro2projekt.objects.Dispecer;
-import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.repository.DispecerRepository;
 import org.example.pro2projekt.validation.validator;
 import org.mindrot.jbcrypt.BCrypt;
