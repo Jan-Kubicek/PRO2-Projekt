@@ -13,6 +13,7 @@ public class LetenkaRegister {
     private String MestoPriletu;
     private String StatPriletu;
     private String NazevLPriletu;
+    private String Trida;
 
     public LetenkaRegister() {
     }
@@ -30,6 +31,13 @@ public class LetenkaRegister {
         NazevLPriletu = nazevLPriletu;
     }
 
+    public String getTrida() {
+        return Trida;
+    }
+
+    public void setTrida(String trida) {
+        Trida = trida;
+    }
     public int getLetId() {
         return LetId;
     }

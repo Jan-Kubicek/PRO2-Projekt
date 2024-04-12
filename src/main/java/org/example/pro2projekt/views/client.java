@@ -33,6 +33,9 @@ import org.example.pro2projekt.objects.*;
 import org.example.pro2projekt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @PageTitle("client")
@@ -59,7 +62,6 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     private List<LetenkaHistorie> letenkaHistories;
     private List<String> classesList, statesList;
     DatePicker datumODletuFiled;
-
     ComboBox<String> odletField, priletField;
     ComboBox<Integer> pocetOsobField;
     ComboBox<String> tridaFiled;
@@ -409,6 +411,51 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         btnSubmit.setWidthFull();
         form.add(btnSubmit);
         divRegistrace.add(form);
+        List <LetenkaRegister> Selected = new ArrayList<>();
+        btnSubmit.addClickListener( event->{
+            Selected.clear();
+            String statOdletu = odletField.getValue();
+            String statPriletu = priletField.getValue();
+            LocalDate datum = datumODletuFiled.getValue();
+            String tridaSelected = tridaFiled.getValue();
+
+            System.out.println("first "+tridaSelected);
+            for (LetenkaRegister letenkaRegister : registerList) {
+                System.out.println(letenkaRegister.getTrida());
+                if (letenkaRegister.getStatOdletu().equals(statOdletu) && letenkaRegister.getStatPriletu().equals(statPriletu)
+                        && letenkaRegister.getTrida().equals(tridaSelected)
+                ) {
+                    System.out.println("second "+letenkaRegister.getTrida());
+                    Selected.add(letenkaRegister);
+                }
+            }
+            System.out.println(Selected.size());
+            if(!Selected.isEmpty()){
+                registraceLetenek.setItems(Selected);
+            }
+        });
+        System.out.println(Selected.size());
+        registraceLetenek.addColumn(LetenkaRegister::getCas_Odletu).setHeader("Datum Odletu");
+        registraceLetenek.addColumn(LetenkaRegister::getMestoOdletu).setHeader("Město Odletu");
+        registraceLetenek.addColumn(LetenkaRegister::getMestoPriletu).setHeader("Město Příletu");
+        registraceLetenek.addColumn(new ComponentRenderer<>(letenkaRegister -> {
+            Button register = new Button("Registruj");
+            register.addClickListener( event -> {
+                Dialog dialog = new Dialog();
+                FlexLayout rowLast = new FlexLayout();
+                Button back = new Button("Zpět", event2 -> dialog.close());
+                Icon icon = new Icon(VaadinIcon.CLOSE);
+                back.setIcon(icon);
+                Button set = new Button("Potvrd",evet3 ->{
+                    //todo
+                    dialog.close();
+                });
+                rowLast.add(back,set);
+                dialog.add(rowLast);
+            });
+            return register;
+        })).setHeader("Registrace");
+        divRegistrace.add(registraceLetenek);
     }
 
     private void updateZavazadla() {

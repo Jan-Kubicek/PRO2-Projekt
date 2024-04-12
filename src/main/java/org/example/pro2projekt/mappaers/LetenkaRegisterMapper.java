@@ -22,6 +22,7 @@ public class LetenkaRegisterMapper implements RowMapper<LetenkaRegister> {
         letenkaRegister.setNazevLPriletu(rs.getString("NAZEVLPRILETU"));
         letenkaRegister.setStatOdletu(rs.getString("STATODLETU"));
         letenkaRegister.setStatPriletu(rs.getString("STATPRILETU"));
+        letenkaRegister.setTrida(rs.getString("TRIDA"));
         return letenkaRegister;
     }
 }
