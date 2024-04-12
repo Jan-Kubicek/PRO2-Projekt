@@ -1,5 +1,6 @@
 package org.example.pro2projekt.views;
 
+import ch.qos.logback.core.boolex.Matcher;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -8,10 +9,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.PostConstruct;
+import org.example.pro2projekt.controller.dataInput;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
-//import org.example.pro2projekt.service.AuthService;
+import org.example.pro2projekt.service.DispecerService;
 import org.example.pro2projekt.service.DispecerServiceImpl;
+import org.example.pro2projekt.service.PasazerService;
 import org.example.pro2projekt.service.PasazerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +25,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
@@ -29,6 +34,7 @@ import java.util.List;
 
 @PageTitle("login")
 @Route("/login")
+@AnonymousAllowed
 public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm loginForm = new LoginForm();
@@ -60,7 +66,6 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private void authenticate(String username, String password) {
         // Načtení uživatelských údajů na základě uživatelského jména
-
         UserDetails userDetails = loadUserByUsername(username);
         if (userDetails != null) {
             // Uživatel nalezen
@@ -70,7 +75,7 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 user = userDetails;
-                navigateToNextPage(userDetails);
+                navigateToNextPage();
             } else {
                 // Nesprávné heslo
                 Notification.show("Neplatné přihlašovací údaje", 3000, Notification.Position.TOP_CENTER);
@@ -85,18 +90,21 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         Pasazer pasazer = null;
         try{
             pasazer =  pasazerService.findByEmail(username);
-        }catch (Exception ignored){}
+        }catch (Exception e){
+            pasazer = null;
+        }
         Dispecer dispecer = null;
         try{
             dispecer = dispecerService.findByEmail(username);
-        }catch (Exception ignored){}
+        }catch (Exception e){
+            dispecer =null;
+        }
         if (pasazer != null) {
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("PASAZER"));
         } else if (dispecer != null) {
             return new User(dispecer.getEmail(), dispecer.getPassword(), getAuthorities("DISPECER"));
         }
         return null;
-
     }
 
     private List<GrantedAuthority> getAuthorities(String role) {
@@ -105,18 +113,16 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         return authorities;
     }
 
-    private void navigateToNextPage(UserDetails userDetails) {
+    private void navigateToNextPage() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_DISPECER"))) {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
-                vaadinSession.setAttribute("userRole","ROLE_DISPECER");
                 getUI().ifPresent(ui -> ui.navigate("/admin"));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
-                vaadinSession.setAttribute("userRole","ROLE_PASAZER");
                 getUI().ifPresent(ui -> ui.navigate("/client"));
             }
         }
@@ -124,10 +130,10 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if(!beforeEnterEvent.getLocation()
+        if(beforeEnterEvent.getLocation()
                 .getQueryParameters()
                 .getParameters()
-                .getOrDefault("error", Collections.emptyList()).isEmpty()) {
+                .containsKey("error")) {
             loginForm.setError(true);
         }
     }
