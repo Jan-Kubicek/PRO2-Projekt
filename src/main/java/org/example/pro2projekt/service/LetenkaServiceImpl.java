@@ -47,4 +47,10 @@ public class LetenkaServiceImpl implements LetenkaService {
         return jdbcTemplate.queryForList(query,String.class);
     }
 
+    @Override
+    public void createNewLetenka(int letId, int pasazerId, int jeSkupinova, int pocet_Pasazeru, String Trida) {
+        String query = "INSERT INTO Letenka (LetID,PasazerID, jeSkupinova, Pocet_pasazeru,Trida) VALUES (?,?,?,?,?)";
+        jdbcTemplate.query(query,new LetenkaMapper(),letId,pasazerId,jeSkupinova,pocet_Pasazeru,Trida);
+    }
+
 }

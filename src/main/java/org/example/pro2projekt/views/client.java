@@ -423,7 +423,7 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
             for (LetenkaRegister letenkaRegister : registerList) {
                 System.out.println(letenkaRegister.getTrida());
                 if (letenkaRegister.getStatOdletu().equals(statOdletu) && letenkaRegister.getStatPriletu().equals(statPriletu)
-                        && letenkaRegister.getTrida().equals(tridaSelected)
+                        && letenkaRegister.getTrida().equals(tridaSelected) && (datum.isBefore(letenkaRegister.getCas_Odletu().toLocalDate()))
                 ) {
                     System.out.println("second "+letenkaRegister.getTrida());
                     Selected.add(letenkaRegister);
@@ -440,18 +440,25 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         registraceLetenek.addColumn(LetenkaRegister::getMestoPriletu).setHeader("Město Příletu");
         registraceLetenek.addColumn(new ComponentRenderer<>(letenkaRegister -> {
             Button register = new Button("Registruj");
-            register.addClickListener( event -> {
+            register.addClickListener(event -> {
                 Dialog dialog = new Dialog();
+
                 FlexLayout rowLast = new FlexLayout();
                 Button back = new Button("Zpět", event2 -> dialog.close());
                 Icon icon = new Icon(VaadinIcon.CLOSE);
                 back.setIcon(icon);
-                Button set = new Button("Potvrd",evet3 ->{
-                    //todo
+                Button set = new Button("Potvrd", event3 -> {
+                    int jeSkupinova = 0;
+                    if(pocetOsobField.getValue()>1){
+                        jeSkupinova = 1;
+                    }
+                    letenkaService.createNewLetenka(letenkaRegister.getLetId(),pasazerId,jeSkupinova,pocetOsobField.getValue(),tridaFiled.getValue());
                     dialog.close();
+                    UI.getCurrent().getPage().reload();
                 });
-                rowLast.add(back,set);
+                rowLast.add(back, set);
                 dialog.add(rowLast);
+                dialog.open();
             });
             return register;
         })).setHeader("Registrace");

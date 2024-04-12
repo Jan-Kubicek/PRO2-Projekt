@@ -11,4 +11,5 @@ public interface LetenkaService {
     List<Letenka> findByPasazerTrida(int id, String trida);
     List<String> getAllStates();
     List<String> getAllClasses();
+    void createNewLetenka(int letId, int pasazerId, int jeSkupinova, int pocet_Pasazeru, String Trida);
 }
