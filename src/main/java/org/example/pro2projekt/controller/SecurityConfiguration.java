@@ -24,13 +24,13 @@ public class SecurityConfiguration extends VaadinWebSecurity {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/").permitAll();
-            auth.requestMatchers("/admin/**").hasRole("DISPECER");
-            auth.requestMatchers("/client/**").hasRole("PASAZER");
-        }).formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login").permitAll())
+                    auth.requestMatchers("/").permitAll();
+                    auth.requestMatchers("/admin/**").hasRole("DISPECER");
+                    auth.requestMatchers("/client/**").hasRole("PASAZER");
+                }).formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login").permitAll())
                 .logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Nastavení cesty pro odhlášení
-                .logoutSuccessUrl("/") // Cesta, kam se uživatel přesměruje po odhlášení
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Nastavení cesty pro odhlášení
+                        .logoutSuccessUrl("/") // Cesta, kam se uživatel přesměruje po odhlášení
                 );
 
         super.configure(http);
