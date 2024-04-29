@@ -20,8 +20,8 @@ import java.sql.SQLException;
 @PageTitle("index")
 @Route("/")
 @AnonymousAllowed
-public class index extends VerticalLayout implements BeforeEnterObserver {
-    Button btnLogin, btnRegister,btnSubmit;
+public class index extends VerticalLayout{
+    Button btnLogin, btnRegister,btnSubmit, btnClient, btnAdmin;
     DatePicker datumODletuFiled, datumPriletuField;
     String statOdletu = "";
     String statPriletu = "";
@@ -36,7 +36,8 @@ public class index extends VerticalLayout implements BeforeEnterObserver {
         btnLogin = new Button("Login");
         btnRegister = new Button("Register");
         btnSubmit = new Button("Submit");
-
+        btnClient = new Button("Hlavní stránka");
+        btnAdmin = new Button("Hlavní stránka");
         //header
         add(importZahlavi());
         //nav
@@ -72,6 +73,36 @@ public class index extends VerticalLayout implements BeforeEnterObserver {
         //
         btnLogin.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate("login")));
         btnRegister.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(register.class)));
+        btnAdmin.addClickListener(event ->  {
+            try {
+                VaadinSession vaadinSession = VaadinSession.getCurrent();
+                if (vaadinSession != null) {
+                    Object userRoleObj = vaadinSession.getAttribute("userRole");
+                    if (userRoleObj != null) {
+                        String userRole = userRoleObj.toString();
+                        if ("ROLE_DISPECER".equals(userRole)) {
+                            getUI().ifPresent(ui -> ui.navigate("/admin"));
+                        }
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        });
+        btnClient.addClickListener(event ->  {
+            try {
+                VaadinSession vaadinSession = VaadinSession.getCurrent();
+                if (vaadinSession != null) {
+                    Object userRoleObj = vaadinSession.getAttribute("userRole");
+                    if (userRoleObj != null) {
+                        String userRole = userRoleObj.toString();
+                        if ("ROLE_PASAZER".equals(userRole)) {
+                            getUI().ifPresent(ui -> ui.navigate(client.class,"9"));
+                        }
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        });
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
     }
@@ -196,7 +227,22 @@ public class index extends VerticalLayout implements BeforeEnterObserver {
         zahlaviBtn.setPadding(true);
         zahlaviBtn.setSpacing(true);
         zahlaviBtn.setDefaultVerticalComponentAlignment(Alignment.END);
-        zahlaviBtn.add(btnLogin, btnRegister);
+        VaadinSession vaadinSession = VaadinSession.getCurrent();
+        if(vaadinSession != null){
+            String s = (String) vaadinSession.getAttribute("userRole");
+            try{
+                if(s.equals("ROLE_DISPECER")){
+                    zahlaviBtn.add(btnLogin, btnRegister,btnAdmin);
+                }
+                if(s.equals("ROLE_PASAZER")){
+                    zahlaviBtn.add(btnLogin, btnRegister,btnClient);
+                }
+            }catch (Exception e){
+                zahlaviBtn.add(btnLogin, btnRegister);
+            }
+        } else{
+            zahlaviBtn.add(btnLogin, btnRegister);
+        }
 
         zahlaviDiv.add(zahlaviH1);
         zahlaviDiv.add(zahlaviBtn);
@@ -244,24 +290,5 @@ public class index extends VerticalLayout implements BeforeEnterObserver {
         main.add(row1,row2,row4,row5,row6);
 
         return main;
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        try {
-            VaadinSession vaadinSession = VaadinSession.getCurrent();
-            if (vaadinSession != null) {
-                Object userRoleObj = vaadinSession.getAttribute("userRole");
-                if (userRoleObj != null) {
-                    String userRole = userRoleObj.toString();
-                    if ("ROLE_DISPECER".equals(userRole)) {
-                        getUI().ifPresent(ui -> ui.navigate("/admin"));
-                    } if ("ROLE_PASAZER".equals(userRole)) {
-                        getUI().ifPresent(ui -> ui.navigate(client.class,"9"));
-                    }
-                }
-            }
-        } catch (Exception ignored) {
-        }
     }
 }
