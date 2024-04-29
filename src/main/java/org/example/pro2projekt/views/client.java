@@ -30,6 +30,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.pro2projekt.objects.*;
+import org.example.pro2projekt.security.SecurityService;
 import org.example.pro2projekt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,19 +40,15 @@ import java.util.Date;
 import java.util.List;
 
 @PageTitle("client")
-@Route("/client")
+@Route("/client/")
 @RolesAllowed("PASAZER")
 public class client extends VerticalLayout implements HasUrlParameter<String> {
-    @Autowired
-    private PasazerService pasazerService;
-    @Autowired
-    private ZavazadloService zavazadloService;
-    @Autowired
-    private LetenkaService letenkaService;
-    @Autowired
-    private LetenkaHistorieService letenkaHistorieService;
-    @Autowired
-    private LetenkaRegisterService letenkaRegisterService;
+    private final PasazerService pasazerService;
+    private final ZavazadloService zavazadloService;
+    private final LetenkaService letenkaService;
+    private final LetenkaHistorieService letenkaHistorieService;
+    private final LetenkaRegisterService letenkaRegisterService;
+    private SecurityService securityService;
     private Pasazer pasazer;
     private Grid<Letenka> historieLetenek = new Grid<>(Letenka.class, false);
     private Grid<LetenkaRegister> registraceLetenek = new Grid<>(LetenkaRegister.class, false);
@@ -70,8 +67,14 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     Button btnLogout,btnSubmit;
     TabSheet tabSheet;
     Div divZavazadla, divProfil, divHistorie, divRegistrace;
-
-    public client() {
+    @Autowired
+    public client( SecurityService securityService, PasazerService pasazerService , ZavazadloService zavazadloService, LetenkaService letenkaService, LetenkaHistorieService letenkaHistorieService,LetenkaRegisterService letenkaRegisterService) {
+        this.securityService = securityService;
+        this.pasazerService = pasazerService;
+        this.zavazadloService = zavazadloService;
+        this.letenkaService = letenkaService;
+        this.letenkaRegisterService = letenkaRegisterService;
+        this.letenkaHistorieService = letenkaHistorieService;
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         System.out.println(vaadinSession.getAttribute("loggedInUser"));
         System.out.println(vaadinSession.getAttribute("userRole"));
@@ -84,7 +87,12 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         Div row1div2 = new Div();
         Icon iconLogOut = new Icon(VaadinIcon.POWER_OFF);
         btnLogout = new Button("Odhlášení");
-        btnLogout.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(index.class)));
+        btnLogout.addClickListener(event -> getUI().ifPresent(ui -> {
+            VaadinSession vaadinSession1 = VaadinSession.getCurrent();
+            vaadinSession1.setAttribute("", null);
+            this.securityService.logout();
+            ui.getPage().executeJs("location.assign('/')");
+        }));
         btnLogout.setIcon(iconLogOut);
         row1div2.add(btnLogout);
         row1div2.setWidth("50%");

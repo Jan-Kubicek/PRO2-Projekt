@@ -18,8 +18,6 @@ import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-//import com.vaadin.flow.component.crud.Crud;
-
 
 @PageTitle("admin")
 @Route("/admin")
@@ -28,7 +26,8 @@ public class admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
     private SecurityService securityService;
-    public admin(@Autowired SecurityService securityService, AuthenticationContext authContext){
+    @Autowired
+    public admin(SecurityService securityService, AuthenticationContext authContext){
         this.securityService = securityService;
         //ragdol
         //componenty

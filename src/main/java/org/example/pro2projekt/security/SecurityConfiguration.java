@@ -32,12 +32,10 @@ public class SecurityConfiguration extends VaadinWebSecurity {
             auth.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("DISPECER");
             auth.requestMatchers(new AntPathRequestMatcher("/client/**")).hasRole("PASAZER");
         });
-
         super.configure(http);
 
-        // This is important to register your login view to the
-        // navigation access control mechanism:
         setLoginView(http, login.class);
+
     }
 
     @Override

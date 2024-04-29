@@ -255,9 +255,9 @@ public class index extends VerticalLayout implements BeforeEnterObserver {
                 if (userRoleObj != null) {
                     String userRole = userRoleObj.toString();
                     if ("ROLE_DISPECER".equals(userRole)) {
-                        getUI().ifPresent(ui -> ui.navigate(admin.class));
-                    } else if ("ROLE_PASAZER".equals(userRole)) {
-                        getUI().ifPresent(ui -> ui.navigate(client.class));
+                        getUI().ifPresent(ui -> ui.navigate("/admin"));
+                    } if ("ROLE_PASAZER".equals(userRole)) {
+                        getUI().ifPresent(ui -> ui.navigate(client.class,"9"));
                     }
                 }
             }
