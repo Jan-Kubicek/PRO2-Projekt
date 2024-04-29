@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 @PageTitle("client")
-@Route("/client/")
+@Route("/client")
 @RolesAllowed("PASAZER")
 public class client extends VerticalLayout implements HasUrlParameter<String> {
     @Autowired
