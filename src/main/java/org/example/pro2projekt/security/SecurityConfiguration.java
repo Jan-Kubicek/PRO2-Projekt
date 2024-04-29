@@ -48,18 +48,5 @@ public class SecurityConfiguration extends VaadinWebSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    @Bean
-    public UserDetailsManager userDetailsService() {
-        UserDetails user =
-                User.withUsername("user")
-                        .password("{noop}user")
-                        .roles("PASAZER")
-                        .build();
-        UserDetails admin =
-                User.withUsername("admin")
-                        .password("{noop}admin")
-                        .roles("DISPECER")
-                        .build();
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+
 }

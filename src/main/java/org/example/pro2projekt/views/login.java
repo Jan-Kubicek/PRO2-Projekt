@@ -43,9 +43,7 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
     private PasazerServiceImpl pasazerService;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private UserDetails user;
-    private AuthenticationContext authContext;
-    public login(AuthenticationContext authContext) {
-        this.authContext = authContext;
+    public login() {
         addClassName("login-view");
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -57,10 +55,10 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         add(btnZpet);
 
         loginForm.setAction("login");
-        add(new H1("JKLetenky Login"), loginForm);
         loginForm.addLoginListener(e -> {
             authenticate(e.getUsername(), e.getPassword());
         });
+        add(new H1("JKLetenky Login"), loginForm);
     }
 
     private void authenticate(String username, String password) {
@@ -112,10 +110,12 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_DISPECER"))) {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
+                vaadinSession.setAttribute("userRole","ROLE_DISPECER");
                 getUI().ifPresent(ui -> ui.navigate("/admin"));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
+                vaadinSession.setAttribute("userRole","ROLE_DISPECER");
                 getUI().ifPresent(ui -> ui.navigate("/client"));
             }
         }
@@ -123,11 +123,11 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if(beforeEnterEvent.getLocation()
+        /*if(beforeEnterEvent.getLocation()
                 .getQueryParameters()
                 .getParameters()
                 .containsKey("error")) {
             loginForm.setError(true);
-        }
+        }*/
     }
 }
