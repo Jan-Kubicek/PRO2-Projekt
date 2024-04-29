@@ -48,17 +48,16 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         this.authContext = authContext;
         addClassName("login-view");
         setSizeFull();
-        setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
-
-        add(new H1("JKLetenky Login"), loginForm);
+        setAlignItems(Alignment.CENTER);
 
         Button btnZpet = new Button("Zpět na hlavní stránku", event -> {
             getUI().ifPresent(ui -> ui.navigate("/"));
         });
-        loginForm.setAction("login");
         add(btnZpet);
 
+        loginForm.setAction("login");
+        add(new H1("JKLetenky Login"), loginForm);
         loginForm.addLoginListener(e -> {
             authenticate(e.getUsername(), e.getPassword());
         });

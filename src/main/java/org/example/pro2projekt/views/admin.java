@@ -15,23 +15,31 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.objects.Pasazer;
+import org.example.pro2projekt.security.SecurityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 //import com.vaadin.flow.component.crud.Crud;
 
 
 @PageTitle("admin")
 @Route("/admin")
-@RolesAllowed("ROLE_DISPECER")
+@RolesAllowed("DISPECER")
 public class admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
-    private final transient AuthenticationContext authContext;
-    public admin(AuthenticationContext authContext){
-        this.authContext = authContext;
+    private SecurityService securityService;
+    public admin(@Autowired SecurityService securityService, AuthenticationContext authContext){
+        this.securityService = securityService;
+
         //componenty
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         System.out.println(vaadinSession.getAttribute("loggedInUser"));
         System.out.println(vaadinSession.getAttribute("userRole"));
+        try {
+            authContext.getAuthenticatedUser(Pasazer.class).ifPresent(user -> System.out.println(user.getTyp_pasazeraID()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         //header
         FlexLayout row1 = new FlexLayout();
         Div row1div1 = new Div();
@@ -44,8 +52,8 @@ public class admin extends VerticalLayout {
         btnLogout.addClickListener(event -> getUI().ifPresent(ui -> {
             VaadinSession vaadinSession1 = VaadinSession.getCurrent();
             vaadinSession1.setAttribute("",null);
-            this.authContext.logout();
-            ui.getPage().executeJs("location.assign('logout')");
+            this.securityService.logout();
+            ui.getPage().executeJs("location.assign('/')");
         }));
         btnLogout.setIcon(iconLogOut);
         row1div2.add(btnLogout);
