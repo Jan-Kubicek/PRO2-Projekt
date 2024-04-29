@@ -37,7 +37,7 @@ public class Pasazer implements UserDetails {
     private String Rodne_cislo;
     @Column(name= "Telefoni_cislo")
     private String Telefoni_cislo;
-    private String role = "ROLE_PASAZER";
+    private String role ;
     public Pasazer(){
 
     }
@@ -54,6 +54,8 @@ public class Pasazer implements UserDetails {
         Telefoni_cislo = telefoni_cislo;
         if(typ_pasazeraID == 6){
             role =  "ROLE_DISPECER";
+        }else {
+            role = "ROLE_PASAZER";
         }
     }
 
@@ -68,6 +70,8 @@ public class Pasazer implements UserDetails {
         Telefoni_cislo = telefoni_cislo;
         if(typ_pasazeraID == 6){
             role =  "ROLE_DISPECER";
+        }else{
+            role = "ROLE_PASAZER";
         }
     }
 

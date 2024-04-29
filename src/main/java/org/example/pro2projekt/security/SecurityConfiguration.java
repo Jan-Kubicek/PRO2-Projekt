@@ -30,7 +30,7 @@ public class SecurityConfiguration extends VaadinWebSecurity {
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers(new AntPathRequestMatcher("/")).permitAll();
             auth.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("DISPECER");
-            auth.requestMatchers(new AntPathRequestMatcher("/client/**")).hasRole("PASAZER");
+            auth.requestMatchers(new AntPathRequestMatcher("/client//**")).hasRole("PASAZER");
         });
 
         super.configure(http);

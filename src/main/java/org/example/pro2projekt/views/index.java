@@ -1,9 +1,9 @@
 package org.example.pro2projekt.views;
 
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
-import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.example.pro2projekt.controller.dataInput;
 import com.vaadin.flow.component.button.Button;
@@ -13,18 +13,14 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 
-import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @PageTitle("index")
 @Route("/")
 @AnonymousAllowed
-public class index extends VerticalLayout {
+public class index extends VerticalLayout implements BeforeEnterObserver {
     Button btnLogin, btnRegister,btnSubmit;
     DatePicker datumODletuFiled, datumPriletuField;
     String statOdletu = "";
@@ -248,5 +244,24 @@ public class index extends VerticalLayout {
         main.add(row1,row2,row4,row5,row6);
 
         return main;
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        try {
+            VaadinSession vaadinSession = VaadinSession.getCurrent();
+            if (vaadinSession != null) {
+                Object userRoleObj = vaadinSession.getAttribute("userRole");
+                if (userRoleObj != null) {
+                    String userRole = userRoleObj.toString();
+                    if ("ROLE_DISPECER".equals(userRole)) {
+                        getUI().ifPresent(ui -> ui.navigate("/admin"));
+                    } else if ("ROLE_PASAZER".equals(userRole)) {
+                        getUI().ifPresent(ui -> ui.navigate("/client/"));
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
     }
 }

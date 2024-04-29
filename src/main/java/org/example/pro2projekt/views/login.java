@@ -55,10 +55,10 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         add(btnZpet);
 
         loginForm.setAction("login");
+        add(new H1("JKLetenky Login"), loginForm);
         loginForm.addLoginListener(e -> {
             authenticate(e.getUsername(), e.getPassword());
         });
-        add(new H1("JKLetenky Login"), loginForm);
     }
 
     private void authenticate(String username, String password) {
@@ -111,23 +111,21 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
                 vaadinSession.setAttribute("userRole","ROLE_DISPECER");
-                getUI().ifPresent(ui -> ui.navigate("/admin"));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
-                vaadinSession.setAttribute("userRole","ROLE_DISPECER");
-                getUI().ifPresent(ui -> ui.navigate("/client"));
+                vaadinSession.setAttribute("userRole","ROLE_PASAZER");
             }
         }
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        /*if(beforeEnterEvent.getLocation()
+        if(beforeEnterEvent.getLocation()
                 .getQueryParameters()
                 .getParameters()
                 .containsKey("error")) {
             loginForm.setError(true);
-        }*/
+        }
     }
 }
