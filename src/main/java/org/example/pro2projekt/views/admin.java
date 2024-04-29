@@ -12,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.objects.Pasazer;
 import org.springframework.security.access.annotation.Secured;
@@ -24,8 +25,9 @@ import org.springframework.security.access.annotation.Secured;
 public class admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
-
-    public admin(){
+    private final transient AuthenticationContext authContext;
+    public admin(AuthenticationContext authContext){
+        this.authContext = authContext;
         //componenty
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         System.out.println(vaadinSession.getAttribute("loggedInUser"));
@@ -42,6 +44,7 @@ public class admin extends VerticalLayout {
         btnLogout.addClickListener(event -> getUI().ifPresent(ui -> {
             VaadinSession vaadinSession1 = VaadinSession.getCurrent();
             vaadinSession1.setAttribute("",null);
+            this.authContext.logout();
             ui.getPage().executeJs("location.assign('logout')");
         }));
         btnLogout.setIcon(iconLogOut);

@@ -9,6 +9,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.PostConstruct;
 import org.example.pro2projekt.controller.dataInput;
 import org.example.pro2projekt.objects.Dispecer;
@@ -39,13 +40,12 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm loginForm = new LoginForm();
     @Autowired
-    private DispecerServiceImpl dispecerService;
-    @Autowired
     private PasazerServiceImpl pasazerService;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private UserDetails user;
-
-    public login() {
+    private AuthenticationContext authContext;
+    public login(AuthenticationContext authContext) {
+        this.authContext = authContext;
         addClassName("login-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
@@ -93,16 +93,10 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         }catch (Exception e){
             pasazer = null;
         }
-        Dispecer dispecer = null;
-        try{
-            dispecer = dispecerService.findByEmail(username);
-        }catch (Exception e){
-            dispecer =null;
-        }
-        if (pasazer != null) {
+        if(pasazer != null && (pasazer.getTyp_pasazeraID() != 6)){
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("PASAZER"));
-        } else if (dispecer != null) {
-            return new User(dispecer.getEmail(), dispecer.getPassword(), getAuthorities("DISPECER"));
+        } else if (pasazer != null && pasazer.getTyp_pasazeraID() == 6) {
+            return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("DISPECER"));
         }
         return null;
     }

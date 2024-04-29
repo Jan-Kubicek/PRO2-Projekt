@@ -52,6 +52,9 @@ public class Pasazer implements UserDetails {
         Prijmeni = prijmeni;
         Rodne_cislo = rodne_cislo;
         Telefoni_cislo = telefoni_cislo;
+        if(typ_pasazeraID == 6){
+            role =  "ROLE_DISPECER";
+        }
     }
 
     public Pasazer(int typ_pasazeraID, String email, String heslo, String jmeno, int pohlavi, String prijmeni, String rodne_cislo, String telefoni_cislo) {
@@ -63,6 +66,9 @@ public class Pasazer implements UserDetails {
         Prijmeni = prijmeni;
         Rodne_cislo = rodne_cislo;
         Telefoni_cislo = telefoni_cislo;
+        if(typ_pasazeraID == 6){
+            role =  "ROLE_DISPECER";
+        }
     }
 
     public String getRole() {
@@ -83,6 +89,11 @@ public class Pasazer implements UserDetails {
 
     public void setTyp_pasazeraID(int typ_pasazeraID) {
         Typ_pasazeraID = typ_pasazeraID;
+        if(typ_pasazeraID == 6){
+            role =  "ROLE_DISPECER";
+        }else{
+            role = "ROLE_PASAZER";
+        }
     }
 
     public Date getDatum_narozeni() {
@@ -151,7 +162,7 @@ public class Pasazer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_PASAZER"));
+        return Collections.singletonList(new SimpleGrantedAuthority(role));
     }
 
     @Override

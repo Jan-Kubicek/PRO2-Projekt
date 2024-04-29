@@ -40,7 +40,7 @@ import java.util.List;
 
 @PageTitle("client")
 @Route("/client/")
-@AnonymousAllowed
+@RolesAllowed("PASAZER")
 public class client extends VerticalLayout implements HasUrlParameter<String> {
     @Autowired
     private PasazerService pasazerService;
