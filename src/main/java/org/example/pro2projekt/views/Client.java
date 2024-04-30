@@ -36,7 +36,7 @@ import java.util.List;
 
 @PageTitle("client")
 @Route("/client")
-@RolesAllowed("DISPECER")
+@RolesAllowed("CLIENT")
 public class Client extends VerticalLayout implements HasUrlParameter<String> {
     private final PasazerService pasazerService;
     private final ZavazadloService zavazadloService;

@@ -10,6 +10,7 @@ public interface PasazerService {
     List<Pasazer> findByJmenoAndPrijmeni(String jmeno, String prijmeni);
 
     int findByEmailAndPassword(String email, String password);
+    int findIdByEmail(String email);
 
     Pasazer findByEmail(String email);
 

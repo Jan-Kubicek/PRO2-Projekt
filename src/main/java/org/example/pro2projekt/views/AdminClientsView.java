@@ -18,10 +18,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.security.RolesAllowed;
-import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.objects.PasazerStats;
-import org.example.pro2projekt.service.DispecerService;
 import org.example.pro2projekt.service.PasazerService;
 import org.example.pro2projekt.service.PasazerStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +33,13 @@ public class AdminClientsView extends VerticalLayout {
     @Autowired
     private PasazerService pasazerService;
     @Autowired
-    private DispecerService dispecerService;
-    @Autowired
     private PasazerStatsService pasazerStatsService;
     private Grid<PasazerStats> pasazerStatsGrid = new Grid<>(PasazerStats.class, false);
     private Grid<Pasazer> pasazerGrid = new Grid<>(Pasazer.class, false);
-    private Grid<Dispecer> dispecrGrid = new Grid<>(Dispecer.class, false);
+    private Grid<Pasazer> dispecrGrid = new Grid<>(Pasazer.class, false);
     private List<Pasazer> pasazerList;
     private List<PasazerStats> pasazerStatsList;
-    private List<Dispecer> dispecerList;
+    private List<Pasazer> dispecerList;
 
     public AdminClientsView() {
         FlexLayout row0 = new FlexLayout();
@@ -106,7 +102,7 @@ public class AdminClientsView extends VerticalLayout {
 
             FlexLayout rowLast = new FlexLayout();
             Button uploadButton = new Button("Vytvoř", event3 -> {
-                dispecerService.createDispecer(emailField.getValue(), hesloField.getValue(), jmenoField.getValue(), prijmeniField.getValue(), rodneCisloField.getValue(), telField.getValue());
+                pasazerService.createDispecer(emailField.getValue(), hesloField.getValue(), jmenoField.getValue(), prijmeniField.getValue(), rodneCisloField.getValue(), telField.getValue());
                 dialog.close();
                 UI.getCurrent().getPage().reload();
             });
@@ -236,14 +232,14 @@ public class AdminClientsView extends VerticalLayout {
                 .set("margin-bottom", "20px")
                 .set("box-shadow", "5px 5px 5px grey");
 
-        dispecrGrid.addColumn(Dispecer::getDispecerID).setHeader("ID");
-        dispecrGrid.addColumn(Dispecer::getJmeno).setHeader("Jmeno");
-        dispecrGrid.addColumn(Dispecer::getPrijmeni).setHeader("Prijmeni");
-        dispecrGrid.addColumn(Dispecer::getEmail).setHeader("Email");
-        dispecrGrid.addColumn(Dispecer::getRodne_cislo).setHeader("Rodné číslo");
-        dispecrGrid.addColumn(Dispecer::getTelefoni_cislo).setHeader("Telefonní číslo");
+        dispecrGrid.addColumn(Pasazer::getPasazerID).setHeader("ID");
+        dispecrGrid.addColumn(Pasazer::getJmeno).setHeader("Jmeno");
+        dispecrGrid.addColumn(Pasazer::getPrijmeni).setHeader("Prijmeni");
+        dispecrGrid.addColumn(Pasazer::getEmail).setHeader("Email");
+        dispecrGrid.addColumn(Pasazer::getRodne_cislo).setHeader("Rodné číslo");
+        dispecrGrid.addColumn(Pasazer::getTelefoni_cislo).setHeader("Telefonní číslo");
         dispecrGrid.addColumn(new ComponentRenderer<>(dispecer -> {
-            int dispecerId = dispecer.getDispecerID();
+            int dispecerId = dispecer.getPasazerID();
             Button editButton = new Button("Úprava");
             editButton.addClickListener(event -> {
                 Dialog dialog = new Dialog();
@@ -293,7 +289,7 @@ public class AdminClientsView extends VerticalLayout {
 
                 FlexLayout rowLast = new FlexLayout();
                 Button uploadButton = new Button("Uprav", event3 -> {
-                    dispecerService.findByIdAndUpdate(dispecer.getDispecerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
+                    pasazerService.findByIdAndUpdateDispecer(dispecer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
@@ -313,7 +309,7 @@ public class AdminClientsView extends VerticalLayout {
             editButton.setIcon(icon3);
             Button deleteButton = new Button("Smazání");
             deleteButton.addClickListener(event -> {
-                dispecerService.findByIdAndDelete(dispecerId);
+                pasazerService.findByIdAndDeleteDispecer(dispecerId);
                 UI.getCurrent().getPage().reload();
             });
             Icon icon4 = new Icon(VaadinIcon.CLOSE_CIRCLE);
@@ -352,7 +348,7 @@ public class AdminClientsView extends VerticalLayout {
         pasazerStatsGrid.setItems(pasazerStatsList);
         pasazerList = pasazerService.findAll();
         pasazerGrid.setItems(pasazerList);
-        dispecerList = dispecerService.findAll();
+        dispecerList = pasazerService.findAllDispecers();
         dispecrGrid.setItems(dispecerList);
     }
 }

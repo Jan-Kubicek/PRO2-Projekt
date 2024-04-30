@@ -23,7 +23,7 @@ public class PasazerServiceImpl implements PasazerService {
 
     @Override
     public List<Pasazer> findAll() {
-        String query = "SELECT * FROM Pasazer ";
+        String query = "SELECT * FROM Pasazer WHERE Pasazer.Typ_pasazeraID != 6 ";
         return jdbcTemplate.query(query, new PasazerMapper());
     }
 
@@ -35,6 +35,12 @@ public class PasazerServiceImpl implements PasazerService {
 
     @Override
     public int findByEmailAndPassword(String email, String password) {
+        String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
+        return jdbcTemplate.queryForObject(query, Integer.class, email);
+    }
+
+    @Override
+    public int findIdByEmail(String email) {
         String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
         return jdbcTemplate.queryForObject(query, Integer.class, email);
     }
@@ -104,7 +110,7 @@ public class PasazerServiceImpl implements PasazerService {
         boolean valid = validator.isValid(jmeno,prijmeni,email,rodneCislo,tel);
         if(valid){
             String hashedHeslo =  BCrypt.hashpw(heslo, BCrypt.gensalt());
-            String query = "INSERT INTO  Dispecer (Email, Heslo, Jmeno, Prijmeni, Rodne_cislo, Telefoni_cislo,Typ_pasazeraID) VALUES (?,?,?,?,?,?,6)";
+            String query = "INSERT INTO  Pasazer (Email, Heslo, Jmeno, Prijmeni, Rodne_cislo, Telefoni_cislo,Typ_pasazeraID) VALUES (?,?,?,?,?,?,6)";
             jdbcTemplate.query(query,new PasazerMapper(),email,hashedHeslo,jmeno,prijmeni,rodneCislo,tel);
         }
     }

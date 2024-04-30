@@ -5,6 +5,7 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.PostConstruct;
 import org.example.pro2projekt.controller.dataInput;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -13,6 +14,8 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import org.example.pro2projekt.service.PasazerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +24,8 @@ import java.sql.SQLException;
 @Route("/")
 @AnonymousAllowed
 public class Index extends VerticalLayout {
+    @Autowired
+    PasazerService pasazerService;
     Button btnLogin, btnRegister, btnSubmit, btnClient, btnAdmin;
     DatePicker datumODletuFiled, datumPriletuField;
     String statOdletu = "";
@@ -31,6 +36,7 @@ public class Index extends VerticalLayout {
     ComboBox<Integer> pocetOsobField;
     ComboBox<String> tridaFiled;
     Div lets;
+    int pasazerId;
 
     public Index() {
         //componenty
@@ -105,7 +111,7 @@ public class Index extends VerticalLayout {
                     if (userRoleObj != null) {
                         String userRole = userRoleObj.toString();
                         if ("ROLE_CLIENT".equals(userRole)) {
-                            getUI().ifPresent(ui -> ui.navigate(Client.class));
+                            getUI().ifPresent(ui -> ui.navigate(Client.class, String.valueOf(pasazerId)));
                         }
                     }
                 }
@@ -300,5 +306,18 @@ public class Index extends VerticalLayout {
         main.add(row1, row2, row4, row5, row6);
 
         return main;
+    }
+
+    @PostConstruct
+    private void init() {
+        try {
+            VaadinSession vaadinSession = VaadinSession.getCurrent();
+            String email = vaadinSession.getAttribute("name").toString();
+            System.out.print(email);
+            int id = pasazerService.findIdByEmail(email);
+            pasazerId = id;
+        } catch (Exception ignored) {
+
+        }
     }
 }
