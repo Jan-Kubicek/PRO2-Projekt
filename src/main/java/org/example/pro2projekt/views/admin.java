@@ -34,7 +34,7 @@ public class admin extends VerticalLayout {
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         System.out.println(vaadinSession.getAttribute("loggedInUser"));
         System.out.println(vaadinSession.getAttribute("userRole"));
-        if (securityService.getAuthenticatedUser() != null) {
+        if ((securityService.getAuthenticatedUser() != null) && (vaadinSession.getAttribute("userRole").equals("ROLE_DISPECER")) ) {
             //header
             FlexLayout row1 = new FlexLayout();
             Div row1div1 = new Div();
@@ -177,6 +177,16 @@ public class admin extends VerticalLayout {
             //
             setAlignItems(Alignment.CENTER);
             setJustifyContentMode(JustifyContentMode.CENTER);
+        }else{
+            H2 nadpis = new H2("Nemáte dostatečná oprávnění pro tuto stránku");
+            Button btnZpet = new Button("Zpět na hlavní stránku");
+            add(nadpis);
+            nadpis.getStyle().set("margin-left","25%");
+            add(btnZpet);
+            btnZpet.getStyle().set("margin-left","46%");
+            btnZpet.addClickListener(event ->{
+                getUI().ifPresent(ui -> ui.navigate(client.class));
+            });
         }
     }
 }

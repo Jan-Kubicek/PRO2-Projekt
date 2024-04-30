@@ -2,6 +2,7 @@ package org.example.pro2projekt.security;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
+import org.example.pro2projekt.views.index;
 import org.example.pro2projekt.views.login;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +33,10 @@ public class SecurityConfiguration extends VaadinWebSecurity {
             auth.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("DISPECER");
             auth.requestMatchers(new AntPathRequestMatcher("/client/**")).hasRole("DISPECER");
         });
+
         super.configure(http);
 
-        setLoginView(http, login.class);
-
+        setLoginView(http, login.class, "/");
     }
 
     @Override

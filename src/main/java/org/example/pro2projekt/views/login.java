@@ -111,10 +111,12 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
                 vaadinSession.setAttribute("userRole","ROLE_DISPECER");
+                getUI().ifPresent(ui -> ui.navigate(index.class));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
                 vaadinSession.setAttribute("userRole","ROLE_CLIENT");
+                getUI().ifPresent(ui -> ui.navigate(index.class));
             }
         }
     }
