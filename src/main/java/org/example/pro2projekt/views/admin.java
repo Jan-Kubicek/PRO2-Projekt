@@ -46,7 +46,8 @@ public class admin extends VerticalLayout {
             btnLogout = new Button("Odhlášení");
             btnLogout.addClickListener(event -> getUI().ifPresent(ui -> {
                 VaadinSession vaadinSession1 = VaadinSession.getCurrent();
-                vaadinSession1.setAttribute("", null);
+                vaadinSession1.setAttribute("loggedInUser", null);
+                vaadinSession1.setAttribute("userRole", null);
                 this.securityService.logout();
                 ui.getPage().executeJs("location.assign('/')");
             }));

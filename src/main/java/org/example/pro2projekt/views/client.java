@@ -40,8 +40,8 @@ import java.util.Date;
 import java.util.List;
 
 @PageTitle("client")
-@Route("/client/")
-@RolesAllowed("PASAZER")
+@Route("/client")
+@RolesAllowed("DISPECER")
 public class client extends VerticalLayout implements HasUrlParameter<String> {
     private final PasazerService pasazerService;
     private final ZavazadloService zavazadloService;
@@ -89,7 +89,8 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         btnLogout = new Button("Odhlášení");
         btnLogout.addClickListener(event -> getUI().ifPresent(ui -> {
             VaadinSession vaadinSession1 = VaadinSession.getCurrent();
-            vaadinSession1.setAttribute("", null);
+            vaadinSession1.setAttribute("loggedInUser", null);
+            vaadinSession1.setAttribute("userRole", null);
             this.securityService.logout();
             ui.getPage().executeJs("location.assign('/')");
         }));

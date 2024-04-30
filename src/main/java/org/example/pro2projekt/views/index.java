@@ -95,8 +95,8 @@ public class index extends VerticalLayout{
                     Object userRoleObj = vaadinSession.getAttribute("userRole");
                     if (userRoleObj != null) {
                         String userRole = userRoleObj.toString();
-                        if ("ROLE_PASAZER".equals(userRole)) {
-                            getUI().ifPresent(ui -> ui.navigate(client.class,"9"));
+                        if ("ROLE_CLIENT".equals(userRole)) {
+                            getUI().ifPresent(ui -> ui.navigate(client.class));
                         }
                     }
                 }
@@ -234,7 +234,7 @@ public class index extends VerticalLayout{
                 if(s.equals("ROLE_DISPECER")){
                     zahlaviBtn.add(btnLogin, btnRegister,btnAdmin);
                 }
-                if(s.equals("ROLE_PASAZER")){
+                if(s.equals("ROLE_CLIENT")){
                     zahlaviBtn.add(btnLogin, btnRegister,btnClient);
                 }
             }catch (Exception e){

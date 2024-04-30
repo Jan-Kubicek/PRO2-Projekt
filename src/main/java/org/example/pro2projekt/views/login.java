@@ -91,7 +91,7 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             pasazer = null;
         }
         if(pasazer != null && (pasazer.getTyp_pasazeraID() != 6)){
-            return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("PASAZER"));
+            return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("CLIENT"));
         } else if (pasazer != null && pasazer.getTyp_pasazeraID() == 6) {
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("DISPECER"));
         }
@@ -114,7 +114,7 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser",user);
-                vaadinSession.setAttribute("userRole","ROLE_PASAZER");
+                vaadinSession.setAttribute("userRole","ROLE_CLIENT");
             }
         }
     }
