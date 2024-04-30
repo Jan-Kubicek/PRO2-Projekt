@@ -1,6 +1,5 @@
 package org.example.pro2projekt.service;
 
-import jakarta.persistence.Access;
 import org.example.pro2projekt.mappaers.LetenkaMapper;
 import org.example.pro2projekt.objects.Letenka;
 import org.example.pro2projekt.repository.LetenkaRepository;
@@ -8,15 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class LetenkaServiceImpl implements LetenkaService {
+    private final LetenkaRepository letenkaRepository;
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private LetenkaRepository letenkaRepository;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public LetenkaServiceImpl(LetenkaRepository letenkaRepository, JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.letenkaRepository = letenkaRepository;
+    }
 
     @Override
     public List<Letenka> findByPasazer(int id) {

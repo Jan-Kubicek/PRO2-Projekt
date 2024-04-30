@@ -14,11 +14,15 @@ import java.util.List;
 
 @Service
 public class SpolecnostServiceImpl implements SpolecnostService {
-    @Autowired
-    private SpolecnostRepository spolecnostRepository;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final SpolecnostRepository spolecnostRepository;
+    private final JdbcTemplate jdbcTemplate;
     Validator validator = new Validator();
+
+    @Autowired
+    public SpolecnostServiceImpl(SpolecnostRepository spolecnostRepository, JdbcTemplate jdbcTemplate) {
+        this.spolecnostRepository = spolecnostRepository;
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Spolecnost> findAll() {

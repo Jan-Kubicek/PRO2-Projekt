@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PasazerStatsServiceImpl implements PasazerStatsService{
+public class PasazerStatsServiceImpl implements PasazerStatsService {
+    private final JdbcTemplate jdbcTemplate;
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public PasazerStatsServiceImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<PasazerStats> groupByTyp() {
@@ -22,6 +25,6 @@ public class PasazerStatsServiceImpl implements PasazerStatsService{
                 "FROM Pasazer P \n" +
                 "INNER JOIN Typ_pasazera TP ON P.typ_pasazeraid = TP.Typ_pasazeraID\n" +
                 "GROUP BY TP.Typ_pasazeraID";
-        return jdbcTemplate.query(query,new PasazerStatsMapper());
+        return jdbcTemplate.query(query, new PasazerStatsMapper());
     }
 }

@@ -13,11 +13,15 @@ import java.util.List;
 
 @Service
 public class LetisteServiceImpl implements LetisteService {
+    private final LetisteRepository letisteRepository;
+    private final JdbcTemplate jdbcTemplate;
+    final Validator validator =new Validator();
+
     @Autowired
-    private LetisteRepository letisteRepository;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    Validator validator = new Validator();
+    public LetisteServiceImpl(LetisteRepository letisteRepository, JdbcTemplate jdbcTemplate) {
+        this.letisteRepository = letisteRepository;
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Letiste> findAll() {

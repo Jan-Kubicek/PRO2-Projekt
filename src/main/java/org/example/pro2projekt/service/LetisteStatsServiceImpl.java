@@ -1,6 +1,5 @@
 package org.example.pro2projekt.service;
 
-import org.example.pro2projekt.mappaers.LetadloStatsMapper;
 import org.example.pro2projekt.mappaers.LetisteStatsMapper;
 import org.example.pro2projekt.objects.LetisteStats;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,12 @@ import java.util.List;
 
 @Service
 public class LetisteStatsServiceImpl implements LetisteStatsService {
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public LetisteStatsServiceImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<LetisteStats> groupByStates() {

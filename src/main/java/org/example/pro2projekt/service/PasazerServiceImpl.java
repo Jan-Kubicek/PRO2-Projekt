@@ -1,6 +1,5 @@
 package org.example.pro2projekt.service;
 
-import org.example.pro2projekt.mappaers.LetadloMapper;
 import org.example.pro2projekt.mappaers.PasazerMapper;
 import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.repository.PasazerRepository;
@@ -15,11 +14,15 @@ import java.util.List;
 
 @Service
 public class PasazerServiceImpl implements PasazerService {
+    private final PasazerRepository pasazerRepository;
+    private final JdbcTemplate jdbcTemplate;
+    private final Validator validator = new Validator();
+
     @Autowired
-    private PasazerRepository pasazerRepository;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    private Validator validator = new Validator();
+    public PasazerServiceImpl(PasazerRepository pasazerRepository, JdbcTemplate jdbcTemplate) {
+        this.pasazerRepository = pasazerRepository;
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Pasazer> findAll() {
@@ -36,13 +39,21 @@ public class PasazerServiceImpl implements PasazerService {
     @Override
     public int findByEmailAndPassword(String email, String password) {
         String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
-        return jdbcTemplate.queryForObject(query, Integer.class, email);
+        try{
+            return jdbcTemplate.queryForObject(query, Integer.class, email);
+        }catch (Exception e){
+            return  0;
+        }
     }
 
     @Override
     public int findIdByEmail(String email) {
         String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
-        return jdbcTemplate.queryForObject(query, Integer.class, email);
+        try{
+            return jdbcTemplate.queryForObject(query, Integer.class, email);
+        }catch (Exception e){
+            return 0;
+        }
     }
 
     @Override
@@ -107,11 +118,11 @@ public class PasazerServiceImpl implements PasazerService {
 
     @Override
     public void createDispecer(String email, String heslo, String jmeno, String prijmeni, String rodneCislo, String tel) {
-        boolean valid = validator.isValid(jmeno,prijmeni,email,rodneCislo,tel);
-        if(valid){
-            String hashedHeslo =  BCrypt.hashpw(heslo, BCrypt.gensalt());
+        boolean valid = validator.isValid(jmeno, prijmeni, email, rodneCislo, tel);
+        if (valid) {
+            String hashedHeslo = BCrypt.hashpw(heslo, BCrypt.gensalt());
             String query = "INSERT INTO  Pasazer (Email, Heslo, Jmeno, Prijmeni, Rodne_cislo, Telefoni_cislo,Typ_pasazeraID) VALUES (?,?,?,?,?,?,6)";
-            jdbcTemplate.query(query,new PasazerMapper(),email,hashedHeslo,jmeno,prijmeni,rodneCislo,tel);
+            jdbcTemplate.query(query, new PasazerMapper(), email, hashedHeslo, jmeno, prijmeni, rodneCislo, tel);
         }
     }
 

@@ -12,8 +12,13 @@ import java.util.List;
 
 @Service
 public class LetenkaHistorieServiceImpl implements LetenkaHistorieService {
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public LetenkaHistorieServiceImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Override
     public List<LetenkaHistorie> findByLetID(int letID) {
         String query = "SELECT L.LetID AS LetId, L.LetadloID AS LetadloID, L.Cas_odletu AS Cas_Odletu,\n" +
@@ -29,7 +34,7 @@ public class LetenkaHistorieServiceImpl implements LetenkaHistorieService {
                 "JOIN Trida t ON tldl.TridaID = t.TridaID\n" +
                 "WHERE (LSL.LetisteID != LSL1.LetisteID ) AND L.LetID = ? \n" +
                 "GROUP BY  L.LetID,  L.LetadloID,LT1.Mesto, +LT1.Stat,LT1.Nazev,LT2.Mesto,LT2.Stat,LT2.Nazev";
-        return jdbcTemplate.query(query,new LetenkaHistorieMapper(),letID);
+        return jdbcTemplate.query(query, new LetenkaHistorieMapper(), letID);
     }
 
     @Override
@@ -45,8 +50,8 @@ public class LetenkaHistorieServiceImpl implements LetenkaHistorieService {
                 "JOIN Letadlo ltdl ON L.LetadloID = ltdl.LetadloID\n" +
                 "JOIN tridaletadlo tldl ON ltdl.LetadloID = tldl.LetadloID\n" +
                 "JOIN Trida t ON tldl.TridaID = t.TridaID\n" +
-                "WHERE (LSL.LetisteID != LSL1.LetisteID )\n"+
+                "WHERE (LSL.LetisteID != LSL1.LetisteID )\n" +
                 "GROUP BY  L.LetID,  L.LetadloID,LT1.Mesto, +LT1.Stat,LT1.Nazev,LT2.Mesto,LT2.Stat,LT2.Nazev";
-        return jdbcTemplate.query(query,new LetenkaHistorieMapper());
+        return jdbcTemplate.query(query, new LetenkaHistorieMapper());
     }
 }

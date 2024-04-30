@@ -13,8 +13,12 @@ import java.util.List;
 
 @Service
 public class LetadloStatsServiceImpl implements LetadloStatsService {
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public LetadloStatsServiceImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<LetadloStats> groupByVyrobces() {
