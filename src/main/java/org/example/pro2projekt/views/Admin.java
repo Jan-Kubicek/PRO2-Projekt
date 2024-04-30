@@ -14,27 +14,26 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.security.RolesAllowed;
-import org.example.pro2projekt.objects.Pasazer;
 import org.example.pro2projekt.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 
 @PageTitle("admin")
 @Route("/admin")
 @RolesAllowed("DISPECER")
-public class admin extends VerticalLayout {
+public class Admin extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
     private SecurityService securityService;
+
     @Autowired
-    public admin(SecurityService securityService, AuthenticationContext authContext){
+    public Admin(SecurityService securityService, AuthenticationContext authContext) {
         this.securityService = securityService;
         //ragdol
         //componenty
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         System.out.println(vaadinSession.getAttribute("loggedInUser"));
         System.out.println(vaadinSession.getAttribute("userRole"));
-        if ((securityService.getAuthenticatedUser() != null) && (vaadinSession.getAttribute("userRole").equals("ROLE_DISPECER")) ) {
+        if ((securityService.getAuthenticatedUser() != null) && (vaadinSession.getAttribute("userRole").equals("ROLE_DISPECER"))) {
             //header
             FlexLayout row1 = new FlexLayout();
             Div row1div1 = new Div();
@@ -177,15 +176,15 @@ public class admin extends VerticalLayout {
             //
             setAlignItems(Alignment.CENTER);
             setJustifyContentMode(JustifyContentMode.CENTER);
-        }else{
+        } else {
             H2 nadpis = new H2("Nemáte dostatečná oprávnění pro tuto stránku");
             Button btnZpet = new Button("Zpět na hlavní stránku");
             add(nadpis);
-            nadpis.getStyle().set("margin-left","25%");
+            nadpis.getStyle().set("margin-left", "25%");
             add(btnZpet);
-            btnZpet.getStyle().set("margin-left","46%");
-            btnZpet.addClickListener(event ->{
-                getUI().ifPresent(ui -> ui.navigate(client.class));
+            btnZpet.getStyle().set("margin-left", "46%");
+            btnZpet.addClickListener(event -> {
+                getUI().ifPresent(ui -> ui.navigate(Client.class));
             });
         }
     }

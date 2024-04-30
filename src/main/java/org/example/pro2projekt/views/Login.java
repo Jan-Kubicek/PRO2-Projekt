@@ -1,6 +1,5 @@
 package org.example.pro2projekt.views;
 
-import ch.qos.logback.core.boolex.Matcher;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -9,14 +8,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.spring.security.AuthenticationContext;
-import jakarta.annotation.PostConstruct;
-import org.example.pro2projekt.controller.dataInput;
-import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.objects.Pasazer;
-import org.example.pro2projekt.service.DispecerService;
-import org.example.pro2projekt.service.DispecerServiceImpl;
-import org.example.pro2projekt.service.PasazerService;
 import org.example.pro2projekt.service.PasazerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,24 +18,23 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @PageTitle("login")
 @Route("/login")
 @AnonymousAllowed
-public class login extends VerticalLayout implements BeforeEnterObserver {
+public class Login extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm loginForm = new LoginForm();
     @Autowired
     private PasazerServiceImpl pasazerService;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private UserDetails user;
-    public login() {
+
+    public Login() {
         addClassName("login-view");
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -85,12 +76,12 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
 
     private UserDetails loadUserByUsername(String username) {
         Pasazer pasazer = null;
-        try{
-            pasazer =  pasazerService.findByEmail(username);
-        }catch (Exception e){
+        try {
+            pasazer = pasazerService.findByEmail(username);
+        } catch (Exception e) {
             pasazer = null;
         }
-        if(pasazer != null && (pasazer.getTyp_pasazeraID() != 6)){
+        if (pasazer != null && (pasazer.getTyp_pasazeraID() != 6)) {
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("CLIENT"));
         } else if (pasazer != null && pasazer.getTyp_pasazeraID() == 6) {
             return new User(pasazer.getEmail(), pasazer.getPassword(), getAuthorities("DISPECER"));
@@ -109,21 +100,21 @@ public class login extends VerticalLayout implements BeforeEnterObserver {
         if (authentication != null && authentication.isAuthenticated()) {
             if (authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_DISPECER"))) {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
-                vaadinSession.setAttribute("loggedInUser",user);
-                vaadinSession.setAttribute("userRole","ROLE_DISPECER");
-                getUI().ifPresent(ui -> ui.navigate(index.class));
+                vaadinSession.setAttribute("loggedInUser", user);
+                vaadinSession.setAttribute("userRole", "ROLE_DISPECER");
+                getUI().ifPresent(ui -> ui.navigate(Index.class));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
-                vaadinSession.setAttribute("loggedInUser",user);
-                vaadinSession.setAttribute("userRole","ROLE_CLIENT");
-                getUI().ifPresent(ui -> ui.navigate(index.class));
+                vaadinSession.setAttribute("loggedInUser", user);
+                vaadinSession.setAttribute("userRole", "ROLE_CLIENT");
+                getUI().ifPresent(ui -> ui.navigate(Index.class));
             }
         }
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if(beforeEnterEvent.getLocation()
+        if (beforeEnterEvent.getLocation()
                 .getQueryParameters()
                 .getParameters()
                 .containsKey("error")) {

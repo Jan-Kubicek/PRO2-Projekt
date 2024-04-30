@@ -1,4 +1,5 @@
 package org.example.pro2projekt.objects;
+
 import jakarta.persistence.*;
 import org.hibernate.annotations.Immutable;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,32 +18,33 @@ import java.util.List;
 public class Pasazer implements UserDetails {
     @Id
     @GeneratedValue
-    @Column(name ="PasazerID")
+    @Column(name = "PasazerID")
     private int PasazerID;
-    @Column(name= "Typ_pasazeraID")
+    @Column(name = "Typ_pasazeraID")
     private int Typ_pasazeraID;
-    @Column(name= "Datum_narozeni")
+    @Column(name = "Datum_narozeni")
     private Date Datum_narozeni;
-    @Column(name= "Email")
+    @Column(name = "Email")
     private String Email;
-    @Column(name= "Heslo")
+    @Column(name = "Heslo")
     private String Heslo;
-    @Column(name= "Jmeno")
+    @Column(name = "Jmeno")
     private String Jmeno;
-    @Column(name= "Pohlavi")
+    @Column(name = "Pohlavi")
     private int Pohlavi;
-    @Column(name= "Prijmeni")
+    @Column(name = "Prijmeni")
     private String Prijmeni;
-    @Column(name= "Rodne_cislo")
+    @Column(name = "Rodne_cislo")
     private String Rodne_cislo;
-    @Column(name= "Telefoni_cislo")
+    @Column(name = "Telefoni_cislo")
     private String Telefoni_cislo;
     private String role = "ROLE_CLIENT";
-    public Pasazer(){
+
+    public Pasazer() {
 
     }
 
-    public Pasazer( int typ_pasazeraID, Date datum_narozeni, String email, String heslo, String jmeno, int pohlavi, String prijmeni, String rodne_cislo, String telefoni_cislo) {
+    public Pasazer(int typ_pasazeraID, Date datum_narozeni, String email, String heslo, String jmeno, int pohlavi, String prijmeni, String rodne_cislo, String telefoni_cislo) {
         Typ_pasazeraID = typ_pasazeraID;
         Datum_narozeni = datum_narozeni;
         Email = email;
@@ -52,9 +54,9 @@ public class Pasazer implements UserDetails {
         Prijmeni = prijmeni;
         Rodne_cislo = rodne_cislo;
         Telefoni_cislo = telefoni_cislo;
-        if(typ_pasazeraID == 6){
-            role =  "ROLE_DISPECER";
-        }else {
+        if (typ_pasazeraID == 6) {
+            role = "ROLE_DISPECER";
+        } else {
             role = "ROLE_CLIENT";
         }
     }
@@ -68,9 +70,9 @@ public class Pasazer implements UserDetails {
         Prijmeni = prijmeni;
         Rodne_cislo = rodne_cislo;
         Telefoni_cislo = telefoni_cislo;
-        if(typ_pasazeraID == 6){
-            role =  "ROLE_DISPECER";
-        }else{
+        if (typ_pasazeraID == 6) {
+            role = "ROLE_DISPECER";
+        } else {
             role = "ROLE_CLIENT";
         }
     }
@@ -93,9 +95,9 @@ public class Pasazer implements UserDetails {
 
     public void setTyp_pasazeraID(int typ_pasazeraID) {
         Typ_pasazeraID = typ_pasazeraID;
-        if(typ_pasazeraID == 6){
-            role =  "ROLE_DISPECER";
-        }else{
+        if (typ_pasazeraID == 6) {
+            role = "ROLE_DISPECER";
+        } else {
             role = "ROLE_CLIENT";
         }
     }
@@ -199,6 +201,7 @@ public class Pasazer implements UserDetails {
         return true;
     }
 
-    public String getRoles(){ return role;
+    public String getRoles() {
+        return role;
     }
 }

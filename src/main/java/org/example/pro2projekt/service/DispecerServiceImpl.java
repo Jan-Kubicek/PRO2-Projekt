@@ -2,10 +2,9 @@ package org.example.pro2projekt.service;
 
 import org.example.pro2projekt.mappaers.DispecerMapper;
 import org.example.pro2projekt.mappaers.LetadloMapper;
-import org.example.pro2projekt.mappaers.PasazerMapper;
 import org.example.pro2projekt.objects.Dispecer;
 import org.example.pro2projekt.repository.DispecerRepository;
-import org.example.pro2projekt.validation.validator;
+import org.example.pro2projekt.validation.Validator;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -19,7 +18,7 @@ public class DispecerServiceImpl implements DispecerService{
     private DispecerRepository dispecerRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private validator validator = new validator();
+    private Validator validator = new Validator();
     @Override
     public List<Dispecer> findAll() {
         String query = "SELECT * FROM Dispecer";

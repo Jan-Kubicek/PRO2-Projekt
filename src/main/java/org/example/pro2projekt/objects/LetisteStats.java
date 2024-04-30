@@ -5,7 +5,8 @@ public class LetisteStats {
     private int Pocet;
     private int Kapacita;
     private int AllLetiste;
-    public LetisteStats(){
+
+    public LetisteStats() {
 
     }
 

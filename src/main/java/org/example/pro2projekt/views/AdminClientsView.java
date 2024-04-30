@@ -38,17 +38,20 @@ public class AdminClientsView extends VerticalLayout {
     private DispecerService dispecerService;
     @Autowired
     private PasazerStatsService pasazerStatsService;
-    private Grid<PasazerStats> pasazerStatsGrid = new Grid<>(PasazerStats.class,false);
-    private Grid<Pasazer> pasazerGrid = new Grid<>(Pasazer.class,false);
-    private Grid<Dispecer> dispecrGrid = new Grid<>(Dispecer.class,false);
+    private Grid<PasazerStats> pasazerStatsGrid = new Grid<>(PasazerStats.class, false);
+    private Grid<Pasazer> pasazerGrid = new Grid<>(Pasazer.class, false);
+    private Grid<Dispecer> dispecrGrid = new Grid<>(Dispecer.class, false);
     private List<Pasazer> pasazerList;
     private List<PasazerStats> pasazerStatsList;
     private List<Dispecer> dispecerList;
-    public AdminClientsView(){
+
+    public AdminClientsView() {
         FlexLayout row0 = new FlexLayout();
         Div div = new Div();
         Button btnBack = new Button();
-        btnBack.addClickListener(event ->{ getUI().ifPresent(ui -> ui.navigate(admin.class));});
+        btnBack.addClickListener(event -> {
+            getUI().ifPresent(ui -> ui.navigate(Admin.class));
+        });
         btnBack.setText("Zpět na hlavní stránku");
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
         btnBack.setIcon(icon1);
@@ -62,14 +65,14 @@ public class AdminClientsView extends VerticalLayout {
             Div row1div1 = new Div();
             Text jmeno = new Text("Jméno");
             TextArea jmenoField = new TextArea();
-            row1div1.add(jmeno,jmenoField);
-            row1div1.getStyle().set("padding-left","10%");
+            row1div1.add(jmeno, jmenoField);
+            row1div1.getStyle().set("padding-left", "10%");
             Div row1div2 = new Div();
             Text prijmeni = new Text("Přijmení");
             TextArea prijmeniField = new TextArea();
-            row1div2.add(prijmeni,prijmeniField);
-            row1div2.getStyle().set("padding-left","10%");
-            row1.add(row1div1,row1div2);
+            row1div2.add(prijmeni, prijmeniField);
+            row1div2.getStyle().set("padding-left", "10%");
+            row1.add(row1div1, row1div2);
             dialog.add(row1);
 
 
@@ -77,55 +80,55 @@ public class AdminClientsView extends VerticalLayout {
             Div row2div1 = new Div();
             Text email = new Text("Email");
             TextArea emailField = new TextArea();
-            row2div1.add(email,emailField);
-            row2div1.getStyle().set("padding-left","10%");
+            row2div1.add(email, emailField);
+            row2div1.getStyle().set("padding-left", "10%");
             Div row2div2 = new Div();
             Text rodneCislo = new Text("Rodné číslo");
             TextArea rodneCisloField = new TextArea();
-            row2div2.add(rodneCislo,rodneCisloField);
-            row2div2.getStyle().set("padding-left","10%");
-            row2.add(row2div1,row2div2);
+            row2div2.add(rodneCislo, rodneCisloField);
+            row2div2.getStyle().set("padding-left", "10%");
+            row2.add(row2div1, row2div2);
             dialog.add(row2);
 
             FlexLayout row3 = new FlexLayout();
             Div last = new Div();
             Text tel = new Text("Telefoní číslo");
             TextArea telField = new TextArea();
-            last.add(tel,telField);
-            last.getStyle().set("padding-left","10%");
+            last.add(tel, telField);
+            last.getStyle().set("padding-left", "10%");
             Div lastt = new Div();
             Text hes = new Text("Heslo");
             TextArea hesloField = new TextArea();
-            lastt.add(hes,hesloField);
-            lastt.getStyle().set("padding-left","10%");
-            row3.add(last,lastt);
+            lastt.add(hes, hesloField);
+            lastt.getStyle().set("padding-left", "10%");
+            row3.add(last, lastt);
             dialog.add(row3);
 
             FlexLayout rowLast = new FlexLayout();
-            Button uploadButton = new Button("Vytvoř", event3 ->{
-                dispecerService.createDispecer(emailField.getValue(),hesloField.getValue(),jmenoField.getValue(),prijmeniField.getValue(),rodneCisloField.getValue(),telField.getValue());
+            Button uploadButton = new Button("Vytvoř", event3 -> {
+                dispecerService.createDispecer(emailField.getValue(), hesloField.getValue(), jmenoField.getValue(), prijmeniField.getValue(), rodneCisloField.getValue(), telField.getValue());
                 dialog.close();
                 UI.getCurrent().getPage().reload();
             });
-            uploadButton.getStyle().set("margin-left","40%");
+            uploadButton.getStyle().set("margin-left", "40%");
             Icon icon10 = new Icon(VaadinIcon.CHECK);
             uploadButton.setIcon(icon10);
 
             Button closeButton = new Button("Zavřít", event2 -> dialog.close());
-            closeButton.getStyle().set("margin-left","10%");
+            closeButton.getStyle().set("margin-left", "10%");
             Icon icon11 = new Icon(VaadinIcon.CLOSE);
             closeButton.setIcon(icon11);
-            rowLast.add(closeButton,uploadButton);
+            rowLast.add(closeButton, uploadButton);
             dialog.add(rowLast);
             dialog.open();
         });
         btnNew.setText("Nový účet dispečera");
-        btnNew.getStyle().set("margin-left","40%");
+        btnNew.getStyle().set("margin-left", "40%");
         Icon icon2 = new Icon(VaadinIcon.PLUS_CIRCLE);
         btnNew.setIcon(icon2);
         div2.add(btnNew);
-        div2.getStyle().set("margin-left","40%");
-        row0.add(div,div2);
+        div2.getStyle().set("margin-left", "40%");
+        row0.add(div, div2);
         add(row0);
 
 
@@ -142,19 +145,19 @@ public class AdminClientsView extends VerticalLayout {
                 Dialog dialog = new Dialog();
 
                 FlexLayout row1 = new FlexLayout();
-                    Div row1div1 = new Div();
-                        Text jmeno = new Text("Jméno");
-                        TextArea jmenoField = new TextArea();
-                        jmenoField.setValue(pasazer.getJmeno());
-                    row1div1.add(jmeno,jmenoField);
-                    row1div1.getStyle().set("padding-left","10%");
-                    Div row1div2 = new Div();
-                        Text prijmeni = new Text("Přijmení");
-                        TextArea prijmeniField = new TextArea();
-                        prijmeniField.setValue(pasazer.getPrijmeni());
-                    row1div2.add(prijmeni,prijmeniField);
-                    row1div2.getStyle().set("padding-left","10%");
-                row1.add(row1div1,row1div2);
+                Div row1div1 = new Div();
+                Text jmeno = new Text("Jméno");
+                TextArea jmenoField = new TextArea();
+                jmenoField.setValue(pasazer.getJmeno());
+                row1div1.add(jmeno, jmenoField);
+                row1div1.getStyle().set("padding-left", "10%");
+                Div row1div2 = new Div();
+                Text prijmeni = new Text("Přijmení");
+                TextArea prijmeniField = new TextArea();
+                prijmeniField.setValue(pasazer.getPrijmeni());
+                row1div2.add(prijmeni, prijmeniField);
+                row1div2.getStyle().set("padding-left", "10%");
+                row1.add(row1div1, row1div2);
                 dialog.add(row1);
 
 
@@ -163,15 +166,15 @@ public class AdminClientsView extends VerticalLayout {
                 Text email = new Text("Email");
                 TextArea emailField = new TextArea();
                 emailField.setValue(pasazer.getEmail());
-                row2div1.add(email,emailField);
-                row2div1.getStyle().set("padding-left","10%");
+                row2div1.add(email, emailField);
+                row2div1.getStyle().set("padding-left", "10%");
                 Div row2div2 = new Div();
                 Text rodneCislo = new Text("Rodné číslo");
                 TextArea rodneCisloField = new TextArea();
                 rodneCisloField.setValue(pasazer.getRodne_cislo());
-                row2div2.add(rodneCislo,rodneCisloField);
-                row2div2.getStyle().set("padding-left","10%");
-                row2.add(row2div1,row2div2);
+                row2div2.add(rodneCislo, rodneCisloField);
+                row2div2.getStyle().set("padding-left", "10%");
+                row2.add(row2div1, row2div2);
                 dialog.add(row2);
 
                 FlexLayout row3 = new FlexLayout();
@@ -179,25 +182,25 @@ public class AdminClientsView extends VerticalLayout {
                 Text tel = new Text("Telefoní číslo");
                 TextArea telField = new TextArea();
                 telField.setValue(pasazer.getTelefoni_cislo());
-                last.add(tel,telField);
-                last.getStyle().set("padding-left","25%");
+                last.add(tel, telField);
+                last.getStyle().set("padding-left", "25%");
                 row3.add(last);
                 dialog.add(row3);
 
                 FlexLayout rowLast = new FlexLayout();
-                Button uploadButton = new Button("Uprav", event3 ->{
-                    pasazerService.findByIdAndUpdate(pasazer.getPasazerID(),jmenoField.getValue(),prijmeniField.getValue(),emailField.getValue(),rodneCisloField.getValue(),telField.getValue());
+                Button uploadButton = new Button("Uprav", event3 -> {
+                    pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
                 Icon icon10 = new Icon(VaadinIcon.CHECK);
                 uploadButton.setIcon(icon10);
-                uploadButton.getStyle().set("margin-left","40%");
+                uploadButton.getStyle().set("margin-left", "40%");
                 Button closeButton = new Button("Zavřít", event2 -> dialog.close());
-                closeButton.getStyle().set("margin-left","10%");
+                closeButton.getStyle().set("margin-left", "10%");
                 Icon icon11 = new Icon(VaadinIcon.CLOSE);
                 closeButton.setIcon(icon11);
-                rowLast.add(closeButton,uploadButton);
+                rowLast.add(closeButton, uploadButton);
                 dialog.add(rowLast);
                 dialog.open();
             });
@@ -217,21 +220,21 @@ public class AdminClientsView extends VerticalLayout {
         pasazerGrid.getStyle().set("border", "2px solid lightblue")
                 .set("border-radius", "10px")
                 .set("padding", "10px")
-                .set("margin-bottom","20px")
-                .set("box-shadow","5px 5px 5px grey");
+                .set("margin-bottom", "20px")
+                .set("box-shadow", "5px 5px 5px grey");
 
         pasazerStatsGrid.addColumn(PasazerStats::getTyp).setHeader("Typ Pasažéra");
         pasazerStatsGrid.addColumn(PasazerStats::getPocet).setHeader("Počet");
         pasazerStatsGrid.addColumn(PasazerStats::getPopis).setHeader("Popis");
-        pasazerStatsGrid.addColumn( new ComponentRenderer<>(pasazerStats -> {
+        pasazerStatsGrid.addColumn(new ComponentRenderer<>(pasazerStats -> {
             double percent = ((double) pasazerStats.getPocet() / pasazerStats.getAllPasazers()) * 100;
             return new Span(String.format("%.2f %%", percent));
         })).setHeader("% z celku");
         pasazerStatsGrid.getStyle().set("border", "2px solid lightblue")
                 .set("border-radius", "10px")
                 .set("padding", "10px")
-                .set("margin-bottom","20px")
-                .set("box-shadow","5px 5px 5px grey");
+                .set("margin-bottom", "20px")
+                .set("box-shadow", "5px 5px 5px grey");
 
         dispecrGrid.addColumn(Dispecer::getDispecerID).setHeader("ID");
         dispecrGrid.addColumn(Dispecer::getJmeno).setHeader("Jmeno");
@@ -250,15 +253,15 @@ public class AdminClientsView extends VerticalLayout {
                 Text jmeno = new Text("Jméno");
                 TextArea jmenoField = new TextArea();
                 jmenoField.setValue(dispecer.getJmeno());
-                row1div1.add(jmeno,jmenoField);
-                row1div1.getStyle().set("padding-left","10%");
+                row1div1.add(jmeno, jmenoField);
+                row1div1.getStyle().set("padding-left", "10%");
                 Div row1div2 = new Div();
                 Text prijmeni = new Text("Přijmení");
                 TextArea prijmeniField = new TextArea();
                 prijmeniField.setValue(dispecer.getPrijmeni());
-                row1div2.add(prijmeni,prijmeniField);
-                row1div2.getStyle().set("padding-left","10%");
-                row1.add(row1div1,row1div2);
+                row1div2.add(prijmeni, prijmeniField);
+                row1div2.getStyle().set("padding-left", "10%");
+                row1.add(row1div1, row1div2);
                 dialog.add(row1);
 
 
@@ -267,15 +270,15 @@ public class AdminClientsView extends VerticalLayout {
                 Text email = new Text("Email");
                 TextArea emailField = new TextArea();
                 emailField.setValue(dispecer.getEmail());
-                row2div1.add(email,emailField);
-                row2div1.getStyle().set("padding-left","10%");
+                row2div1.add(email, emailField);
+                row2div1.getStyle().set("padding-left", "10%");
                 Div row2div2 = new Div();
                 Text rodneCislo = new Text("Rodné číslo");
                 TextArea rodneCisloField = new TextArea();
                 rodneCisloField.setValue(dispecer.getRodne_cislo());
-                row2div2.add(rodneCislo,rodneCisloField);
-                row2div2.getStyle().set("padding-left","10%");
-                row2.add(row2div1,row2div2);
+                row2div2.add(rodneCislo, rodneCisloField);
+                row2div2.getStyle().set("padding-left", "10%");
+                row2.add(row2div1, row2div2);
                 dialog.add(row2);
 
                 FlexLayout row3 = new FlexLayout();
@@ -283,26 +286,26 @@ public class AdminClientsView extends VerticalLayout {
                 Text tel = new Text("Telefoní číslo");
                 TextArea telField = new TextArea();
                 telField.setValue(dispecer.getTelefoni_cislo());
-                last.add(tel,telField);
-                last.getStyle().set("padding-left","25%");
+                last.add(tel, telField);
+                last.getStyle().set("padding-left", "25%");
                 row3.add(last);
                 dialog.add(row3);
 
                 FlexLayout rowLast = new FlexLayout();
-                Button uploadButton = new Button("Uprav", event3 ->{
-                    dispecerService.findByIdAndUpdate(dispecer.getDispecerID(),jmenoField.getValue(),prijmeniField.getValue(),emailField.getValue(),rodneCisloField.getValue(),telField.getValue());
+                Button uploadButton = new Button("Uprav", event3 -> {
+                    dispecerService.findByIdAndUpdate(dispecer.getDispecerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
                 Icon icon10 = new Icon(VaadinIcon.CHECK);
                 uploadButton.setIcon(icon10);
-                uploadButton.getStyle().set("margin-left","40%");
+                uploadButton.getStyle().set("margin-left", "40%");
 
                 Button closeButton = new Button("Zavřít", event2 -> dialog.close());
-                closeButton.getStyle().set("margin-left","10%");
+                closeButton.getStyle().set("margin-left", "10%");
                 Icon icon11 = new Icon(VaadinIcon.CLOSE);
                 closeButton.setIcon(icon11);
-                rowLast.add(closeButton,uploadButton);
+                rowLast.add(closeButton, uploadButton);
                 dialog.add(rowLast);
                 dialog.open();
             });
@@ -322,8 +325,8 @@ public class AdminClientsView extends VerticalLayout {
         dispecrGrid.getStyle().set("border", "2px solid lightblue")
                 .set("border-radius", "10px")
                 .set("padding", "10px")
-                .set("margin-bottom","20px")
-                .set("box-shadow","5px 5px 5px grey");
+                .set("margin-bottom", "20px")
+                .set("box-shadow", "5px 5px 5px grey");
 
 
         add(pasazerGrid);
@@ -334,17 +337,17 @@ public class AdminClientsView extends VerticalLayout {
         Text text2 = new Text("Jan Kubíček");
         Div div1 = new Div();
         div1.add(text1);
-        div1.getStyle().set("margin-left","10%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        div1.getStyle().set("margin-left", "10%").set("font-size", "1.3em").set("color", "blue").set("font-weight", "bolder");
         Div div3 = new Div();
         div3.add(text2);
-        div3.getStyle().set("margin-left","70%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        div3.getStyle().set("margin-left", "70%").set("font-size", "1.3em").set("color", "blue").set("font-weight", "bolder");
         footer.getStyle().set("border-top", "2px solid lightblue").set("width", "100%");
         footer.add(div1, div3);
         add(footer);
     }
 
     @PostConstruct
-    private void init(){
+    private void init() {
         pasazerStatsList = pasazerStatsService.groupByTyp();
         pasazerStatsGrid.setItems(pasazerStatsList);
         pasazerList = pasazerService.findAll();

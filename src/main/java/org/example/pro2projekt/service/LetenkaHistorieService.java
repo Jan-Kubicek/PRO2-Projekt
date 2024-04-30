@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface LetenkaHistorieService {
     List<LetenkaHistorie> findByLetID(int letID);
+
     List<LetenkaHistorie> findAll();
 }

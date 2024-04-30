@@ -20,8 +20,8 @@ import java.sql.SQLException;
 @PageTitle("index")
 @Route("/")
 @AnonymousAllowed
-public class index extends VerticalLayout{
-    Button btnLogin, btnRegister,btnSubmit, btnClient, btnAdmin;
+public class Index extends VerticalLayout {
+    Button btnLogin, btnRegister, btnSubmit, btnClient, btnAdmin;
     DatePicker datumODletuFiled, datumPriletuField;
     String statOdletu = "";
     String statPriletu = "";
@@ -31,7 +31,8 @@ public class index extends VerticalLayout{
     ComboBox<Integer> pocetOsobField;
     ComboBox<String> tridaFiled;
     Div lets;
-    public index(){
+
+    public Index() {
         //componenty
         btnLogin = new Button("Login");
         btnRegister = new Button("Register");
@@ -46,16 +47,24 @@ public class index extends VerticalLayout{
         add(importMain());
 
         btnSubmit.addClickListener(event -> {
-            if(lets!= null)
+            if (lets != null)
                 remove(lets);
-            lets = importLety(input.getLets(statOdletu, statPriletu,datumOdletu,trida));
+            lets = importLety(input.getLets(statOdletu, statPriletu, datumOdletu, trida));
             add(lets);
         });
 
-        odletField.addValueChangeListener(event -> {statOdletu = event.getValue(); });
-        priletField.addValueChangeListener(event -> {statPriletu = event.getValue(); });
-        datumODletuFiled.addValueChangeListener(event ->{datumOdletu = event.getValue().toString();}) ;
-        tridaFiled.addValueChangeListener(event -> {trida = event.getValue();});
+        odletField.addValueChangeListener(event -> {
+            statOdletu = event.getValue();
+        });
+        priletField.addValueChangeListener(event -> {
+            statPriletu = event.getValue();
+        });
+        datumODletuFiled.addValueChangeListener(event -> {
+            datumOdletu = event.getValue().toString();
+        });
+        tridaFiled.addValueChangeListener(event -> {
+            trida = event.getValue();
+        });
 
         //footer
         FlexLayout footer = new FlexLayout();
@@ -63,17 +72,17 @@ public class index extends VerticalLayout{
         Text text2 = new Text("Jan Kubíček");
         Div div = new Div();
         div.add(text1);
-        div.getStyle().set("margin-left","10%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        div.getStyle().set("margin-left", "10%").set("font-size", "1.3em").set("color", "blue").set("font-weight", "bolder");
         Div div1 = new Div();
         div1.add(text2);
-        div1.getStyle().set("margin-left","70%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        div1.getStyle().set("margin-left", "70%").set("font-size", "1.3em").set("color", "blue").set("font-weight", "bolder");
         footer.getStyle().set("border-top", "2px solid lightblue").set("width", "70%");
         footer.add(div, div1);
         add(footer);
         //
         btnLogin.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate("login")));
-        btnRegister.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(register.class)));
-        btnAdmin.addClickListener(event ->  {
+        btnRegister.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(Register.class)));
+        btnAdmin.addClickListener(event -> {
             try {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 if (vaadinSession != null) {
@@ -88,7 +97,7 @@ public class index extends VerticalLayout{
             } catch (Exception ignored) {
             }
         });
-        btnClient.addClickListener(event ->  {
+        btnClient.addClickListener(event -> {
             try {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 if (vaadinSession != null) {
@@ -96,7 +105,7 @@ public class index extends VerticalLayout{
                     if (userRoleObj != null) {
                         String userRole = userRoleObj.toString();
                         if ("ROLE_CLIENT".equals(userRole)) {
-                            getUI().ifPresent(ui -> ui.navigate(client.class));
+                            getUI().ifPresent(ui -> ui.navigate(Client.class));
                         }
                     }
                 }
@@ -106,8 +115,9 @@ public class index extends VerticalLayout{
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
     }
-    private Div importLety(ResultSet resultSet){
-    // LetId LetadloID Cas_Odletu Cas_Priletu MestoOdletu StatOdletu NazevLOdletu MestoPriletu StatPriletu NazevLPriletu
+
+    private Div importLety(ResultSet resultSet) {
+        // LetId LetadloID Cas_Odletu Cas_Priletu MestoOdletu StatOdletu NazevLOdletu MestoPriletu StatPriletu NazevLPriletu
         Div div = new Div();
 
         try {
@@ -117,23 +127,23 @@ public class index extends VerticalLayout{
                 FlexLayout row1 = new FlexLayout();
                 Div row1Left = new Div();
                 int letId = resultSet.getInt("LetId");
-                Text letIdText = new Text(String.valueOf("Id letu: "+letId));
+                Text letIdText = new Text(String.valueOf("Id letu: " + letId));
                 row1Left.add(letIdText);
                 Div row1Right = new Div();
                 int letadloId = resultSet.getInt("LetadloID");
-                Text letadloIdText = new Text(String.valueOf("Id letadla: "+letadloId));
+                Text letadloIdText = new Text(String.valueOf("Id letadla: " + letadloId));
                 row1Right.add(letadloIdText);
                 row1Left.setWidth("20%");
                 row1Right.setWidth("80%");
                 row1.setWidthFull();
-                row1.add(row1Left,row1Right);
+                row1.add(row1Left, row1Right);
 
-                row1.getStyle().set("border", "1px solid lightblue").set("background","lightblue").set("border-radius", "6px");
+                row1.getStyle().set("border", "1px solid lightblue").set("background", "lightblue").set("border-radius", "6px");
 
-                FlexLayout  row2 = new FlexLayout ();
+                FlexLayout row2 = new FlexLayout();
                 Div row2Left = new Div();
                 String casOdletu = resultSet.getString("Cas_Odletu");
-                Text casOdletuText = new Text(String.valueOf("Čas Odletu: "+casOdletu));
+                Text casOdletuText = new Text(String.valueOf("Čas Odletu: " + casOdletu));
                 row2Left.add(casOdletuText);
                 row2Left.setWidth("20%");
 
@@ -141,67 +151,67 @@ public class index extends VerticalLayout{
                 FlexLayout row2Right = new FlexLayout();
                 Div rw2a = new Div();
                 String mestoOdletu = resultSet.getString("MestoOdletu");
-                Text textMestoOdletu =new Text(String.valueOf("Město : "+mestoOdletu));
+                Text textMestoOdletu = new Text(String.valueOf("Město : " + mestoOdletu));
                 rw2a.add(textMestoOdletu);
                 rw2a.setWidth("33%");
 
                 Div rw2b = new Div();
                 String statOdletu = resultSet.getString("StatOdletu");
-                Text textStatOdletu = new Text(String.valueOf("Stát : "+statOdletu));
+                Text textStatOdletu = new Text(String.valueOf("Stát : " + statOdletu));
                 rw2b.add(textStatOdletu);
                 rw2b.setWidth("33%");
 
                 Div rw2c = new Div();
                 String nazevLOdletu = resultSet.getString("NazevLOdletu");
-                Text textLOdletu = new Text(String.valueOf("Název : "+nazevLOdletu));
+                Text textLOdletu = new Text(String.valueOf("Název : " + nazevLOdletu));
                 rw2c.add(textLOdletu);
                 rw2c.setWidth("33%");
                 row2Right.setWidth("80%");
-                row2Right.add(rw2a,rw2b,rw2c);
+                row2Right.add(rw2a, rw2b, rw2c);
 
                 row2.setWidthFull();
-                row2.add(row2Left,row2Right);
-                row2.getStyle().set("border", "1px solid lightblue").set("background","white").set("border-radius", "6px");
+                row2.add(row2Left, row2Right);
+                row2.getStyle().set("border", "1px solid lightblue").set("background", "white").set("border-radius", "6px");
 
-                FlexLayout  row3 = new FlexLayout ();
+                FlexLayout row3 = new FlexLayout();
                 Div row3Left = new Div();
                 String casPriletu = resultSet.getString("Cas_Priletu");
-                Text casPriletuText = new Text(String.valueOf("Čas : "+casPriletu));
+                Text casPriletuText = new Text(String.valueOf("Čas : " + casPriletu));
                 row3Left.add(casPriletuText);
                 row3Left.setWidth("20%");
 
                 FlexLayout row3Right = new FlexLayout();
                 Div rw3a = new Div();
                 String mestoPriletu = resultSet.getString("MestoPriletu");
-                Text mestoPriletuText = new Text(String.valueOf("Město : "+mestoPriletu));
+                Text mestoPriletuText = new Text(String.valueOf("Město : " + mestoPriletu));
                 rw3a.add(mestoPriletuText);
                 rw3a.setWidth("33%");
 
                 Div rw3b = new Div();
                 String statPriletu = resultSet.getString("StatPriletu");
-                Text statPriletuText = new Text(String.valueOf("Stát : "+statPriletu));
+                Text statPriletuText = new Text(String.valueOf("Stát : " + statPriletu));
                 rw3b.add(statPriletuText);
                 rw3b.setWidth("33%");
 
                 Div rw3c = new Div();
                 String nazevLPriletu = resultSet.getString("NazevLPriletu");
-                Text nazevLPriletuText = new Text(String.valueOf("Název : "+nazevLPriletu));
+                Text nazevLPriletuText = new Text(String.valueOf("Název : " + nazevLPriletu));
                 rw3c.add(nazevLPriletuText);
                 rw3c.setWidth("33%");
 
                 row3Right.setWidth("80%");
-                row3Right.add(rw3a,rw3b,rw3c);
+                row3Right.add(rw3a, rw3b, rw3c);
 
                 row3.setWidthFull();
-                row3.add(row3Left,row3Right);
-                row3.getStyle().set("border", "1px solid lightblue").set("background","lightblue").set("border-radius", "6px");
+                row3.add(row3Left, row3Right);
+                row3.getStyle().set("border", "1px solid lightblue").set("background", "lightblue").set("border-radius", "6px");
 
-                let.add(row1,row2,row3);
+                let.add(row1, row2, row3);
                 let.getStyle().set("border", "2px solid lightblue")
                         .set("border-radius", "10px")
                         .set("padding", "10px")
-                        .set("margin-bottom","20px")
-                        .set("box-shadow","5px 5px 5px grey");
+                        .set("margin-bottom", "20px")
+                        .set("box-shadow", "5px 5px 5px grey");
                 div.add(let);
             }
         } catch (SQLException e) {
@@ -213,7 +223,7 @@ public class index extends VerticalLayout{
     }
 
 
-    private Div importZahlavi(){
+    private Div importZahlavi() {
         Div zahlaviDiv = new Div();
         H1 logo = new H1("JKLetenky");
 
@@ -228,19 +238,19 @@ public class index extends VerticalLayout{
         zahlaviBtn.setSpacing(true);
         zahlaviBtn.setDefaultVerticalComponentAlignment(Alignment.END);
         VaadinSession vaadinSession = VaadinSession.getCurrent();
-        if(vaadinSession != null){
+        if (vaadinSession != null) {
             String s = (String) vaadinSession.getAttribute("userRole");
-            try{
-                if(s.equals("ROLE_DISPECER")){
-                    zahlaviBtn.add(btnLogin, btnRegister,btnAdmin);
+            try {
+                if (s.equals("ROLE_DISPECER")) {
+                    zahlaviBtn.add(btnLogin, btnRegister, btnAdmin);
                 }
-                if(s.equals("ROLE_CLIENT")){
-                    zahlaviBtn.add(btnLogin, btnRegister,btnClient);
+                if (s.equals("ROLE_CLIENT")) {
+                    zahlaviBtn.add(btnLogin, btnRegister, btnClient);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 zahlaviBtn.add(btnLogin, btnRegister);
             }
-        } else{
+        } else {
             zahlaviBtn.add(btnLogin, btnRegister);
         }
 
@@ -250,7 +260,7 @@ public class index extends VerticalLayout{
         return zahlaviDiv;
     }
 
-    private Div importMain(){
+    private Div importMain() {
         Div main = new Div();
         main.setMaxWidth("80%");
 
@@ -271,7 +281,7 @@ public class index extends VerticalLayout{
         Text pocetOsob = new Text("Počet osob ");
         pocetOsobField = new ComboBox<>();
         pocetOsobField.setPlaceholder("Zadejte počet osob");
-        pocetOsobField.setItems(1,2,3,4,5,6,7);
+        pocetOsobField.setItems(1, 2, 3, 4, 5, 6, 7);
         pocetOsobField.setWidthFull();
 
         Text trida = new Text("Třída: ");
@@ -280,14 +290,14 @@ public class index extends VerticalLayout{
         tridaFiled.setPlaceholder("Vyberte třídu");
         tridaFiled.setWidthFull();
 
-        Div row1 = new Div(odlet, odletField,prilet,priletField);
-        Div row2 = new Div(datumOdletu,datumODletuFiled);
-        Div row4 = new Div(pocetOsob,pocetOsobField);
-        Div row5 = new Div(trida,tridaFiled);
+        Div row1 = new Div(odlet, odletField, prilet, priletField);
+        Div row2 = new Div(datumOdletu, datumODletuFiled);
+        Div row4 = new Div(pocetOsob, pocetOsobField);
+        Div row5 = new Div(trida, tridaFiled);
         Div row6 = new Div(btnSubmit);
         btnSubmit.setWidthFull();
 
-        main.add(row1,row2,row4,row5,row6);
+        main.add(row1, row2, row4, row5, row6);
 
         return main;
     }

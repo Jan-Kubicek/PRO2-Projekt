@@ -5,7 +5,7 @@ import org.example.pro2projekt.mappaers.PasazerMapper;
 import org.example.pro2projekt.mappaers.SpolecnostMapper;
 import org.example.pro2projekt.objects.Spolecnost;
 import org.example.pro2projekt.repository.SpolecnostRepository;
-import org.example.pro2projekt.validation.validator;
+import org.example.pro2projekt.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -13,16 +13,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SpolecnostServiceImpl implements  SpolecnostService {
+public class SpolecnostServiceImpl implements SpolecnostService {
     @Autowired
     private SpolecnostRepository spolecnostRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    validator validator = new validator();
+    Validator validator = new Validator();
+
     @Override
     public List<Spolecnost> findAll() {
         String query = "SELECT * FROM Spolecnost";
-        return jdbcTemplate.query(query,new SpolecnostMapper());
+        return jdbcTemplate.query(query, new SpolecnostMapper());
     }
 
     @Override
@@ -34,24 +35,24 @@ public class SpolecnostServiceImpl implements  SpolecnostService {
     @Override
     public List<Spolecnost> finByIdAndDelete(int id) {
         String query = "DELETE FROM Spolecnost WHERE Spolecnost.SpolecnostID = ?";
-        return jdbcTemplate.query(query,new SpolecnostMapper(),id);
+        return jdbcTemplate.query(query, new SpolecnostMapper(), id);
     }
 
     @Override
     public void findByIdAndUpdate(int id, String nazev, String sidlo) {
-        boolean valid = validator.isValidSpolecnost(nazev,sidlo);
-        if(valid){
+        boolean valid = validator.isValidSpolecnost(nazev, sidlo);
+        if (valid) {
             String query = "UPDATE Spolecnost SET Spolecnost.Nazev = ?, Spolecnost.Sidlo = ? WHERE Spolecnost.SpolecnostID = ?";
-            jdbcTemplate.query(query,new PasazerMapper(),nazev, sidlo,id);
+            jdbcTemplate.query(query, new PasazerMapper(), nazev, sidlo, id);
         }
     }
 
     @Override
     public void createSpolecnost(String nazev, String sidlo) {
-        boolean valid = validator.isValidSpolecnost(nazev,sidlo);
-        if(valid){
+        boolean valid = validator.isValidSpolecnost(nazev, sidlo);
+        if (valid) {
             String query = "INSERT INTO  Spolecnost (Nazev, Sidlo) VALUES (?,?)";
-            jdbcTemplate.query(query,new LetadloMapper(),nazev,sidlo);
+            jdbcTemplate.query(query, new LetadloMapper(), nazev, sidlo);
         }
     }
 }

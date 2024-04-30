@@ -16,19 +16,14 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.pro2projekt.objects.*;
 import org.example.pro2projekt.security.SecurityService;
 import org.example.pro2projekt.service.*;
@@ -42,7 +37,7 @@ import java.util.List;
 @PageTitle("client")
 @Route("/client")
 @RolesAllowed("DISPECER")
-public class client extends VerticalLayout implements HasUrlParameter<String> {
+public class Client extends VerticalLayout implements HasUrlParameter<String> {
     private final PasazerService pasazerService;
     private final ZavazadloService zavazadloService;
     private final LetenkaService letenkaService;
@@ -64,11 +59,12 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
     ComboBox<String> tridaFiled;
     private int pasazerId, letID = 0;
     LetenkaHistorie letenkaH;
-    Button btnLogout,btnSubmit;
+    Button btnLogout, btnSubmit;
     TabSheet tabSheet;
     Div divZavazadla, divProfil, divHistorie, divRegistrace;
+
     @Autowired
-    public client( SecurityService securityService, PasazerService pasazerService , ZavazadloService zavazadloService, LetenkaService letenkaService, LetenkaHistorieService letenkaHistorieService,LetenkaRegisterService letenkaRegisterService) {
+    public Client(SecurityService securityService, PasazerService pasazerService, ZavazadloService zavazadloService, LetenkaService letenkaService, LetenkaHistorieService letenkaHistorieService, LetenkaRegisterService letenkaRegisterService) {
         this.securityService = securityService;
         this.pasazerService = pasazerService;
         this.zavazadloService = zavazadloService;
@@ -115,14 +111,14 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         add(tabSheet);
         tabSheet.setWidth("90%");
         FlexLayout footer = new FlexLayout();
-            Text text1 = new Text("@2024");
-            Text text2 = new Text("Jan Kubíček");
-            Div div = new Div();
-            div.add(text1);
-            div.getStyle().set("margin-left","10%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
-            Div div1 = new Div();
-            div1.add(text2);
-            div1.getStyle().set("margin-left","70%").set("font-size","1.3em").set("color","blue").set("font-weight","bolder");
+        Text text1 = new Text("@2024");
+        Text text2 = new Text("Jan Kubíček");
+        Div div = new Div();
+        div.add(text1);
+        div.getStyle().set("margin-left", "10%").set("font-size", "1.3em").set("color", "blue").set("font-weight", "bolder");
+        Div div1 = new Div();
+        div1.add(text2);
+        div1.getStyle().set("margin-left", "70%").set("font-size", "1.3em").set("color", "blue").set("font-weight", "bolder");
         footer.getStyle().set("border-top", "2px solid lightblue").set("width", "90%");
         footer.add(div, div1);
         add(footer);
@@ -378,11 +374,11 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
             letID = letenka.getLetID();
             for (int i = 0; i < letenkaHistories.size(); i++) {
                 LetenkaHistorie historie = letenkaHistories.get(i);
-                if(historie.getCas_Odletu().after(current) && letID == historie.getLetId()){
+                if (historie.getCas_Odletu().after(current) && letID == historie.getLetId()) {
                     Button del = new Button("Zrušení letenky");
                     Icon icon = new Icon(VaadinIcon.CLOSE);
                     del.setIcon(icon);
-                    del.addClickListener(event ->{
+                    del.addClickListener(event -> {
                         letenkaService.deleteLetenka(letenka.getLetenkaID());
                         UI.getCurrent().getPage().reload();
                     });
@@ -421,7 +417,7 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         Text pocetOsob = new Text("Počet osob ");
         pocetOsobField = new ComboBox<>();
         pocetOsobField.setPlaceholder("Zadejte počet osob");
-        pocetOsobField.setItems(1,2,3,4,5,6,7);
+        pocetOsobField.setItems(1, 2, 3, 4, 5, 6, 7);
         pocetOsobField.setWidthFull();
 
         Text trida = new Text("Třída: ");
@@ -430,37 +426,37 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
         tridaFiled.setPlaceholder("Vyberte třídu");
         tridaFiled.setWidthFull();
 
-        Div row1 = new Div(odlet, odletField,prilet,priletField);
-        Div row2 = new Div(datumOdletu,datumODletuFiled);
-        Div row4 = new Div(pocetOsob,pocetOsobField);
-        Div row5 = new Div(trida,tridaFiled);
+        Div row1 = new Div(odlet, odletField, prilet, priletField);
+        Div row2 = new Div(datumOdletu, datumODletuFiled);
+        Div row4 = new Div(pocetOsob, pocetOsobField);
+        Div row5 = new Div(trida, tridaFiled);
         Div row6 = new Div(btnSubmit);
-        form.add(row1,row2,row4,row5,row6);
+        form.add(row1, row2, row4, row5, row6);
         btnSubmit.setWidthFull();
         Icon icon = new Icon(VaadinIcon.ARROW_CIRCLE_UP);
         btnSubmit.setIcon(icon);
         form.add(btnSubmit);
         divRegistrace.add(form);
-        List <LetenkaRegister> Selected = new ArrayList<>();
-        btnSubmit.addClickListener( event->{
+        List<LetenkaRegister> Selected = new ArrayList<>();
+        btnSubmit.addClickListener(event -> {
             Selected.clear();
             String statOdletu = odletField.getValue();
             String statPriletu = priletField.getValue();
             LocalDate datum = datumODletuFiled.getValue();
             String tridaSelected = tridaFiled.getValue();
 
-            System.out.println("first "+tridaSelected);
+            System.out.println("first " + tridaSelected);
             for (LetenkaRegister letenkaRegister : registerList) {
                 System.out.println(letenkaRegister.getTrida());
                 if (letenkaRegister.getStatOdletu().equals(statOdletu) && letenkaRegister.getStatPriletu().equals(statPriletu)
                         && letenkaRegister.getTrida().equals(tridaSelected) && (datum.isBefore(letenkaRegister.getCas_Odletu().toLocalDate()))
                 ) {
-                    System.out.println("second "+letenkaRegister.getTrida());
+                    System.out.println("second " + letenkaRegister.getTrida());
                     Selected.add(letenkaRegister);
                 }
             }
             System.out.println(Selected.size());
-            if(!Selected.isEmpty()){
+            if (!Selected.isEmpty()) {
                 registraceLetenek.setItems(Selected);
             }
         });
@@ -479,10 +475,10 @@ public class client extends VerticalLayout implements HasUrlParameter<String> {
                 back.setIcon(icon2);
                 Button set = new Button("Potvrd", event3 -> {
                     int jeSkupinova = 0;
-                    if(pocetOsobField.getValue()>1){
+                    if (pocetOsobField.getValue() > 1) {
                         jeSkupinova = 1;
                     }
-                    letenkaService.createNewLetenka(letenkaRegister.getLetId(),pasazerId,jeSkupinova,pocetOsobField.getValue(),tridaFiled.getValue());
+                    letenkaService.createNewLetenka(letenkaRegister.getLetId(), pasazerId, jeSkupinova, pocetOsobField.getValue(), tridaFiled.getValue());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });

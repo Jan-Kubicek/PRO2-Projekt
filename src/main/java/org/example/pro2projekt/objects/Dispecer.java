@@ -31,6 +31,7 @@ public class Dispecer implements UserDetails {
     private String Rodne_cislo;
     private String Telefoni_cislo;
     private String role = "ROLE_DISPECER";
+
     public Dispecer() {
     }
 
@@ -42,6 +43,7 @@ public class Dispecer implements UserDetails {
         Rodne_cislo = rodne_cislo;
         Telefoni_cislo = telefoni_cislo;
     }
+
     public String getRole() {
         return role;
     }
@@ -136,6 +138,8 @@ public class Dispecer implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    public String getRoles(){ return role;
+
+    public String getRoles() {
+        return role;
     }
 }

@@ -27,7 +27,7 @@ public class LetenkaHistorieServiceImpl implements LetenkaHistorieService {
                 "JOIN Letadlo ltdl ON L.LetadloID = ltdl.LetadloID\n" +
                 "JOIN tridaletadlo tldl ON ltdl.LetadloID = tldl.LetadloID\n" +
                 "JOIN Trida t ON tldl.TridaID = t.TridaID\n" +
-                "WHERE (LSL.LetisteID != LSL1.LetisteID ) AND L.LetID = ? \n"+
+                "WHERE (LSL.LetisteID != LSL1.LetisteID ) AND L.LetID = ? \n" +
                 "GROUP BY  L.LetID,  L.LetadloID,LT1.Mesto, +LT1.Stat,LT1.Nazev,LT2.Mesto,LT2.Stat,LT2.Nazev";
         return jdbcTemplate.query(query,new LetenkaHistorieMapper(),letID);
     }

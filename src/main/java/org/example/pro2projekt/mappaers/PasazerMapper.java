@@ -1,9 +1,11 @@
 package org.example.pro2projekt.mappaers;
+
 import org.example.pro2projekt.objects.Pasazer;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 public class PasazerMapper implements RowMapper<Pasazer> {
     @Override
     public Pasazer mapRow(ResultSet rs, int rowNum) throws SQLException {

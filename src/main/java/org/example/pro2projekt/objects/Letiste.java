@@ -17,7 +17,7 @@ public class Letiste {
     public Letiste() {
     }
 
-    public Letiste( int kapacita, String mesto, String nazev, String stat) {
+    public Letiste(int kapacita, String mesto, String nazev, String stat) {
         Kapacita = kapacita;
         Mesto = mesto;
         Nazev = nazev;

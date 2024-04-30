@@ -5,7 +5,8 @@ public class PasazerStats {
     private int Pocet;
     private String Popis;
     private int AllPasazers;
-    public PasazerStats(){
+
+    public PasazerStats() {
 
     }
 

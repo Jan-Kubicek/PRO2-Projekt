@@ -10,15 +10,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
-public class LetadloStatsServiceImpl implements LetadloStatsService{
+public class LetadloStatsServiceImpl implements LetadloStatsService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
     @Override
     public List<LetadloStats> groupByVyrobces() {
         String query = "SELECT L.Vyrobce, L.Nazev, (SELECT COUNT(L1.LetadloID) FROM Letadlo L1 WHERE L1.Nazev = L.Nazev ) AS Pocet,\n" +
                 "(SELECT COUNT(L1.LetadloID) FROM Letadlo L1 ) AS Allplanes\n" +
                 "FROM Letadlo L GROUP BY L.Nazev";
-        return jdbcTemplate.query(query,new LetadloStatsMapper());
+        return jdbcTemplate.query(query, new LetadloStatsMapper());
     }
 }

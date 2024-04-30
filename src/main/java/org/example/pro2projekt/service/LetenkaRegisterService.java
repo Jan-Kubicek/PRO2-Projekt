@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface LetenkaRegisterService {
     List<LetenkaRegister> findByStatesDateNumberClass(String statOdletu, String statPriletum, Date datum, int NumOfMembers, String trida);
+
     List<LetenkaRegister> findAll();
 }

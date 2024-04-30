@@ -11,8 +11,8 @@ public class Database {
 
     }
 
-    public ResultSet getData(String query){
-        try(Connection connection = DriverManager.getConnection(connectionUrl,username,password)) {
+    public ResultSet getData(String query) {
+        try (Connection connection = DriverManager.getConnection(connectionUrl, username, password)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
@@ -21,11 +21,11 @@ public class Database {
         }
     }
 
-    public void newEntity(String query){
-        try(Connection connection = DriverManager.getConnection(connectionUrl,username,password)){
+    public void newEntity(String query) {
+        try (Connection connection = DriverManager.getConnection(connectionUrl, username, password)) {
             Statement statement = connection.createStatement();
             statement.executeQuery(query);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

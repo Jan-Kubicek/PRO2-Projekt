@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -22,6 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private PasazerService pasazerRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Dispecer dispecer = dispecerRepository.findByEmail(username);

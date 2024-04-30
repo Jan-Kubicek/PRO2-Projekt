@@ -1,10 +1,9 @@
 package org.example.pro2projekt.service;
 
 import org.example.pro2projekt.mappaers.LetadloMapper;
-import org.example.pro2projekt.mappaers.PasazerMapper;
 import org.example.pro2projekt.objects.Letadlo;
 import org.example.pro2projekt.repository.LetadloRepository;
-import org.example.pro2projekt.validation.validator;
+import org.example.pro2projekt.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class LetadloServiceImpl implements LetadloService {
     private LetadloRepository letadloRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private validator validator = new validator();
+    private Validator validator = new Validator();
     @Override
     public List<Letadlo> findAll() {
         String query = "SELECT * FROM Letadlo ";

@@ -38,6 +38,7 @@ public class LetenkaRegister {
     public void setTrida(String trida) {
         Trida = trida;
     }
+
     public int getLetId() {
         return LetId;
     }

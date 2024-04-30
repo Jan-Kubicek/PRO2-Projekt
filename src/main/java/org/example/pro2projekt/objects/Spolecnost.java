@@ -15,7 +15,7 @@ public class Spolecnost {
     public Spolecnost() {
     }
 
-    public Spolecnost( String nazev, String sidlo) {
+    public Spolecnost(String nazev, String sidlo) {
         Nazev = nazev;
         Sidlo = sidlo;
     }
