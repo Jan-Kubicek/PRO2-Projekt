@@ -52,7 +52,7 @@ public class DispecerServiceImpl implements DispecerService{
         if(valid){
             String hashedHeslo =  BCrypt.hashpw(heslo, BCrypt.gensalt());
             String query = "INSERT INTO  Dispecer (Email, Heslo, Jmeno, Prijmeni, Rodne_cislo, Telefoni_cislo) VALUES (?,?,?,?,?,?)";
-            jdbcTemplate.query(query,new LetadloMapper(),email,hashedHeslo,jmeno,prijmeni,rodneCislo,tel);
+            jdbcTemplate.query(query,new DispecerMapper(),email,hashedHeslo,jmeno,prijmeni,rodneCislo,tel);
         }
     }
 
