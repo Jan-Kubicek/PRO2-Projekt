@@ -1,7 +1,5 @@
 package org.example.pro2projekt.service;
 
-import org.example.pro2projekt.mappaers.LetadloMapper;
-import org.example.pro2projekt.mappaers.LetisteMapper;
 import org.example.pro2projekt.mappaers.ZavazadloMapper;
 import org.example.pro2projekt.objects.Zavazadlo;
 import org.example.pro2projekt.repository.ZavazadloRepository;
@@ -13,10 +11,14 @@ import java.util.List;
 
 @Service
 public class ZavazadloServiceImpl implements ZavazadloService {
+    private final ZavazadloRepository zavazadloRepository;
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private ZavazadloRepository zavazadloRepository;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public ZavazadloServiceImpl(ZavazadloRepository zavazadloRepository, JdbcTemplate jdbcTemplate) {
+        this.zavazadloRepository = zavazadloRepository;
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Zavazadlo> findByPasazerId(int id) {
