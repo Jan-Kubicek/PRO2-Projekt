@@ -24,10 +24,10 @@ import java.sql.SQLException;
 @Route("/")
 @AnonymousAllowed
 public class Index extends VerticalLayout {
-    @Autowired
-    PasazerService pasazerService;
+
+    private final PasazerService pasazerService;
     Button btnLogin, btnRegister, btnSubmit, btnClient, btnAdmin;
-    DatePicker datumODletuFiled, datumPriletuField;
+    DatePicker datumODletuFiled;
     String statOdletu = "";
     String statPriletu = "";
     String datumOdletu = "", trida = "";
@@ -38,7 +38,9 @@ public class Index extends VerticalLayout {
     Div lets;
     int pasazerId;
 
-    public Index() {
+    @Autowired
+    public Index(PasazerService pasazerService) {
+        this.pasazerService = pasazerService;
         //componenty
         btnLogin = new Button("Login");
         btnRegister = new Button("Register");
@@ -59,18 +61,10 @@ public class Index extends VerticalLayout {
             add(lets);
         });
 
-        odletField.addValueChangeListener(event -> {
-            statOdletu = event.getValue();
-        });
-        priletField.addValueChangeListener(event -> {
-            statPriletu = event.getValue();
-        });
-        datumODletuFiled.addValueChangeListener(event -> {
-            datumOdletu = event.getValue().toString();
-        });
-        tridaFiled.addValueChangeListener(event -> {
-            trida = event.getValue();
-        });
+        odletField.addValueChangeListener(event -> statOdletu = event.getValue());
+        priletField.addValueChangeListener(event -> statPriletu = event.getValue());
+        datumODletuFiled.addValueChangeListener(event -> datumOdletu = event.getValue().toString());
+        tridaFiled.addValueChangeListener(event -> trida = event.getValue());
 
         //footer
         FlexLayout footer = new FlexLayout();
@@ -87,7 +81,7 @@ public class Index extends VerticalLayout {
         add(footer);
         //
         btnLogin.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate("login")));
-        btnRegister.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(Register.class)));
+        btnRegister.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(RegisterView.class)));
         btnAdmin.addClickListener(event -> {
             try {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
@@ -111,7 +105,7 @@ public class Index extends VerticalLayout {
                     if (userRoleObj != null) {
                         String userRole = userRoleObj.toString();
                         if ("ROLE_CLIENT".equals(userRole)) {
-                            getUI().ifPresent(ui -> ui.navigate(Client.class, String.valueOf(pasazerId)));
+                            getUI().ifPresent(ui -> ui.navigate(ClientView.class, String.valueOf(pasazerId)));
                         }
                     }
                 }
@@ -133,11 +127,11 @@ public class Index extends VerticalLayout {
                 FlexLayout row1 = new FlexLayout();
                 Div row1Left = new Div();
                 int letId = resultSet.getInt("LetId");
-                Text letIdText = new Text(String.valueOf("Id letu: " + letId));
+                Text letIdText = new Text("Id letu: " + letId);
                 row1Left.add(letIdText);
                 Div row1Right = new Div();
                 int letadloId = resultSet.getInt("LetadloID");
-                Text letadloIdText = new Text(String.valueOf("Id letadla: " + letadloId));
+                Text letadloIdText = new Text("Id letadla: " + letadloId);
                 row1Right.add(letadloIdText);
                 row1Left.setWidth("20%");
                 row1Right.setWidth("80%");
@@ -149,7 +143,7 @@ public class Index extends VerticalLayout {
                 FlexLayout row2 = new FlexLayout();
                 Div row2Left = new Div();
                 String casOdletu = resultSet.getString("Cas_Odletu");
-                Text casOdletuText = new Text(String.valueOf("Čas Odletu: " + casOdletu));
+                Text casOdletuText = new Text("Čas Odletu: " + casOdletu);
                 row2Left.add(casOdletuText);
                 row2Left.setWidth("20%");
 
@@ -157,19 +151,19 @@ public class Index extends VerticalLayout {
                 FlexLayout row2Right = new FlexLayout();
                 Div rw2a = new Div();
                 String mestoOdletu = resultSet.getString("MestoOdletu");
-                Text textMestoOdletu = new Text(String.valueOf("Město : " + mestoOdletu));
+                Text textMestoOdletu = new Text("Město : " + mestoOdletu);
                 rw2a.add(textMestoOdletu);
                 rw2a.setWidth("33%");
 
                 Div rw2b = new Div();
                 String statOdletu = resultSet.getString("StatOdletu");
-                Text textStatOdletu = new Text(String.valueOf("Stát : " + statOdletu));
+                Text textStatOdletu = new Text("Stát : " + statOdletu);
                 rw2b.add(textStatOdletu);
                 rw2b.setWidth("33%");
 
                 Div rw2c = new Div();
                 String nazevLOdletu = resultSet.getString("NazevLOdletu");
-                Text textLOdletu = new Text(String.valueOf("Název : " + nazevLOdletu));
+                Text textLOdletu = new Text("Název : " + nazevLOdletu);
                 rw2c.add(textLOdletu);
                 rw2c.setWidth("33%");
                 row2Right.setWidth("80%");
@@ -182,26 +176,26 @@ public class Index extends VerticalLayout {
                 FlexLayout row3 = new FlexLayout();
                 Div row3Left = new Div();
                 String casPriletu = resultSet.getString("Cas_Priletu");
-                Text casPriletuText = new Text(String.valueOf("Čas : " + casPriletu));
+                Text casPriletuText = new Text("Čas : " + casPriletu);
                 row3Left.add(casPriletuText);
                 row3Left.setWidth("20%");
 
                 FlexLayout row3Right = new FlexLayout();
                 Div rw3a = new Div();
                 String mestoPriletu = resultSet.getString("MestoPriletu");
-                Text mestoPriletuText = new Text(String.valueOf("Město : " + mestoPriletu));
+                Text mestoPriletuText = new Text("Město : " + mestoPriletu);
                 rw3a.add(mestoPriletuText);
                 rw3a.setWidth("33%");
 
                 Div rw3b = new Div();
                 String statPriletu = resultSet.getString("StatPriletu");
-                Text statPriletuText = new Text(String.valueOf("Stát : " + statPriletu));
+                Text statPriletuText = new Text("Stát : " + statPriletu);
                 rw3b.add(statPriletuText);
                 rw3b.setWidth("33%");
 
                 Div rw3c = new Div();
                 String nazevLPriletu = resultSet.getString("NazevLPriletu");
-                Text nazevLPriletuText = new Text(String.valueOf("Název : " + nazevLPriletu));
+                Text nazevLPriletuText = new Text("Název : " + nazevLPriletu);
                 rw3c.add(nazevLPriletuText);
                 rw3c.setWidth("33%");
 
@@ -314,8 +308,7 @@ public class Index extends VerticalLayout {
             VaadinSession vaadinSession = VaadinSession.getCurrent();
             String email = vaadinSession.getAttribute("name").toString();
             System.out.print(email);
-            int id = pasazerService.findIdByEmail(email);
-            pasazerId = id;
+            pasazerId = pasazerService.findIdByEmail(email);
         } catch (Exception ignored) {
 
         }

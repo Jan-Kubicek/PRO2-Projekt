@@ -30,24 +30,23 @@ import java.util.List;
 @Route("/admin/clients")
 @RolesAllowed("DISPECER")
 public class AdminClientsView extends VerticalLayout {
-    @Autowired
-    private PasazerService pasazerService;
-    @Autowired
-    private PasazerStatsService pasazerStatsService;
-    private Grid<PasazerStats> pasazerStatsGrid = new Grid<>(PasazerStats.class, false);
-    private Grid<Pasazer> pasazerGrid = new Grid<>(Pasazer.class, false);
-    private Grid<Pasazer> dispecrGrid = new Grid<>(Pasazer.class, false);
-    private List<Pasazer> pasazerList;
-    private List<PasazerStats> pasazerStatsList;
-    private List<Pasazer> dispecerList;
+    private final PasazerService pasazerService;
+    private final PasazerStatsService pasazerStatsService;
+    private final Grid<PasazerStats> pasazerStatsGrid = new Grid<>(PasazerStats.class, false);
+    private final Grid<Pasazer> pasazerGrid = new Grid<>(Pasazer.class, false);
+    private final Grid<Pasazer> dispecrGrid = new Grid<>(Pasazer.class, false);
+    List<Pasazer> pasazerList;
+    List<PasazerStats> pasazerStatsList;
+    List<Pasazer> dispecerList;
 
-    public AdminClientsView() {
+    @Autowired
+    public AdminClientsView(PasazerService pasazerService, PasazerStatsService pasazerStatsService) {
+        this.pasazerService = pasazerService;
+        this.pasazerStatsService = pasazerStatsService;
         FlexLayout row0 = new FlexLayout();
         Div div = new Div();
         Button btnBack = new Button();
-        btnBack.addClickListener(event -> {
-            getUI().ifPresent(ui -> ui.navigate(Admin.class));
-        });
+        btnBack.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminView.class)));
         btnBack.setText("Zpět na hlavní stránku");
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
         btnBack.setIcon(icon1);

@@ -27,18 +27,18 @@ import java.util.List;
 @Route("/admin/spolecnost")
 @RolesAllowed("DISPECER")
 public class AdminSpolecnostView extends VerticalLayout {
-    @Autowired
-    private SpolecnostService spolecnostService;
-    private Grid<Spolecnost> spolecnostGrid = new Grid<>(Spolecnost.class, false);
-    private List<Spolecnost> spolecnostList;
 
-    public AdminSpolecnostView() {
+    private final SpolecnostService spolecnostService;
+    private final Grid<Spolecnost> spolecnostGrid = new Grid<>(Spolecnost.class, false);
+    List<Spolecnost> spolecnostList;
+
+    @Autowired
+    public AdminSpolecnostView(SpolecnostService spolecnostService) {
+        this.spolecnostService = spolecnostService;
         FlexLayout row0 = new FlexLayout();
         Div div = new Div();
         Button btnBack = new Button();
-        btnBack.addClickListener(event -> {
-            getUI().ifPresent(ui -> ui.navigate(Admin.class));
-        });
+        btnBack.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminView.class)));
         btnBack.setText("Zpět na hlavní stránku");
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
         btnBack.setIcon(icon1);

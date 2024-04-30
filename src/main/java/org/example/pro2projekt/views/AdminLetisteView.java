@@ -31,22 +31,21 @@ import java.util.List;
 @Route("/admin/letiste")
 @RolesAllowed("DISPECER")
 public class AdminLetisteView extends VerticalLayout {
-    @Autowired
-    private LetisteService letisteService;
-    @Autowired
-    private LetisteStatsService letisteStatsService;
-    private Grid<LetisteStats> letisteStatsGrid = new Grid<>(LetisteStats.class, false);
-    private List<LetisteStats> letisteStatsList;
-    private Grid<Letiste> letisteGrid = new Grid<>(Letiste.class, false);
-    private List<Letiste> letisteList;
+    private final LetisteService letisteService;
+    private final LetisteStatsService letisteStatsService;
+    private final Grid<LetisteStats> letisteStatsGrid = new Grid<>(LetisteStats.class, false);
+    List<LetisteStats> letisteStatsList;
+    private final Grid<Letiste> letisteGrid = new Grid<>(Letiste.class, false);
+    List<Letiste> letisteList;
 
-    public AdminLetisteView() {
+    @Autowired
+    public AdminLetisteView(LetisteService letisteService, LetisteStatsService letisteStatsService) {
+        this.letisteService = letisteService;
+        this.letisteStatsService = letisteStatsService;
         FlexLayout row0 = new FlexLayout();
         Div div = new Div();
         Button btnBack = new Button();
-        btnBack.addClickListener(event -> {
-            getUI().ifPresent(ui -> ui.navigate(Admin.class));
-        });
+        btnBack.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminView.class)));
         btnBack.setText("Zpět na hlavní stránku");
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
         btnBack.setIcon(icon1);

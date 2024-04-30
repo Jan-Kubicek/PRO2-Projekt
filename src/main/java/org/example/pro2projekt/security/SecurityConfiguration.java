@@ -1,7 +1,7 @@
 package org.example.pro2projekt.security;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
-import org.example.pro2projekt.views.Login;
+import org.example.pro2projekt.views.LoginView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,7 +25,7 @@ public class SecurityConfiguration extends VaadinWebSecurity {
 
         super.configure(http);
 
-        setLoginView(http, Login.class, "/");
+        setLoginView(http, LoginView.class, "/");
     }
 
     @Override

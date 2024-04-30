@@ -37,17 +37,17 @@ import java.util.List;
 @PageTitle("client")
 @Route("/client")
 @RolesAllowed("CLIENT")
-public class Client extends VerticalLayout implements HasUrlParameter<String> {
+public class ClientView extends VerticalLayout implements HasUrlParameter<String> {
     private final PasazerService pasazerService;
     private final ZavazadloService zavazadloService;
     private final LetenkaService letenkaService;
     private final LetenkaHistorieService letenkaHistorieService;
     private final LetenkaRegisterService letenkaRegisterService;
-    private SecurityService securityService;
+    private final SecurityService securityService;
     private Pasazer pasazer;
-    private Grid<Letenka> historieLetenek = new Grid<>(Letenka.class, false);
-    private Grid<LetenkaRegister> registraceLetenek = new Grid<>(LetenkaRegister.class, false);
-    private Grid<Zavazadlo> zavazadloGrid = new Grid<>(Zavazadlo.class, false);
+    private final Grid<Letenka> historieLetenek = new Grid<>(Letenka.class, false);
+    private final Grid<LetenkaRegister> registraceLetenek = new Grid<>(LetenkaRegister.class, false);
+    private final Grid<Zavazadlo> zavazadloGrid = new Grid<>(Zavazadlo.class, false);
     private List<Letenka> historieList;
     private List<LetenkaRegister> registerList;
     private List<Zavazadlo> zavazadloList;
@@ -64,7 +64,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
     Div divZavazadla, divProfil, divHistorie, divRegistrace;
 
     @Autowired
-    public Client(SecurityService securityService, PasazerService pasazerService, ZavazadloService zavazadloService, LetenkaService letenkaService, LetenkaHistorieService letenkaHistorieService, LetenkaRegisterService letenkaRegisterService) {
+    public ClientView(SecurityService securityService, PasazerService pasazerService, ZavazadloService zavazadloService, LetenkaService letenkaService, LetenkaHistorieService letenkaHistorieService, LetenkaRegisterService letenkaRegisterService) {
         this.securityService = securityService;
         this.pasazerService = pasazerService;
         this.zavazadloService = zavazadloService;
@@ -137,8 +137,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
                 zavazadloGrid.setItems(zavazadloList);
                 historieList = letenkaService.findByPasazer(pasazerId);
                 historieLetenek.setItems(historieList);
-                if (pasazer == null) {
-                } else {
+                if (pasazer != null) {
                     // Po načtení pasažéra aktualizujeme profil
                     updateProfile();
                     updateRegister();
@@ -283,7 +282,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
         }
         historieLetenek.addColumn(Letenka::getLetenkaID).setHeader("ID");
         historieLetenek.addColumn(new ComponentRenderer<>(letenka -> {
-            String value = "";
+            String value;
             if (letenka.getJeSkupinova() == 1) {
                 value = "Skupinová";
             } else {
@@ -302,8 +301,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
 
                 letID = letenka.getLetID();
                 System.out.println("size of ltHs" + letenkaHistories.size());
-                for (int i = 0; i < letenkaHistories.size(); i++) {
-                    LetenkaHistorie historie = letenkaHistories.get(i);
+                for (LetenkaHistorie historie : letenkaHistories) {
                     if (historie != null && historie.getLetId() == letID) {
                         letenkaH = historie;
                         break; // Pokud nalezena shoda, ukončíme cyklus
@@ -372,8 +370,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
             l.add(showDetails);
             Date current = new Date();
             letID = letenka.getLetID();
-            for (int i = 0; i < letenkaHistories.size(); i++) {
-                LetenkaHistorie historie = letenkaHistories.get(i);
+            for (LetenkaHistorie historie : letenkaHistories) {
                 if (historie.getCas_Odletu().after(current) && letID == historie.getLetId()) {
                     Button del = new Button("Zrušení letenky");
                     Icon icon = new Icon(VaadinIcon.CLOSE);
@@ -502,7 +499,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
         divZavazadla.add(text);
 
         zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
-            String value = "";
+            String value;
             if (zavazadlo.getZavazadloID() == 1) {
                 value = "Příruční";
             } else {
@@ -514,7 +511,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
         zavazadloGrid.addColumn(Zavazadlo::getVyska).setHeader("Výška");
         zavazadloGrid.addColumn(Zavazadlo::getVaha).setHeader("Váha");
         zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
-            String value = "";
+            String value;
             if (zavazadlo.getKrehke() == 1) {
                 value = "Křehké";
             } else {
@@ -681,8 +678,7 @@ public class Client extends VerticalLayout implements HasUrlParameter<String> {
         registerList = letenkaRegisterService.findAll();
         statesList = letenkaService.getAllStates();
         classesList = letenkaService.getAllClasses();
-        if (pasazer == null) {
-        } else {
+        if (pasazer != null) {
             updateProfile(); // Aktualizace profilu
             updateRegister();
             updateHistory();

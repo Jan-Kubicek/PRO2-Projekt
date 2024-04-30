@@ -12,7 +12,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.security.RolesAllowed;
 import org.example.pro2projekt.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("admin")
 @Route("/admin")
 @RolesAllowed("DISPECER")
-public class Admin extends VerticalLayout {
+public class AdminView extends VerticalLayout {
 
     Button btnLogout, btnClients, btnLetadla, btnLetiste, btnSpolecnost;
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
     @Autowired
-    public Admin(SecurityService securityService, AuthenticationContext authContext) {
+    public AdminView(SecurityService securityService) {
         this.securityService = securityService;
         //ragdol
         //componenty
@@ -108,7 +107,6 @@ public class Admin extends VerticalLayout {
                     .set("padding", "10px")
                     .set("margin-bottom", "20px")
                     .set("box-shadow", "5px 5px 5px grey");
-            ;
             add(row3);
             FlexLayout row4 = new FlexLayout();
             Div row4div1 = new Div();
@@ -133,7 +131,6 @@ public class Admin extends VerticalLayout {
                     .set("padding", "10px")
                     .set("margin-bottom", "20px")
                     .set("box-shadow", "5px 5px 5px grey");
-            ;
             add(row4);
 
             FlexLayout row5 = new FlexLayout();
@@ -183,9 +180,7 @@ public class Admin extends VerticalLayout {
             nadpis.getStyle().set("margin-left", "25%");
             add(btnZpet);
             btnZpet.getStyle().set("margin-left", "46%");
-            btnZpet.addClickListener(event -> {
-                getUI().ifPresent(ui -> ui.navigate(Client.class));
-            });
+            btnZpet.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(ClientView.class)));
         }
     }
 }

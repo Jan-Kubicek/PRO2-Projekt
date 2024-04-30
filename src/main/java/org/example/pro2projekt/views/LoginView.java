@@ -26,30 +26,27 @@ import java.util.List;
 @PageTitle("login")
 @Route("/login")
 @AnonymousAllowed
-public class Login extends VerticalLayout implements BeforeEnterObserver {
+public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm loginForm = new LoginForm();
-    @Autowired
-    private PasazerServiceImpl pasazerService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final PasazerServiceImpl pasazerService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private UserDetails user;
 
-    public Login() {
+    @Autowired
+    public LoginView(PasazerServiceImpl pasazerService) {
+        this.pasazerService = pasazerService;
         addClassName("login-view");
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
         setAlignItems(Alignment.CENTER);
 
-        Button btnZpet = new Button("Zpět na hlavní stránku", event -> {
-            getUI().ifPresent(ui -> ui.navigate("/"));
-        });
+        Button btnZpet = new Button("Zpět na hlavní stránku", event -> getUI().ifPresent(ui -> ui.navigate("/")));
         add(btnZpet);
 
         loginForm.setAction("login");
         add(new H1("JKLetenky Login"), loginForm);
-        loginForm.addLoginListener(e -> {
-            authenticate(e.getUsername(), e.getPassword());
-        });
+        loginForm.addLoginListener(e -> authenticate(e.getUsername(), e.getPassword()));
     }
 
     private void authenticate(String username, String password) {
@@ -75,7 +72,7 @@ public class Login extends VerticalLayout implements BeforeEnterObserver {
     }
 
     private UserDetails loadUserByUsername(String username) {
-        Pasazer pasazer = null;
+        Pasazer pasazer;
         try {
             pasazer = pasazerService.findByEmail(username);
         } catch (Exception e) {
@@ -102,13 +99,13 @@ public class Login extends VerticalLayout implements BeforeEnterObserver {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser", user);
                 vaadinSession.setAttribute("userRole", "ROLE_DISPECER");
-                vaadinSession.setAttribute("name",user.getUsername());
+                vaadinSession.setAttribute("name", user.getUsername());
                 getUI().ifPresent(ui -> ui.navigate(Index.class));
             } else {
                 VaadinSession vaadinSession = VaadinSession.getCurrent();
                 vaadinSession.setAttribute("loggedInUser", user);
                 vaadinSession.setAttribute("userRole", "ROLE_CLIENT");
-                vaadinSession.setAttribute("name",user.getUsername());
+                vaadinSession.setAttribute("name", user.getUsername());
                 getUI().ifPresent(ui -> ui.navigate(Index.class));
             }
         }

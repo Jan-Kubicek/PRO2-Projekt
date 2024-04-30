@@ -32,24 +32,23 @@ import java.util.List;
 @Route("/admin/letadla")
 @RolesAllowed("DISPECER")
 public class AdminLetadlaView extends VerticalLayout {
-    @Autowired
-    private LetadloService letadloService;
-    @Autowired
-    private SpolecnostService spolecnostService;
-    @Autowired
-    private LetadloStatsService letadloStatsService;
-    private Grid<Letadlo> letadloGrid = new Grid<>(Letadlo.class, false);
-    private Grid<LetadloStats> statsGrid = new Grid<>(LetadloStats.class, false);
-    private List<Letadlo> letadloList;
-    private List<LetadloStats> customList;
+    private final LetadloService letadloService;
+    private final SpolecnostService spolecnostService;
+    private final LetadloStatsService letadloStatsService;
+    private final Grid<Letadlo> letadloGrid = new Grid<>(Letadlo.class, false);
+    private final Grid<LetadloStats> statsGrid = new Grid<>(LetadloStats.class, false);
+    List<Letadlo> letadloList;
+    List<LetadloStats> customList;
 
-    public AdminLetadlaView() {
+    @Autowired
+    public AdminLetadlaView(LetadloService letadloService, SpolecnostService spolecnostService, LetadloStatsService letadloStatsService) {
+        this.letadloService = letadloService;
+        this.spolecnostService = spolecnostService;
+        this.letadloStatsService = letadloStatsService;
         FlexLayout row0 = new FlexLayout();
         Div div = new Div();
         Button btnBack = new Button();
-        btnBack.addClickListener(event -> {
-            getUI().ifPresent(ui -> ui.navigate(Admin.class));
-        });
+        btnBack.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(AdminView.class)));
         btnBack.setText("Zpět na hlavní stránku");
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
         btnBack.setIcon(icon1);
