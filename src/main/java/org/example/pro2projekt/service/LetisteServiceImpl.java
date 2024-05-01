@@ -15,7 +15,7 @@ import java.util.List;
 public class LetisteServiceImpl implements LetisteService {
     private final LetisteRepository letisteRepository;
     private final JdbcTemplate jdbcTemplate;
-    final Validator validator =new Validator();
+    final Validator validator = new Validator();
 
     @Autowired
     public LetisteServiceImpl(LetisteRepository letisteRepository, JdbcTemplate jdbcTemplate) {

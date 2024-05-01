@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class PasazerStatsServiceImpl implements PasazerStatsService {
     private final JdbcTemplate jdbcTemplate;
+
     @Autowired
     public PasazerStatsServiceImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

@@ -45,7 +45,7 @@ public class Index extends VerticalLayout {
     ComboBox<Integer> pocetOsobField;
     ComboBox<String> tridaFiled;
     int pasazerId;
-    Div divRegistrace ;
+    Div divRegistrace;
 
     @Autowired
     public Index(PasazerService pasazerService, LetenkaRegisterService letenkaRegisterService, LetenkaService letenkaService) {
@@ -226,6 +226,7 @@ public class Index extends VerticalLayout {
         zahlaviDiv.getStyle().set("border-bottom", "2px solid lightblue");
         return zahlaviDiv;
     }
+
     @PostConstruct
     private void init() {
         registerList = letenkaRegisterService.findAll();

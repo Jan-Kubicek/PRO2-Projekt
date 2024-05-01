@@ -111,7 +111,7 @@ public class AdminClientsView extends VerticalLayout {
 
             FlexLayout rowLast = new FlexLayout();
             Button uploadButton = new Button("Vytvoř", event3 -> {
-                pasazerService.createDispecer(emailField.getValue(), hesloField.getValue(), jmenoField.getValue(), prijmeniField.getValue(), rodneCisloField.getValue(), telField.getValue(),datePicker.getValue().toString());
+                pasazerService.createDispecer(emailField.getValue(), hesloField.getValue(), jmenoField.getValue(), prijmeniField.getValue(), rodneCisloField.getValue(), telField.getValue(), datePicker.getValue().toString());
                 dialog.close();
                 UI.getCurrent().getPage().reload();
             });
@@ -203,7 +203,7 @@ public class AdminClientsView extends VerticalLayout {
 
                 FlexLayout rowLast = new FlexLayout();
                 Button uploadButton = new Button("Uprav", event3 -> {
-                    pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue(),datePicker.getValue().toString());
+                    pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue(), datePicker.getValue().toString());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
@@ -316,7 +316,7 @@ public class AdminClientsView extends VerticalLayout {
 
                 FlexLayout rowLast = new FlexLayout();
                 Button uploadButton = new Button("Uprav", event3 -> {
-                    pasazerService.findByIdAndUpdateDispecer(dispecer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue(),datePicker.getValue().toString());
+                    pasazerService.findByIdAndUpdateDispecer(dispecer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue(), datePicker.getValue().toString());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });

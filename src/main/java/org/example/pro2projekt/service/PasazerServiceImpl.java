@@ -39,19 +39,19 @@ public class PasazerServiceImpl implements PasazerService {
     @Override
     public int findByEmailAndPassword(String email, String password) {
         String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
-        try{
+        try {
             return jdbcTemplate.queryForObject(query, Integer.class, email);
-        }catch (Exception e){
-            return  0;
+        } catch (Exception e) {
+            return 0;
         }
     }
 
     @Override
     public int findIdByEmail(String email) {
         String query = "SELECT P.PasazerID FROM Pasazer P WHERE P.Email = ?";
-        try{
+        try {
             return jdbcTemplate.queryForObject(query, Integer.class, email);
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }
@@ -85,7 +85,7 @@ public class PasazerServiceImpl implements PasazerService {
         boolean valid = validator.isValid(jmeno, prijmeni, email, rodneCislo, tel);
         if (valid) {
             String query = "UPDATE Pasazer SET Pasazer.Jmeno = ?, Pasazer.Prijmeni = ?, Pasazer.Email = ?, Pasazer.Rodne_cislo = ?, Pasazer.Telefoni_cislo = ?, Pasazer.Datum_narozeni = ? WHERE Pasazer.PasazerID = ?";
-            jdbcTemplate.query(query, new PasazerMapper(), jmeno, prijmeni, email, rodneCislo, tel, datumNarozeni ,id);
+            jdbcTemplate.query(query, new PasazerMapper(), jmeno, prijmeni, email, rodneCislo, tel, datumNarozeni, id);
         }
     }
 
@@ -128,14 +128,14 @@ public class PasazerServiceImpl implements PasazerService {
 
     @Override
     public void createPasazer(String jmeno, String prijmeni, String email, String rodCi, String telCis, String heslo, String pohlavi) {
-        boolean valid = validator.isValid(jmeno,prijmeni,email,rodCi,telCis);
-        if(valid){
+        boolean valid = validator.isValid(jmeno, prijmeni, email, rodCi, telCis);
+        if (valid) {
             String hashedPassword = BCrypt.hashpw(heslo, BCrypt.gensalt());
             int poh = 1; // žena
             if (pohlavi.equals("Muž"))
                 poh = 0;
             String query = "INSERT INTO Pasazer ( Datum_narozeni, Email, Heslo, Jmeno, Pohlavi, Prijmeni, Rodne_cislo, Telefoni_cislo,Typ_pasazeraID) VALUES (?,?,?,?,?,?,?,?,1)";
-            jdbcTemplate.query(query,new PasazerMapper(),"2024-04-03",email,hashedPassword,jmeno,poh,prijmeni,rodCi,telCis);
+            jdbcTemplate.query(query, new PasazerMapper(), "2024-04-03", email, hashedPassword, jmeno, poh, prijmeni, rodCi, telCis);
         }
     }
 
