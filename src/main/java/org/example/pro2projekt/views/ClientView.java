@@ -77,7 +77,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
         // Inicializace komponent v konstruktoru
         FlexLayout row1 = new FlexLayout();
         Div row1div1 = new Div();
-        H1 text = new H1("Client page");
+        H1 text = new H1("Klientský účet");
         row1div1.add(text);
         row1div1.setWidth("50%");
         Div row1div2 = new Div();
@@ -509,6 +509,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
         })).setHeader("Typ zavazadla");
         zavazadloGrid.addColumn(Zavazadlo::getSirka).setHeader("Šířka");
         zavazadloGrid.addColumn(Zavazadlo::getVyska).setHeader("Výška");
+        zavazadloGrid.addColumn(Zavazadlo::getHloubka).setHeader("Hloubka");
         zavazadloGrid.addColumn(Zavazadlo::getVaha).setHeader("Váha");
         zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
             String value;
@@ -567,9 +568,18 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
                 row.add(div);
                 dialog.add(row);
 
+                FlexLayout rowW = new FlexLayout();
+                Div diva = new Div();
+                Text type = new Text("Hloubka");
+                NumberField hloubkaField = new NumberField();
+                hloubkaField.setValue((double) zavazadlo.getHloubka());
+                diva.add(type, hloubkaField);
+                rowW.add(diva);
+                dialog.add(rowW);
+
                 FlexLayout rowLast = new FlexLayout();
                 Button uploadButton = new Button("Uprav", event3 -> {
-                    zavazadloService.findByIdAndUpdate(zavazadlo.getZavazadloID(), sirkaField.getValue().intValue(), vyskaField.getValue().intValue(), vahaField.getValue().intValue(), krehkeField.getValue().intValue(), typField.getValue().intValue());
+                    zavazadloService.findByIdAndUpdate(zavazadlo.getZavazadloID(), sirkaField.getValue().intValue(), vyskaField.getValue().intValue(), vahaField.getValue().intValue(), krehkeField.getValue().intValue(), typField.getValue().intValue(), hloubkaField.getValue().intValue());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
@@ -595,7 +605,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
             deleteButton.setIcon(icon4);
             HorizontalLayout buttonLayout = new HorizontalLayout(editButton, deleteButton);
             return buttonLayout;
-        })).setHeader("Akce");
+        })).setHeader("Akce").setWidth("25%");
         divZavazadla.add(zavazadloGrid);
         FlexLayout row = new FlexLayout();
         Div div = new Div();
@@ -662,6 +672,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
         div.add(btnNew);
         div.getStyle().set("margin-left", "50%");
         row.add(div);
+
         divZavazadla.add(row);
     }
 

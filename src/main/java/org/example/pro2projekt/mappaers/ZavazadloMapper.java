@@ -17,6 +17,7 @@ public class ZavazadloMapper implements RowMapper<Zavazadlo> {
         zavazadlo.setVyska(rs.getInt("VYSKA"));
         zavazadlo.setPasazerID(rs.getInt("PASAZERID"));
         zavazadlo.setTyp_zavazadlaID(rs.getInt("TYP_ZAVAZADLAID"));
+        zavazadlo.setHloubka(rs.getInt("HLOUBKA"));
         return zavazadlo;
     }
 }

@@ -186,7 +186,7 @@ public class AdminLetisteView extends VerticalLayout {
             deleteButton.setIcon(icon4);
             HorizontalLayout buttonLayout = new HorizontalLayout(editButton, deleteButton);
             return buttonLayout;
-        })).setHeader("Akce");
+        })).setHeader("Akce").setWidth("20%");
         letisteGrid.getStyle().set("border", "2px solid lightblue")
                 .set("border-radius", "10px")
                 .set("padding", "10px")

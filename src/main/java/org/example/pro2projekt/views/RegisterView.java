@@ -13,13 +13,16 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.example.pro2projekt.service.PasazerService;
 import org.example.pro2projekt.validation.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("register")
 @Route("/register")
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout {
     private final Validator validate = new Validator();
+    private final PasazerService pasazerService;
     TextArea jmenoField, prijmeniField, emailField;
     TextArea rodnecisloField, telefonniCisloField;
     PasswordField hesloField;
@@ -27,8 +30,9 @@ public class RegisterView extends VerticalLayout {
     RadioButtonGroup<String> pohlavi;
     String jmeno = "", prijmeni = "", rodCi = "", telCis = "", heslo = "", email = "", pohla = "";
 
-    public RegisterView() {
-        //todo rest
+    @Autowired
+    public RegisterView(PasazerService pasazerService) {
+        this.pasazerService = pasazerService;
         Div main = new Div();
         H1 h = new H1("Register");
         main.add(h);
@@ -108,7 +112,10 @@ public class RegisterView extends VerticalLayout {
         pohlavi.addValueChangeListener(event -> pohla = event.getValue());
         emailField.addValueChangeListener(event -> email = event.getValue());
 
-        btnRegister.addClickListener(event -> Registruj(jmeno, prijmeni, email, rodCi, telCis, heslo, pohla));
+        btnRegister.addClickListener(event -> {
+            pasazerService.createPasazer(jmeno, prijmeni, email, rodCi, telCis, heslo, pohla);
+            getUI().ifPresent(ui -> ui.navigate(LoginView.class));
+        });
         btnBack.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(Index.class)));
 
         main.add(row1, row2, row3, row3a, row4, row4b, row5);
@@ -117,14 +124,4 @@ public class RegisterView extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
     }
-
-    private void Registruj(String jmeno, String prijmeni, String email, String rodCi, String telCis, String heslo, String pohlavi) {
-        boolean isRegisted = validate.Registruj(jmeno, prijmeni, email, rodCi, telCis, heslo, pohlavi);
-        if (isRegisted) {
-            getUI().ifPresent(ui -> ui.navigate(LoginView.class));
-        } else {
-            Notification.show("Byly zadány neplatné údaje");
-        }
-    }
-
 }

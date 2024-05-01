@@ -135,7 +135,6 @@ public class AdminLetadlaView extends VerticalLayout {
         letadloGrid.addColumn(Letadlo::getStav).setHeader("Stav");
         letadloGrid.addColumn(Letadlo::getRok_vyroby).setHeader("Rok výroby");
         letadloGrid.addColumn(Letadlo::getTyp).setHeader("Typ");
-        letadloGrid.addColumn(Letadlo::getVyrobce).setHeader("Vyrobce");
         letadloGrid.addColumn(new ComponentRenderer<>(letadlo -> {
             int letadloId = letadlo.getLetadloID();
             Button editButton = new Button("Úprava");
@@ -215,7 +214,7 @@ public class AdminLetadlaView extends VerticalLayout {
             deleteButton.setIcon(icon4);
             HorizontalLayout buttonLayout = new HorizontalLayout(editButton, deleteButton);
             return buttonLayout;
-        })).setHeader("Akce");
+        })).setHeader("Akce").setWidth("20%");
         letadloGrid.getStyle().set("border", "2px solid lightblue")
                 .set("border-radius", "10px")
                 .set("padding", "10px")
@@ -224,7 +223,6 @@ public class AdminLetadlaView extends VerticalLayout {
 
         add(letadloGrid);
 
-        statsGrid.addColumn(LetadloStats::getVyrobce).setHeader("Vyrobce");
         statsGrid.addColumn(LetadloStats::getNazev).setHeader("Název");
         statsGrid.addColumn(new ComponentRenderer<>(letadloStat -> new Span(Integer.toString(letadloStat.getPocet()))))
                 .setHeader("Počet");

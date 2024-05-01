@@ -9,7 +9,7 @@ public interface ZavazadloService {
 
     List<Zavazadlo> findByIdAndDelete(int id);
 
-    void findByIdAndUpdate(int id, int sirka, int vyska, int vaha, int krehke, int typ);
+    void findByIdAndUpdate(int id, int sirka, int vyska, int vaha, int krehke, int typ, int hloubka);
 
     void createZavazadlo(int pasazerId, int sirka, int vyska, int vaha, int krehke, int typ);
 }

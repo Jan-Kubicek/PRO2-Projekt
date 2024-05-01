@@ -15,17 +15,19 @@ public class Zavazadlo {
     private int Sirka;
     private int Vyska;
     private int Vaha;
+    private int Hloubka;
 
     public Zavazadlo() {
     }
 
-    public Zavazadlo(int pasazerID, int typ_zavazadlaID, int krehke, int sirka, int vyska, int vaha) {
+    public Zavazadlo(int pasazerID, int typ_zavazadlaID, int krehke, int sirka, int vyska, int vaha, int hloubka) {
         PasazerID = pasazerID;
         Typ_zavazadlaID = typ_zavazadlaID;
         Krehke = krehke;
         Sirka = sirka;
         Vyska = vyska;
         Vaha = vaha;
+        Hloubka = hloubka;
     }
 
     public int getZavazadloID() {
@@ -82,5 +84,13 @@ public class Zavazadlo {
 
     public void setVaha(int vaha) {
         Vaha = vaha;
+    }
+
+    public int getHloubka() {
+        return Hloubka;
+    }
+
+    public void setHloubka(int hloubka) {
+        Hloubka = hloubka;
     }
 }

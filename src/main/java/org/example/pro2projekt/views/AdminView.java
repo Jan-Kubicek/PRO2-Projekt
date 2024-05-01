@@ -36,7 +36,7 @@ public class AdminView extends VerticalLayout {
             //header
             FlexLayout row1 = new FlexLayout();
             Div row1div1 = new Div();
-            H1 text = new H1("Admin page");
+            H1 text = new H1("Administrátorský účet");
             row1div1.add(text);
             row1div1.setWidth("50%");
             Div row1div2 = new Div();
@@ -61,7 +61,7 @@ public class AdminView extends VerticalLayout {
 
             FlexLayout row2 = new FlexLayout();
             Div row2div1 = new Div();
-            H2 text1 = new H2("Správa účtů");
+            H2 text1 = new H2("Účty");
             row2div1.add(text1);
             row2div1.setWidth("50%");
             row2div1.getStyle().set("padding-left", "3%");
@@ -86,7 +86,7 @@ public class AdminView extends VerticalLayout {
 
             FlexLayout row3 = new FlexLayout();
             Div row3div1 = new Div();
-            H2 text2 = new H2("Správa letadel");
+            H2 text2 = new H2("Letadla");
             row3div1.add(text2);
             row3div1.setWidth("50%");
             row3div1.getStyle().set("padding-left", "3%");
@@ -110,7 +110,7 @@ public class AdminView extends VerticalLayout {
             add(row3);
             FlexLayout row4 = new FlexLayout();
             Div row4div1 = new Div();
-            H2 text3 = new H2("Správa letišť");
+            H2 text3 = new H2("Letiště");
             row4div1.add(text3);
             row4div1.setWidth("50%");
             row4div1.getStyle().set("padding-left", "3%");
@@ -135,7 +135,7 @@ public class AdminView extends VerticalLayout {
 
             FlexLayout row5 = new FlexLayout();
             Div row5div1 = new Div();
-            H2 text4 = new H2("Správa společností");
+            H2 text4 = new H2("Společnosti");
             row5div1.add(text4);
             row5div1.setWidth("50%");
             row5div1.getStyle().set("padding-left", "3%");

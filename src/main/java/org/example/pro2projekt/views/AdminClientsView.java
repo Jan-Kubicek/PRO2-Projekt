@@ -211,7 +211,7 @@ public class AdminClientsView extends VerticalLayout {
 
             HorizontalLayout buttonLayout = new HorizontalLayout(editButton, deleteButton);
             return buttonLayout;
-        })).setHeader("Akce");
+        })).setHeader("Akce").setWidth("20%");
         pasazerGrid.getStyle().set("border", "2px solid lightblue")
                 .set("border-radius", "10px")
                 .set("padding", "10px")
@@ -316,7 +316,7 @@ public class AdminClientsView extends VerticalLayout {
 
             HorizontalLayout buttonLayout = new HorizontalLayout(editButton, deleteButton);
             return buttonLayout;
-        })).setHeader("Akce");
+        })).setHeader("Akce").setWidth("20%");
         dispecrGrid.getStyle().set("border", "2px solid lightblue")
                 .set("border-radius", "10px")
                 .set("padding", "10px")

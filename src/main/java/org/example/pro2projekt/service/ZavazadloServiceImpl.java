@@ -33,9 +33,9 @@ public class ZavazadloServiceImpl implements ZavazadloService {
     }
 
     @Override
-    public void findByIdAndUpdate(int id, int sirka, int vyska, int vaha, int krehke, int typ) {
-        String query = "UPDATE Zavazadlo SET Zavazadlo.Krehke = ?, Zavazadlo.Sirka = ?, Zavazadlo.Vaha = ?, Zavazadlo.Vyska = ?, Zavazadlo.Typ_zavazadlaID = ? WHERE Zavazadlo.ZavazadloID = ?";
-        jdbcTemplate.query(query, new ZavazadloMapper(), krehke, sirka, vaha, vyska, typ, id);
+    public void findByIdAndUpdate(int id, int sirka, int vyska, int vaha, int krehke, int typ, int hloubka) {
+        String query = "UPDATE Zavazadlo SET Zavazadlo.Krehke = ?, Zavazadlo.Sirka = ?, Zavazadlo.Vaha = ?, Zavazadlo.Vyska = ?, Zavazadlo.Typ_zavazadlaID = ?, Zavazadlo.Hloubka = ? WHERE Zavazadlo.ZavazadloID = ?";
+        jdbcTemplate.query(query, new ZavazadloMapper(), krehke, sirka, vaha, vyska, typ, hloubka, id);
     }
 
     @Override

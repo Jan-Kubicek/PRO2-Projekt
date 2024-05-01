@@ -45,7 +45,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         add(btnZpet);
 
         loginForm.setAction("login");
-        add(new H1("JKLetenky Login"), loginForm);
+        add(new H1("JKLetenky Přihlášení"), loginForm);
         loginForm.addLoginListener(e -> authenticate(e.getUsername(), e.getPassword()));
     }
 

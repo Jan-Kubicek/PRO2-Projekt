@@ -127,6 +127,19 @@ public class PasazerServiceImpl implements PasazerService {
     }
 
     @Override
+    public void createPasazer(String jmeno, String prijmeni, String email, String rodCi, String telCis, String heslo, String pohlavi) {
+        boolean valid = validator.isValid(jmeno,prijmeni,email,rodCi,telCis);
+        if(valid){
+            String hashedPassword = BCrypt.hashpw(heslo, BCrypt.gensalt());
+            int poh = 1; // žena
+            if (pohlavi.equals("Muž"))
+                poh = 0;
+            String query = "INSERT INTO Pasazer ( Datum_narozeni, Email, Heslo, Jmeno, Pohlavi, Prijmeni, Rodne_cislo, Telefoni_cislo,Typ_pasazeraID) VALUES (?,?,?,?,?,?,?,?,1)";
+            jdbcTemplate.query(query,new PasazerMapper(),"2024-04-03",email,hashedPassword,jmeno,poh,prijmeni,rodCi,telCis);
+        }
+    }
+
+    @Override
     public Pasazer findByEmailDispecer(String email) {
         String query = "SELECT * FROM Pasazer P WHERE P.Email = ? AND P.Typ_pasazeraID = 6";
         return jdbcTemplate.queryForObject(query, new BeanPropertyRowMapper<>(Pasazer.class), email);
