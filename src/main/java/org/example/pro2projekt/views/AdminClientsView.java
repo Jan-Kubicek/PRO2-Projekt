@@ -128,8 +128,8 @@ public class AdminClientsView extends VerticalLayout {
 
 
         pasazerGrid.addColumn(Pasazer::getPasazerID).setHeader("ID");
-        pasazerGrid.addColumn(Pasazer::getJmeno).setHeader("Jmeno");
-        pasazerGrid.addColumn(Pasazer::getPrijmeni).setHeader("Prijmeni");
+        pasazerGrid.addColumn(Pasazer::getJmeno).setHeader("Jméno");
+        pasazerGrid.addColumn(Pasazer::getPrijmeni).setHeader("Přijmení");
         pasazerGrid.addColumn(Pasazer::getEmail).setHeader("Email");
         pasazerGrid.addColumn(Pasazer::getRodne_cislo).setHeader("Rodné číslo");
         pasazerGrid.addColumn(Pasazer::getTelefoni_cislo).setHeader("Telefonní číslo");
@@ -218,8 +218,8 @@ public class AdminClientsView extends VerticalLayout {
                 .set("margin-bottom", "20px")
                 .set("box-shadow", "5px 5px 5px grey");
 
-        pasazerStatsGrid.addColumn(PasazerStats::getTyp).setHeader("Typ Pasažéra");
-        pasazerStatsGrid.addColumn(PasazerStats::getPocet).setHeader("Počet");
+        pasazerStatsGrid.addColumn(PasazerStats::getTyp).setHeader("Typ Pasažera");
+        pasazerStatsGrid.addColumn(PasazerStats::getPocet).setHeader("Počet pasažerů");
         pasazerStatsGrid.addColumn(PasazerStats::getPopis).setHeader("Popis");
         pasazerStatsGrid.addColumn(new ComponentRenderer<>(pasazerStats -> {
             double percent = ((double) pasazerStats.getPocet() / pasazerStats.getAllPasazers()) * 100;
@@ -232,8 +232,8 @@ public class AdminClientsView extends VerticalLayout {
                 .set("box-shadow", "5px 5px 5px grey");
 
         dispecrGrid.addColumn(Pasazer::getPasazerID).setHeader("ID");
-        dispecrGrid.addColumn(Pasazer::getJmeno).setHeader("Jmeno");
-        dispecrGrid.addColumn(Pasazer::getPrijmeni).setHeader("Prijmeni");
+        dispecrGrid.addColumn(Pasazer::getJmeno).setHeader("Jméno");
+        dispecrGrid.addColumn(Pasazer::getPrijmeni).setHeader("Přijmení");
         dispecrGrid.addColumn(Pasazer::getEmail).setHeader("Email");
         dispecrGrid.addColumn(Pasazer::getRodne_cislo).setHeader("Rodné číslo");
         dispecrGrid.addColumn(Pasazer::getTelefoni_cislo).setHeader("Telefonní číslo");

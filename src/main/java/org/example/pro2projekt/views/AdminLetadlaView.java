@@ -225,7 +225,7 @@ public class AdminLetadlaView extends VerticalLayout {
 
         statsGrid.addColumn(LetadloStats::getNazev).setHeader("Název");
         statsGrid.addColumn(new ComponentRenderer<>(letadloStat -> new Span(Integer.toString(letadloStat.getPocet()))))
-                .setHeader("Počet");
+                .setHeader("Počet letadel");
         statsGrid.addColumn(new ComponentRenderer<>(letadloStat -> {
             double percent = ((double) letadloStat.getPocet() / letadloStat.getAllPlanes()) * 100;
             return new Span(String.format("%.2f %%", percent));

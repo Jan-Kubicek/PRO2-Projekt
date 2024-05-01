@@ -115,9 +115,9 @@ public class AdminLetisteView extends VerticalLayout {
         add(row0);
 
         letisteGrid.addColumn(Letiste::getLetisteID).setHeader("ID");
-        letisteGrid.addColumn(Letiste::getKapacita).setHeader("Kapacita");
+        letisteGrid.addColumn(Letiste::getKapacita).setHeader("Kapacita letiště");
         letisteGrid.addColumn(Letiste::getMesto).setHeader("Město");
-        letisteGrid.addColumn(Letiste::getNazev).setHeader("Název");
+        letisteGrid.addColumn(Letiste::getNazev).setHeader("Název letiště");
         letisteGrid.addColumn(Letiste::getStat).setHeader("Stát");
         letisteGrid.addColumn(new ComponentRenderer<>(letiste -> {
             int letisteID = letiste.getLetisteID();

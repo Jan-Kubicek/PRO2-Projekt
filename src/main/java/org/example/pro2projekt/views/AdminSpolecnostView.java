@@ -80,7 +80,7 @@ public class AdminSpolecnostView extends VerticalLayout {
             dialog.add(rowLast);
             dialog.open();
         });
-        btnNew.setText("Nové společnost");
+        btnNew.setText("Nová společnost");
         btnNew.getStyle().set("margin-left", "40%");
         Icon icon2 = new Icon(VaadinIcon.PLUS_CIRCLE);
         btnNew.setIcon(icon2);
