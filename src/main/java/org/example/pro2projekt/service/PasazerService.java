@@ -28,9 +28,9 @@ public interface PasazerService {
 
     List<Pasazer> findByIdAndDeleteDispecer(int id);
 
-    void findByIdAndUpdateDispecer(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel);
+    void findByIdAndUpdateDispecer(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel, String datumNarozeni);
 
-    void createDispecer(String email, String heslo, String jmeno, String prijmeni, String rodneCislo, String tel);
+    void createDispecer(String email, String heslo, String jmeno, String prijmeni, String rodneCislo, String tel, String datumNarozeni);
     void createPasazer(String jmeno, String prijmeni, String email, String rodCi, String telCis, String heslo, String pohlavi);
 
     Pasazer findByEmailDispecer(String email);

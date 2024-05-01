@@ -108,21 +108,21 @@ public class PasazerServiceImpl implements PasazerService {
     }
 
     @Override
-    public void findByIdAndUpdateDispecer(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel) {
+    public void findByIdAndUpdateDispecer(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel, String datumNarozeni) {
         boolean valid = validator.isValid(jmeno, prijmeni, email, rodneCislo, tel);
         if (valid) {
-            String query = "UPDATE Pasazer SET Pasazer.Jmeno = ?, Pasazer.Prijmeni = ?, Pasazer.Email = ?, Pasazer.Rodne_cislo = ?, Pasazer.Telefoni_cislo = ? WHERE Pasazer.PasazerID = ? AND Pasazer.Typ_pasazeraID = 6";
-            jdbcTemplate.query(query, new PasazerMapper(), jmeno, prijmeni, email, rodneCislo, tel, id);
+            String query = "UPDATE Pasazer SET Pasazer.Jmeno = ?, Pasazer.Prijmeni = ?, Pasazer.Email = ?, Pasazer.Rodne_cislo = ?, Pasazer.Telefoni_cislo = ?, Pasazer.Datum_narozeni = ? WHERE Pasazer.PasazerID = ? AND Pasazer.Typ_pasazeraID = 6";
+            jdbcTemplate.query(query, new PasazerMapper(), jmeno, prijmeni, email, rodneCislo, tel, datumNarozeni, id);
         }
     }
 
     @Override
-    public void createDispecer(String email, String heslo, String jmeno, String prijmeni, String rodneCislo, String tel) {
+    public void createDispecer(String email, String heslo, String jmeno, String prijmeni, String rodneCislo, String tel, String datumNarozeni) {
         boolean valid = validator.isValid(jmeno, prijmeni, email, rodneCislo, tel);
         if (valid) {
             String hashedHeslo = BCrypt.hashpw(heslo, BCrypt.gensalt());
-            String query = "INSERT INTO  Pasazer (Email, Heslo, Jmeno, Prijmeni, Rodne_cislo, Telefoni_cislo,Typ_pasazeraID) VALUES (?,?,?,?,?,?,6)";
-            jdbcTemplate.query(query, new PasazerMapper(), email, hashedHeslo, jmeno, prijmeni, rodneCislo, tel);
+            String query = "INSERT INTO  Pasazer (Email, Heslo, Jmeno, Prijmeni, Rodne_cislo, Telefoni_cislo, Datum_narozeni, Typ_pasazeraID) VALUES (?,?,?,?,?,?,?,6)";
+            jdbcTemplate.query(query, new PasazerMapper(), email, hashedHeslo, jmeno, prijmeni, rodneCislo, tel, datumNarozeni);
         }
     }
 

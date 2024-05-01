@@ -100,9 +100,18 @@ public class AdminClientsView extends VerticalLayout {
             row3.add(last, lastt);
             dialog.add(row3);
 
+            FlexLayout row4 = new FlexLayout();
+            Div last2 = new Div();
+            Text datumNa = new Text("Datum narození");
+            DatePicker datePicker = new DatePicker();
+            last2.add(datumNa, datePicker);
+            last2.getStyle().set("padding-left", "25%");
+            row4.add(last2);
+            dialog.add(row4);
+
             FlexLayout rowLast = new FlexLayout();
             Button uploadButton = new Button("Vytvoř", event3 -> {
-                pasazerService.createDispecer(emailField.getValue(), hesloField.getValue(), jmenoField.getValue(), prijmeniField.getValue(), rodneCisloField.getValue(), telField.getValue());
+                pasazerService.createDispecer(emailField.getValue(), hesloField.getValue(), jmenoField.getValue(), prijmeniField.getValue(), rodneCisloField.getValue(), telField.getValue(),datePicker.getValue().toString());
                 dialog.close();
                 UI.getCurrent().getPage().reload();
             });
@@ -296,9 +305,18 @@ public class AdminClientsView extends VerticalLayout {
                 row3.add(last);
                 dialog.add(row3);
 
+                FlexLayout row4 = new FlexLayout();
+                Div last2 = new Div();
+                Text datumNa = new Text("Datum narození");
+                DatePicker datePicker = new DatePicker();
+                last2.add(datumNa, datePicker);
+                last2.getStyle().set("padding-left", "25%");
+                row4.add(last2);
+                dialog.add(row4);
+
                 FlexLayout rowLast = new FlexLayout();
                 Button uploadButton = new Button("Uprav", event3 -> {
-                    pasazerService.findByIdAndUpdateDispecer(dispecer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
+                    pasazerService.findByIdAndUpdateDispecer(dispecer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue(),datePicker.getValue().toString());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
