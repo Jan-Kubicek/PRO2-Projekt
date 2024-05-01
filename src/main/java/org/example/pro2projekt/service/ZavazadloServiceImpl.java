@@ -39,8 +39,8 @@ public class ZavazadloServiceImpl implements ZavazadloService {
     }
 
     @Override
-    public void createZavazadlo(int pasazerID, int sirka, int vyska, int vaha, int krehke, int typ) {
-        String query = "INSERT INTO  Zavazadlo (PasazerID,Krehke,Sirka,Vyska,Vaha,Typ_zavazadlaID) VALUES (?,?,?,?,?,?)";
-        jdbcTemplate.query(query, new ZavazadloMapper(), pasazerID, krehke, sirka, vyska, vaha, typ);
+    public void createZavazadlo(int pasazerID, int sirka, int vyska, int vaha, int krehke, int typ, int hloubka) {
+        String query = "INSERT INTO  Zavazadlo (PasazerID,Krehke,Sirka,Vyska,Vaha,Typ_zavazadlaID, Hloubka) VALUES (?,?,?,?,?,?,?)";
+        jdbcTemplate.query(query, new ZavazadloMapper(), pasazerID, krehke, sirka, vyska, vaha, typ,hloubka);
     }
 }

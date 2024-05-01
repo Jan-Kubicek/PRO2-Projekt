@@ -1,0 +1,4 @@
+.background-image {
+    background-image: url('../../src/res/bg.jpg');
+    background-size: cover;
+}

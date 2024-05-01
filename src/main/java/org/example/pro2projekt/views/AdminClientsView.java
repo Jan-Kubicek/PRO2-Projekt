@@ -3,6 +3,7 @@ package org.example.pro2projekt.views;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -182,9 +183,18 @@ public class AdminClientsView extends VerticalLayout {
                 row3.add(last);
                 dialog.add(row3);
 
+                FlexLayout row4 = new FlexLayout();
+                Div last2 = new Div();
+                Text datumNa = new Text("Datum narození");
+                DatePicker datePicker = new DatePicker();
+                last2.add(datumNa, datePicker);
+                last2.getStyle().set("padding-left", "25%");
+                row4.add(last2);
+                dialog.add(row4);
+
                 FlexLayout rowLast = new FlexLayout();
                 Button uploadButton = new Button("Uprav", event3 -> {
-                    pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
+                    pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue(),datePicker.getValue().toString());
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });

@@ -81,11 +81,11 @@ public class PasazerServiceImpl implements PasazerService {
     }
 
     @Override
-    public void findByIdAndUpdate(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel) {
+    public void findByIdAndUpdate(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel, String datumNarozeni) {
         boolean valid = validator.isValid(jmeno, prijmeni, email, rodneCislo, tel);
         if (valid) {
-            String query = "UPDATE Pasazer SET Pasazer.Jmeno = ?, Pasazer.Prijmeni = ?, Pasazer.Email = ?, Pasazer.Rodne_cislo = ?, Pasazer.Telefoni_cislo = ? WHERE Pasazer.PasazerID = ?";
-            jdbcTemplate.query(query, new PasazerMapper(), jmeno, prijmeni, email, rodneCislo, tel, id);
+            String query = "UPDATE Pasazer SET Pasazer.Jmeno = ?, Pasazer.Prijmeni = ?, Pasazer.Email = ?, Pasazer.Rodne_cislo = ?, Pasazer.Telefoni_cislo = ?, Pasazer.Datum_narozeni = ? WHERE Pasazer.PasazerID = ?";
+            jdbcTemplate.query(query, new PasazerMapper(), jmeno, prijmeni, email, rodneCislo, tel, datumNarozeni ,id);
         }
     }
 

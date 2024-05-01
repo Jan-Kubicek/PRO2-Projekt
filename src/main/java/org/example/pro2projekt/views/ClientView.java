@@ -248,9 +248,18 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
             row3.add(last);
             dialog.add(row3);
 
+            FlexLayout row4 = new FlexLayout();
+            Div last2 = new Div();
+            Text datumNa = new Text("Datum narození");
+            DatePicker datePicker = new DatePicker();
+            last2.add(datumNa, datePicker);
+            last2.getStyle().set("padding-left", "25%");
+            row4.add(last2);
+            dialog.add(row4);
+
             FlexLayout rowLast = new FlexLayout();
             Button uploadButton = new Button("Uprav", event3 -> {
-                pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue());
+                pasazerService.findByIdAndUpdate(pasazer.getPasazerID(), jmenoField.getValue(), prijmeniField.getValue(), emailField.getValue(), rodneCisloField.getValue(), telField.getValue(), datePicker.getValue().toString());
                 dialog.close();
                 UI.getCurrent().getPage().reload();
             });
@@ -396,7 +405,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
         }
         Div form = new Div();
         //here
-        btnSubmit = new Button("Submit");
+        btnSubmit = new Button("Hledat");
         Text odlet = new Text("Stát odeltu: ");
         odletField = new ComboBox<>();
         odletField.setItems(statesList);
@@ -479,6 +488,8 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
                     dialog.close();
                     UI.getCurrent().getPage().reload();
                 });
+                Icon icon1 = new Icon(VaadinIcon.CHECK);
+                set.setIcon(icon1);
                 rowLast.add(back, set);
                 dialog.add(rowLast);
                 dialog.open();
@@ -507,10 +518,10 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
             }
             return new Span(value);
         })).setHeader("Typ zavazadla");
-        zavazadloGrid.addColumn(Zavazadlo::getSirka).setHeader("Šířka");
-        zavazadloGrid.addColumn(Zavazadlo::getVyska).setHeader("Výška");
-        zavazadloGrid.addColumn(Zavazadlo::getHloubka).setHeader("Hloubka");
-        zavazadloGrid.addColumn(Zavazadlo::getVaha).setHeader("Váha");
+        zavazadloGrid.addColumn(Zavazadlo::getSirka).setHeader("Šířka [cm]");
+        zavazadloGrid.addColumn(Zavazadlo::getVyska).setHeader("Výška [cm]");
+        zavazadloGrid.addColumn(Zavazadlo::getHloubka).setHeader("Hloubka [cm]");
+        zavazadloGrid.addColumn(Zavazadlo::getVaha).setHeader("Váha [Kg]");
         zavazadloGrid.addColumn(new ComponentRenderer<>(zavazadlo -> {
             String value;
             if (zavazadlo.getKrehke() == 1) {
@@ -527,14 +538,14 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
 
                 FlexLayout row1 = new FlexLayout();
                 Div row1div1 = new Div();
-                Text sirka = new Text("Šířka");
+                Text sirka = new Text("Šířka [cm]");
                 NumberField sirkaField = new NumberField();
                 sirkaField.setValue(Double.valueOf(String.valueOf(zavazadlo.getSirka())));
                 row1div1.add(sirka, sirkaField);
                 row1div1.getStyle().set("padding-left", "10%");
 
                 Div row1div2 = new Div();
-                Text vyska = new Text("Výška");
+                Text vyska = new Text("Výška [cm]");
                 NumberField vyskaField = new NumberField();
                 vyskaField.setValue((double) zavazadlo.getVyska());
                 row1div2.add(vyska, vyskaField);
@@ -544,7 +555,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
 
                 FlexLayout row2 = new FlexLayout();
                 Div row2div1 = new Div();
-                Text vaha = new Text("Váha");
+                Text vaha = new Text("Váha [Kg]");
                 NumberField vahaField = new NumberField();
                 vahaField.setValue((double) zavazadlo.getVaha());
                 row2div1.add(vaha, vahaField);
@@ -570,7 +581,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
 
                 FlexLayout rowW = new FlexLayout();
                 Div diva = new Div();
-                Text type = new Text("Hloubka");
+                Text type = new Text("Hloubka [cm]");
                 NumberField hloubkaField = new NumberField();
                 hloubkaField.setValue((double) zavazadlo.getHloubka());
                 diva.add(type, hloubkaField);
@@ -615,13 +626,13 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
 
             FlexLayout row1 = new FlexLayout();
             Div row1div1 = new Div();
-            Text sirka = new Text("Šířka");
+            Text sirka = new Text("Šířka [cm]");
             NumberField sirkaField = new NumberField();
             row1div1.add(sirka, sirkaField);
             row1div1.getStyle().set("padding-left", "10%");
 
             Div row1div2 = new Div();
-            Text vyska = new Text("Výška");
+            Text vyska = new Text("Výška [cm]");
             NumberField vyskaField = new NumberField();
             row1div2.add(vyska, vyskaField);
             row1div2.getStyle().set("padding-left", "10%");
@@ -630,7 +641,7 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
 
             FlexLayout row2 = new FlexLayout();
             Div row2div1 = new Div();
-            Text vaha = new Text("Váha");
+            Text vaha = new Text("Váha [Kg]");
             NumberField vahaField = new NumberField();
             row2div1.add(vaha, vahaField);
             row2div1.getStyle().set("padding-left", "10%");
@@ -651,9 +662,17 @@ public class ClientView extends VerticalLayout implements HasUrlParameter<String
             row4.add(div2);
             dialog.add(row4);
 
+            FlexLayout row5 = new FlexLayout();
+            Div div3 = new Div();
+            Text typP = new Text("Hloubka [cm]");
+            NumberField hloubkaField = new NumberField();
+            div3.add(typP, hloubkaField);
+            row5.add(div3);
+            dialog.add(row5);
+
             FlexLayout rowLast = new FlexLayout();
             Button uploadButton = new Button("Nový", event3 -> {
-                zavazadloService.createZavazadlo(pasazerId, sirkaField.getValue().intValue(), vyskaField.getValue().intValue(), vahaField.getValue().intValue(), krehkeField.getValue().intValue(), typField.getValue().intValue());
+                zavazadloService.createZavazadlo(pasazerId, sirkaField.getValue().intValue(), vyskaField.getValue().intValue(), vahaField.getValue().intValue(), krehkeField.getValue().intValue(), typField.getValue().intValue(), hloubkaField.getValue().intValue());
                 dialog.close();
                 UI.getCurrent().getPage().reload();
             });

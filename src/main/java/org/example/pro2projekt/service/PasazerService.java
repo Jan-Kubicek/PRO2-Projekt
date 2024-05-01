@@ -20,7 +20,7 @@ public interface PasazerService {
 
     List<Pasazer> findByIdAndDelete(int id);
 
-    void findByIdAndUpdate(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel);
+    void findByIdAndUpdate(int id, String jmeno, String prijmeni, String email, String rodneCislo, String tel, String datumNarozeni);
 
     List<Pasazer> findAllDispecers();
 

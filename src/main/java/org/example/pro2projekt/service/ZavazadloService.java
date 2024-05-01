@@ -11,5 +11,5 @@ public interface ZavazadloService {
 
     void findByIdAndUpdate(int id, int sirka, int vyska, int vaha, int krehke, int typ, int hloubka);
 
-    void createZavazadlo(int pasazerId, int sirka, int vyska, int vaha, int krehke, int typ);
+    void createZavazadlo(int pasazerId, int sirka, int vyska, int vaha, int krehke, int typ, int hloubka);
 }
