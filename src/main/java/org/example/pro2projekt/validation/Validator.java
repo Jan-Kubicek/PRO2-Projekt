@@ -33,7 +33,7 @@ public class Validator {
     }
 
     public boolean isValidLetadlo(String nazev, String rok, String stav, String typ, String vyrobce) {
-        if ((nazev.length() < 3) || (rok.length() < 3) || (stav.length() < 3) || (typ.length() < 3) || (vyrobce.length() < 3)) {
+        if ((nazev.length() < 3) || (rok.length() < 4) || (stav.length() < 3) || (typ.length() < 3) || (vyrobce.length() < 3)) {
             return false;
         }
         try {
@@ -45,7 +45,7 @@ public class Validator {
     }
 
     public boolean isValidLetiste(String mesto, int kapacita, String nazev, String stat) {
-        return (mesto.length() >= 3) && (kapacita >= 3) && (nazev.length() >= 4) && (stat.length() >= 4);
+        return (mesto.length() >= 3) && (kapacita >= 20) && (nazev.length() >= 4) && (stat.length() >= 4);
     }
 
     public boolean isValidSpolecnost(String nazev, String sidlo) {
