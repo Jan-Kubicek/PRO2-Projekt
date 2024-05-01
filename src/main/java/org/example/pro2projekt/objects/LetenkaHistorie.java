@@ -16,6 +16,18 @@ public class LetenkaHistorie {
     public LetenkaHistorie() {
     }
 
+    public LetenkaHistorie(int letId, int letadloID, Date cas_Odletu, String mestoOdletu, String statOdletu, String nazevLOdletu, String mestoPriletu, String statPriletu, String nazevLPriletu) {
+        LetId = letId;
+        LetadloID = letadloID;
+        Cas_Odletu = cas_Odletu;
+        MestoOdletu = mestoOdletu;
+        StatOdletu = statOdletu;
+        NazevLOdletu = nazevLOdletu;
+        MestoPriletu = mestoPriletu;
+        StatPriletu = statPriletu;
+        NazevLPriletu = nazevLPriletu;
+    }
+
     public int getLetId() {
         return LetId;
     }

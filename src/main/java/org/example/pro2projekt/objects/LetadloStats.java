@@ -9,6 +9,13 @@ public class LetadloStats {
     public LetadloStats() {
     }
 
+    public LetadloStats(String vyrobce, String nazev, int pocet, int allPlanes) {
+        this.vyrobce = vyrobce;
+        this.nazev = nazev;
+        this.pocet = pocet;
+        this.allPlanes = allPlanes;
+    }
+
     public String getVyrobce() {
         return vyrobce;
     }

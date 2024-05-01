@@ -10,6 +10,13 @@ public class PasazerStats {
 
     }
 
+    public PasazerStats(String typ, int pocet, String popis, int allPasazers) {
+        Typ = typ;
+        Pocet = pocet;
+        Popis = popis;
+        AllPasazers = allPasazers;
+    }
+
     public String getTyp() {
         return Typ;
     }

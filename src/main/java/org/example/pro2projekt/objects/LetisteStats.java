@@ -7,7 +7,13 @@ public class LetisteStats {
     private int AllLetiste;
 
     public LetisteStats() {
+    }
 
+    public LetisteStats(String stat, int pocet, int kapacita, int allLetiste) {
+        Stat = stat;
+        Pocet = pocet;
+        Kapacita = kapacita;
+        AllLetiste = allLetiste;
     }
 
     public String getStat() {
